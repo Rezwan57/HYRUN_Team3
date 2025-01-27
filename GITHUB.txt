@@ -2,14 +2,20 @@ PULL Code: git PULL
 PUSH Code: git PUSH
 
 
-New Branch:
+New PERSONAL Branch for:
 git checkout -b FirstName-develop
 git push -u origin FirstName-develop
 
 
 Regular:
-git checkout develop
-git pull origin develop
-git checkout rezwan-develop
-git merge develop
-git push
+$ git checkout develop
+$ git pull origin develop
+$ git checkout rezwan-develop
+$ git merge develop
+$ git push
+
+
+Suppose you want to push a file from src/components/FILE.jsx to your FirstName-develop Branch:
+$ git add src/components/FILE.jsx
+$ git commit -m "add FILE"
+$ git push origin FirstName-develop
