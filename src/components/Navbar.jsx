@@ -68,7 +68,7 @@ export default function Navbar() {
         <div className="row-span-3 flex items-center justify-center">
           <Link href={"/"}>
             <Image
-              src="/assets/LogoYDark.png"
+              src="/assets/logo/LogoDark.png"
               alt="logo"
               width={512}
               height={512}
