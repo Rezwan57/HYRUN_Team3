@@ -1,0 +1,15 @@
+PULL Code: git PULL
+PUSH Code: git PUSH
+
+
+New Branch:
+git checkout -b FirstName-develop
+git push -u origin FirstName-develop
+
+
+Regular:
+git checkout develop
+git pull origin develop
+git checkout rezwan-develop
+git merge develop
+git push
