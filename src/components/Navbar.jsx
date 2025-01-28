@@ -121,7 +121,7 @@ export default function Navbar() {
             <FaHeart className="hidden lg:inline text-2xl cursor-pointer" />
             <RiShoppingBag4Fill className="hidden lg:inline text-2xl cursor-pointer" />
             <button className="hidden lg:inline bg-yellow-400 w-32 h-full rounded-full">
-              Login
+              Login 
             </button>
             <button
               className={`lg:hidden flex items-center gap-1 ${
