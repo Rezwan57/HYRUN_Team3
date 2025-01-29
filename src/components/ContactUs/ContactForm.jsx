@@ -3,7 +3,8 @@ import "./style.css"
 function ContactForm() {
   return (
     <div className="container">
-        <h2>Hyrun Contact Us Form</h2>
+        <h2>Contact Us Form</h2>
+        <h3>For any inquiries or assistance, please don't hesitate to get in touch with us.</h3>
 
         <form action="/submit-form" method="post">
             <label htmlFor="name">Name:</label>

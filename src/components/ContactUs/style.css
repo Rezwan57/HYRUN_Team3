@@ -8,7 +8,15 @@
 }
 h2 {
     text-align: center;
-    color: #333;
+    color: black;
+    font-size: 32px; 
+    font-weight: bold; 
+}
+h3 {
+    text-align: center;
+    color: black;
+    font-size: 18px; 
+    font-weight: bold; 
 }
 form {
     display: flex;
@@ -27,8 +35,8 @@ input, textarea {
 }
 button {
     padding: 12px;
-    background-color: #007BFF;
-    color: white;
+    background-color: #FFEB3B;
+    color: black;
     border: none;
     border-radius: 5px;
     cursor: pointer;
