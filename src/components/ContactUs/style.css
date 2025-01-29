@@ -12,7 +12,12 @@ h2 {
     font-size: 32px; 
     font-weight: bold; 
 }
-
+h3 {
+    text-align: center;
+    color: black;
+    font-size: 18px; 
+    font-weight: bold; 
+}
 form {
     display: flex;
     flex-direction: column;
