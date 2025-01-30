@@ -72,7 +72,7 @@ export default function Navbar() {
               alt="logo"
               width={512}
               height={512}
-              className="w-56 h-auto"
+              className="w-56 h-auto select-none"
             />
           </Link>
         </div>
@@ -87,7 +87,7 @@ export default function Navbar() {
               onChange={handleInputChange}
             />
             <button
-              className={`absolute right-1 top-1 bg-yellow-400 w-20 h-8 rounded-full transition-transform duration-150 ease-in-out transform ${
+              className={`absolute right-1 top-1 bg-primary w-20 h-8 rounded-full transition-transform duration-150 ease-in-out transform ${
                 inputText.trim() ? "scale-100" : "scale-0"
               }`}
             >
@@ -106,7 +106,7 @@ export default function Navbar() {
                   value={inputText}
                   onChange={handleInputChange}
                 />
-                <button className="flex items-center justify-center bg-yellow-400 w-10 h-10 rounded-full transition-transform duration-150 ease-in-out transform">
+                <button className="flex items-center justify-center bg-primary w-10 h-10 rounded-full transition-transform duration-150 ease-in-out transform">
                   <IoSearch className="h-6 w-6" />
                 </button>
               </div>
@@ -120,11 +120,11 @@ export default function Navbar() {
           <div className="col-start-5 col-end-6 justify-self-end place-self-center flex items-center h-full gap-6">
             <FaHeart className="hidden lg:inline text-2xl cursor-pointer" />
             <RiShoppingBag4Fill className="hidden lg:inline text-2xl cursor-pointer" />
-            <button className="hidden lg:inline bg-yellow-400 w-32 h-full rounded-full">
-              Login 
+            <button className="hidden lg:inline bg-primary w-32 h-full rounded-full">
+              Login
             </button>
             <button
-              className={`lg:hidden flex items-center gap-1 ${
+              className={`lg:hidden flex items-center gap-1  ${
                 showCategories ? "text-black" : "text-neutral-700"
               }`}
               onClick={toggleCategories}
@@ -134,11 +134,11 @@ export default function Navbar() {
           </div>
         </div>
 
-        <div className="row-span-2 col-span-4 bg-yellow-400 px-2 py-1 hidden lg:flex items-center justify-start text-neutral-700">
+        <div className="row-span-2 col-span-4 bg-primary px-2 py-1 hidden lg:flex items-center justify-start text-neutral-700">
           <div className="flex items-center w-full px-4 gap-16 text-uppercase">
             <button
               className={`flex items-center gap-1 ${
-                showCategories ? "text-black" : "text-neutral-700"
+                showCategories ? "text-black " : "text-neutral-700"
               }`}
               onClick={toggleCategories}
             >
@@ -162,11 +162,11 @@ export default function Navbar() {
       </nav>
 
       {showCategories && (
-        <div className="absolute h-auto lg:h-screen w-full top-full p-10 bg-white bg-opacity-30 backdrop-blur-3xl z-10 m-auto">
-          <div className="flex flex-wrap gap-28 w-full max-w-screen-lg p-4 text-black">
+        <div className="absolute h-screen w-full top-full lg:p-auto p-10 lg:pb-0 pb-20 bg-white bg-opacity-30 backdrop-blur-3xl z-10 lg:overflow-hidden overflow-y-auto ">
+          <div className="flex items-start justify-start flex-wrap gap-0 lg:gap-10 w-full max-w-screen-lg text-black h-screen ">
             {genders.map((gender) => (
-              <div key={gender} className="gender-category">
-                <h2 className="text-4xl mb-5 border-b-2 border-neutral-400">
+              <div key={gender} className="gender-category w-72 p-2">
+                <h2 className="text-left text-4xl mb-5 border-b-4 border-yellow-400">
                   {gender}
                 </h2>
                 <div className="subcategory-cards flex flex-col gap-2 text-xl">
