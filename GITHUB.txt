@@ -14,7 +14,6 @@ $ git checkout rezwan-develop
 $ git merge develop
 $ git push
 
-
 Suppose you want to push a file from src/components/FILE.jsx to your FirstName-develop Branch:
 $ git add src/components/FILE.jsx
 $ git commit -m "add FILE"
