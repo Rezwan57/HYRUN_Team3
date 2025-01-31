@@ -21,7 +21,7 @@ function NewProducts() {
                   width={250}
                   height={250}
                   alt="Shoe"
-                  className="lg:w-auto lg:max-w-72 h-auto "
+                  className="lg:w-auto lg:max-w-56 h-auto "
                 />
               </span>
               <span className="font-bold text-xl text-white ">{sneaker.name}</span>
