@@ -87,7 +87,7 @@ export default function Navbar() {
               onChange={handleInputChange}
             />
             <button
-              className={`absolute right-1 top-1 bg-primary w-20 h-8 rounded-full transition-transform duration-150 ease-in-out transform ${
+              className={`absolute right-1 top-1 bg-prime w-20 h-8 rounded-full transition-transform duration-150 ease-in-out transform ${
                 inputText.trim() ? "scale-100" : "scale-0"
               }`}
             >
@@ -106,7 +106,7 @@ export default function Navbar() {
                   value={inputText}
                   onChange={handleInputChange}
                 />
-                <button className="flex items-center justify-center bg-primary w-10 h-10 rounded-full transition-transform duration-150 ease-in-out transform">
+                <button className="flex items-center justify-center bg-prime w-10 h-10 rounded-full transition-transform duration-150 ease-in-out transform">
                   <IoSearch className="h-6 w-6" />
                 </button>
               </div>
@@ -120,7 +120,7 @@ export default function Navbar() {
           <div className="col-start-5 col-end-6 justify-self-end place-self-center flex items-center h-full gap-6">
             <FaHeart className="hidden lg:inline text-2xl cursor-pointer" />
             <RiShoppingBag4Fill className="hidden lg:inline text-2xl cursor-pointer" />
-            <Link href={"/login"} className="lg:flex justify-center items-center  hidden bg-primary w-32 h-full rounded-full">
+            <Link href={"/login"} className="lg:flex justify-center items-center  hidden bg-prime w-32 h-full rounded-full">
               <h5>Login</h5>
             </Link>
             <button
@@ -134,7 +134,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        <div className="row-span-2 col-span-4 bg-primary px-2 py-1 hidden lg:flex items-center justify-start text-neutral-700">
+        <div className="row-span-2 col-span-4 bg-prime px-2 py-1 hidden lg:flex items-center justify-start text-neutral-700">
           <div className="flex items-center w-full px-4 gap-16 text-uppercase">
             <button
               className={`flex items-center gap-1 ${
