@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import HeroSection from "@/components/Homepage/HeroSection";
-import HotProducts from "@/components/Homepage/HotProducts";  
-import Footer from "@/components/Homepage/Footer";
+import HotProducts from "@/components/Homepage/HotProducts";
+import NewProduct from "@/components/Homepage/NewProduct"; 
 
 
 
@@ -15,9 +15,8 @@ export default function Home() {
   return (
     <main className="flex flex-col gap-20 mb-10">
       <HeroSection />
-     
       <HotProducts />
-      <Footer />
+      <NewProduct />
     </main>
   );
 }

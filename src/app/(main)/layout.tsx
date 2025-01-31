@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
 import Headline from "@/components/Headline";
+import Footer from "@/components/Homepage/Footer";
 
 export default function RootLayout({
   children,
@@ -12,6 +13,7 @@ export default function RootLayout({
       <Headline />
       <Navbar />
       {children}
+      <Footer />
     </main>
   );
 }

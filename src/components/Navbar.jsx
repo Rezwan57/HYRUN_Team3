@@ -120,9 +120,9 @@ export default function Navbar() {
           <div className="col-start-5 col-end-6 justify-self-end place-self-center flex items-center h-full gap-6">
             <FaHeart className="hidden lg:inline text-2xl cursor-pointer" />
             <RiShoppingBag4Fill className="hidden lg:inline text-2xl cursor-pointer" />
-            <button className="hidden lg:inline bg-primary w-32 h-full rounded-full">
-              Login
-            </button>
+            <Link href={"/login"} className="lg:flex justify-center items-center  hidden bg-primary w-32 h-full rounded-full">
+              <h5>Login</h5>
+            </Link>
             <button
               className={`lg:hidden flex items-center gap-1  ${
                 showCategories ? "text-black" : "text-neutral-700"
