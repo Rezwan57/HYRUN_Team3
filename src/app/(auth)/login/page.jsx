@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Image from "next/image";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -21,17 +22,19 @@ export default function Login() {
   };
 
   return (
-    <div className="container-fluid vh-100">
-      <div className="row h-100">
+    <div className="h-screen px-2">
+      <div className="row">
         
         {/* Left Side - Background Colour (No Text) */}
         <div
-          className="col-md-6 d-none d-md-block p-0"
-          style={{
-            backgroundColor: "#f5a623", // Change this to any colour you want
+          className="col-md-6 d-none d-md-block p-0 object-contain h-screen p-2"
+          style={{ // Change this to any colour you want
             borderRadius: "10px 0px 0px 10px"
           }}
-        />
+        >
+
+            <Image src="/assets/FW/auth.jpg" width={500} height={500} alt="alt" className="h-full w-full rounded-xl"/>
+          </div>
 
         {/* Right Side - Login Form */}
         <div className="col-md-6 d-flex align-items-center justify-content-center p-5 bg-white">
