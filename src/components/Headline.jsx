@@ -4,7 +4,7 @@ import { FaDiamond } from "react-icons/fa6";
 const headlines = [
   "Double the Joy, Double the Savings: Buy One, Get One Free on Your Favorite Items!",
   "Last Chance! Black Friday Deals Up to 70% Off Your Christmas Shopping",
-  "Hurry! Limited-Time Offer: Extra 20% Off on All Electronics!",
+  "Hurry! Limited-Time Offer: Extra 20% Off on All Footwear!",
   "Shop the Trend: Up to 50% Off New Arrivals!",
   "Weekend Special: Free Shipping on Orders Over £50!",
   "Mega Sale Alert: Buy More, Save More on Fashion Essentials!",
