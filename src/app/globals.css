@@ -24,10 +24,10 @@ body {
 
 
 /* Primary color  */
-.text-primary {
+.text-prime {
   color: var(--primary);
 }
-.bg-primary {
+.bg-prime {
   background-color: var(--primary);
 }
 
