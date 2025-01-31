@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import Image from "next/image";
 import HeroSection from "@/components/Homepage/HeroSection";
 
 import NewProduct from "@/components/Homepage/NewProduct";
