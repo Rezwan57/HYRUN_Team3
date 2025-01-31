@@ -5,26 +5,31 @@
 :root {
   --background: #ffffff;
   --foreground: #000000;
+  --primary: #FFBB00;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --background: #000000;
-    --foreground: #ffffff;
-  }
-}
 
 body {
+  width: 100%;
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
-  margin: 0;
-  padding: 0;
-  overflow-y: hidden;
+  box-sizing: border-box;
+  margin: 0px !important;
+  padding: 0px !important;
+  overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
 
+
+/* Primary color  */
+.text-primary {
+  color: var(--primary);
+}
+.bg-primary {
+  background-color: var(--primary);
+}
 
 /* headline */
 .marquee {
