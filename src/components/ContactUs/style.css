@@ -9,31 +9,43 @@
 h2 {
     text-align: center;
     color: black;
+<<<<<<< HEAD
     font-size: 18x; 
+=======
+    font-size: 30px; 
+>>>>>>> aa6e3ab833ec06c79079e23dc6649f8171687c0e
     font-weight: bold; 
+    font-family: Arial, Helvetica, sans-serif;
 }
 h3 {
     text-align: center;
     color: black;
+<<<<<<< HEAD
     font-size: 16px; 
     font-weight: lighter; 
+=======
+    font-size: 16x; 
+    font-weight: lighter; 
+    font-family: Arial, Helvetica, sans-serif;
+>>>>>>> aa6e3ab833ec06c79079e23dc6649f8171687c0e
 }
 form {
     display: flex;
     flex-direction: column;
+    
 }
 label {
     margin-bottom: 8px;
     font-weight: bold;
 }
-input, textarea {
+.input, textarea {
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
 }
-button {
+.submit-button {
     padding: 12px;
     background-color: #FFBB00;
     color: black;
@@ -43,6 +55,10 @@ button {
     font-size: 1rem;
     font-family: Arial, Helvetica, sans-serif;
 }
+<<<<<<< HEAD
 button:hover {
+=======
+.submit-button:hover {
+>>>>>>> aa6e3ab833ec06c79079e23dc6649f8171687c0e
     background-color: darkorange;
 }
