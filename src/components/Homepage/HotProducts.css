@@ -12,7 +12,7 @@ body, html {
   justify-content: space-evenly;
   align-items: center;
   padding: 5px;
-  background: rgb(32, 19, 19); 
+  background: rgb(29, 20, 20); 
   width: 100%;
   margin-bottom: 0px;  
   border-radius: 5px;
@@ -51,11 +51,11 @@ body, html {
   width: 100%;
   height: auto;
   padding: 20px;
-  background: linear-gradient(to right, rgb(21, 11, 11), rgb(116, 112, 112));
+  background: linear-gradient(to right, rgb(35, 20, 20), rgb(116, 112, 112));
   border-radius: 5px;
   border-style: solid;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  margin-bottom: -70px;
+  margin-top: 10px;
   position: relative;
 }
 
@@ -171,7 +171,7 @@ body, html {
 
 
 .show-more-arrow {
-  background: rgb(12, 223, 174);
+  background: rgb(242, 245, 244);
   color: black;
   padding: 17px;
   border-radius: 50%;
