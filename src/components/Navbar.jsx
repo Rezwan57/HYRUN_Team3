@@ -1,13 +1,19 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
-import { IoMenu } from "react-icons/io5";
-import { PiStarFourFill } from "react-icons/pi";
-import { RiShoppingBag4Fill } from "react-icons/ri";
-import { FaHeart } from "react-icons/fa6";
-import { IoSearch } from "react-icons/io5";
-import { IoPerson } from "react-icons/io5";
+import React, { useState, useEffect } from "react";
+import {
+  IoMenu,
+  IoSearch,
+  IoReturnUpBackOutline,
+  IoCallOutline,
+} from "react-icons/io5";
+import { PiStarFourFill, PiHeart } from "react-icons/pi";
+import { SlBasket } from "react-icons/sl";
+import { VscAccount } from "react-icons/vsc";
+import { MdLocalOffer } from "react-icons/md";
+import { IoReceiptOutline } from "react-icons/io5";
+import { motion } from "framer-motion";
 
 const categories = [
   { id: 1, name: "Trainers", link: "/trainers/" },
@@ -47,84 +53,124 @@ const CategoryCard = ({ shoeTypeName, link }) => (
 
 export default function Navbar() {
   const [inputText, setInputText] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
+  const [showFullPageSearch, setShowFullPageSearch] = useState(false);
 
   const handleInputChange = (event) => {
     setInputText(event.target.value);
+    if (event.target.value) {
+      setShowFullPageSearch(true);
+    } else {
+      setShowFullPageSearch(false);
+    }
   };
 
   const toggleCategories = () => {
     setShowCategories(!showCategories);
   };
 
-  const toggleSearch = () => {
-    setShowSearch(!showSearch); // Toggle the search bar visibility
-  };
-
   return (
-    <header className="sticky top-0 z-[999]">
-      <nav className="flex lg:grid grid-cols-5 grid-flow-row w-full bg-white bg-opacity-30 backdrop-blur-3xl px-5 lg:px-0">
+    <header
+      className="sticky top-0 z-[999] transition-all duration-300 ease-in-out"
+    >
+      <nav className="flex lg:grid grid-cols-6 grid-flow-row w-full bg-white bg-opacity-30 backdrop-blur-3xl px-5 lg:px-0">
         <div className="row-span-3 flex items-center justify-center">
           <Link href={"/"}>
             <Image
-              src="/assets/logo/LogoDark.png"
+              src="/assets/logo/LogoYDark.png"
               alt="logo"
               width={512}
               height={512}
-              className="w-56 h-auto select-none"
+              className="lg:w-40 w-56 h-auto"
             />
           </Link>
         </div>
 
-        <div className="flex justify-end lg:grid grid-cols-5 grid-flow-col col-span-4  lg:px-12 py-2 h-14 w-full gap-4">
-          <div className="hidden lg:inline relative col-start-2 col-end-4 place-content-center h-full">
+        <div className="flex items-center justify-end lg:justify-between col-start-2 col-end-7 pr-0 lg:pr-4 py-2 h-14 w-full gap-2">
+          {/* section 1 */}
+          <div className="hidden lg:flex items-center justify-end gap-2 h-full w-auto">
+            <button className="hidden lg:flex items-center justify-between  bg-neutral-400 bg-opacity-30 gap-2 h-full w-full rounded-full px-2">
+              <VscAccount className="h-10 w-10" />
+              <span className="flex flex-col items-start justify-center ml-1 w-full">
+                <span>Sign in</span>
+              </span>
+            </button>
+
+            <div className="hidden lg:flex items-center justify-between  bg-neutral-400 bg-opacity-30 gap-2 h-full w-auto  rounded-full px-2">
+              <MdLocalOffer className="h-5 w-5" />
+              <span className="mr-2">Offers</span>
+            </div>
+          </div>
+
+          {/* section 2 */}
+          <div className="hidden lg:flex relative h-full w-auto">
             <IoSearch className="absolute text-xl inset-0 left-1 translate-x-2/4 translate-y-2/4" />
             <input
               type="text"
-              className="w-full h-full top-3 pl-12 pr-24 rounded-full bg-neutral-500 bg-opacity-30 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+              className="w-full h-full top-3 pl-12 pr-24 rounded-full  bg-neutral-400 bg-opacity-30 focus:outline-none "
+              placeholder="Search for products"
               value={inputText}
               onChange={handleInputChange}
             />
+          </div>
+
+          {/* sectio 3 */}
+          <div className="flex items-center justify-center h-full gap-6 w-auto rounded-full   bg-neutral-400  lg:bg-opacity-30 bg-opacity-0 bg-none mr-2 px-0 lg:px-8">
+            <div className="lg:flex items-center justify-center gap-4 hidden text-sm">
+              <Link
+                href="/orders"
+                className="flex items-center justify-center gap-1"
+              >
+                <IoReceiptOutline className="h-4" />
+                <span className="ml-2">Your Orders</span>
+              </Link>
+              <span className="h-6 border-r-[1px] border-neutral-300" />
+              <Link
+                href="/cart"
+                className="flex items-center justify-center gap-1"
+              >
+                <SlBasket className="h-4" />
+                <span className="ml-2">Cart</span>
+              </Link>
+              <span className="h-6 border-r-[1px] border-neutral-300" />
+              <Link
+                href="/wishlist"
+                className="flex items-center justify-center gap-1"
+              >
+                <PiHeart className="h-4" />
+                <span className="ml-2">Wishlist</span>
+              </Link>
+              <span className="h-6 border-r-[1px] border-neutral-300" />
+              <Link
+                href="/return"
+                className="flex items-center justify-center gap-1"
+              >
+                <IoReturnUpBackOutline className="h-4" />
+                <span className="ml-2">Return</span>
+              </Link>
+              <span className="h-6 border-r-[1px] border-neutral-300" />
+              <Link
+                href="/contact-us"
+                className="flex items-center justify-center gap-1"
+              >
+                <IoCallOutline className="h-4" />
+                <span className="ml-2">Contact us</span>
+              </Link>
+            </div>
+
+            <div className="relative lg:hidden flex col-start-4 col-end-5 place-self-center">
+              <IoSearch
+                className="h-6 w-6"
+                onClick={() => setShowFullPageSearch(true)}
+              />
+            </div>
+
+            <div className="lg:hidden inline col-start-4 col-end-5 place-self-center">
+              <VscAccount className="h-6 w-6" />
+            </div>
+
             <button
-              className={`absolute right-1 top-1 bg-prime w-20 h-8 rounded-full transition-transform duration-150 ease-in-out transform ${
-                inputText.trim() ? "scale-100" : "scale-0"
-              }`}
-            >
-              Search
-            </button>
-          </div>
-
-          <div className="relative lg:hidden flex col-start-4 col-end-5 place-self-center">
-            <IoSearch className="h-6 w-6" onClick={toggleSearch} />{" "}
-            {/* Add click handler to toggle search */}
-            {showSearch && (
-              <div className="absolute flex gap-2 top-10 right-0 mx-3 translate-x-28 bg-neutral-500 p-2 rounded-full">
-                <input
-                  type="text"
-                  className="w-sreen h-10 pl-6 lg:pl-12 pr-24 rounded-full bg-white focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
-                  value={inputText}
-                  onChange={handleInputChange}
-                />
-                <button className="flex items-center justify-center bg-prime w-10 h-10 rounded-full transition-transform duration-150 ease-in-out transform">
-                  <IoSearch className="h-6 w-6" />
-                </button>
-              </div>
-            )}
-          </div>
-
-          <div className="lg:hidden inline col-start-4 col-end-5 place-self-center">
-            <IoPerson className="h-6 w-6" />
-          </div>
-
-          <div className="col-start-5 col-end-6 justify-self-end place-self-center flex items-center h-full gap-6">
-            <FaHeart className="hidden lg:inline text-2xl cursor-pointer" />
-            <RiShoppingBag4Fill className="hidden lg:inline text-2xl cursor-pointer" />
-            <Link href={"/login"} className="lg:flex justify-center items-center  hidden bg-prime w-32 h-full rounded-full">
-              <h5>Login</h5>
-            </Link>
-            <button
-              className={`lg:hidden flex items-center gap-1  ${
+              className={`lg:hidden flex items-center gap-1 ${
                 showCategories ? "text-black" : "text-neutral-700"
               }`}
               onClick={toggleCategories}
@@ -134,11 +180,11 @@ export default function Navbar() {
           </div>
         </div>
 
-        <div className="row-span-2 col-span-4 bg-prime px-2 py-1 hidden lg:flex items-center justify-start text-neutral-700">
+        <div className="row-span-2 col-span-5 bg-prime px-2 py-1 hidden lg:flex items-center justify-start text-neutral-700">
           <div className="flex items-center w-full px-4 gap-16 text-uppercase">
             <button
               className={`flex items-center gap-1 ${
-                showCategories ? "text-black " : "text-neutral-700"
+                showCategories ? "text-black" : "text-neutral-700"
               }`}
               onClick={toggleCategories}
             >
@@ -162,11 +208,11 @@ export default function Navbar() {
       </nav>
 
       {showCategories && (
-        <div className="absolute h-screen w-full top-full lg:p-auto p-10 lg:pb-0 pb-20 bg-white bg-opacity-30 backdrop-blur-3xl z-10 lg:overflow-hidden overflow-y-auto ">
+        <div className="absolute h-screen w-full top-full lg:p-auto p-10 lg:pb-0 pb-20 bg-white bg-opacity-70 backdrop-blur-3xl z-10 lg:overflow-hidden overflow-y-auto ">
           <div className="flex items-start justify-start flex-wrap gap-0 lg:gap-10 w-full max-w-screen-lg text-black h-screen ">
             {genders.map((gender) => (
               <div key={gender} className="gender-category w-72 p-2">
-                <h2 className="text-left text-4xl mb-5 border-b-4 border-yellow-400">
+                <h2 className="text-left text-4xl mb-5 border-b-[2px] border-yellow-400 py-2">
                   {gender}
                 </h2>
                 <div className="subcategory-cards flex flex-col gap-2 text-xl">
@@ -188,6 +234,36 @@ export default function Navbar() {
             ))}
           </div>
         </div>
+      )}
+      {showFullPageSearch && (
+        <motion.div
+          className="fixed inset-0 bg-neutral-400 bg-opacity-80 backdrop-blur-xl z-[999] flex items-start justify-center h-screen"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div
+            className="w-full max-w-2xl p-8 relative"
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -50, opacity: 0 }}
+          >
+            <input
+              type="text"
+              className="w-full h-12 pl-12 pr-24 rounded-full bg-white focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+              value={inputText}
+              onChange={handleInputChange}
+              placeholder="Search..."
+            />
+            <IoSearch className="absolute left-12 top-1/2 transform -translate-y-1/2 text-gray-500 h-6 w-6" />
+            <button
+              className="absolute right-10 top-1/2 transform -translate-y-1/2 bg-yellow-400 text-black px-4 py-2 rounded-full"
+              onClick={() => setShowFullPageSearch(false)}
+            >
+              Cancel
+            </button>
+          </motion.div>
+        </motion.div>
       )}
     </header>
   );

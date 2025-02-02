@@ -22,12 +22,12 @@ export default function Login() {
   };
 
   return (
-    <div className="h-screen px-2">
-      <div className="row">
+    <div className="h-screen px-2 overflow-hidden">
+      <div className="row h-full lg:w-full w-screen">
         
         {/* Left Side - Background Colour (No Text) */}
         <div
-          className="col-md-6 d-none d-md-block p-0 object-contain h-screen p-2"
+          className="col-md-6 d-none d-md-block object-contain h-screen p-2"
           style={{ // Change this to any colour you want
             borderRadius: "10px 0px 0px 10px"
           }}
@@ -37,7 +37,7 @@ export default function Login() {
           </div>
 
         {/* Right Side - Login Form */}
-        <div className="col-md-6 d-flex align-items-center justify-content-center p-5 bg-white">
+        <div className="col-md-6 d-flex align-items-center justify-content-center lg:p-5 p-0 bg-white">
           <div className="w-75">
             <h2 className="fw-bold">
               Welcome Back<span className="text-warning">!</span>
