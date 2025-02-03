@@ -7,10 +7,10 @@ const BrandLogos = () => {
   return (
     <div className="brand-logos">
       <img src="/assets/Shoe brand logos/Adidas.svg" alt="Adidas" />
-      <img src="/assets/Shoe brand logos/NB.svg" alt="under-Armour" />
+      <img src="/assets/Shoe brand logos/NB.svg" alt="New-Balance" />
       <img src="/assets/Shoe brand logos/puma.svg" alt="Puma" />
-      <img src="/assets/Shoe brand logos/rebook.svg" alt="New Balance" />
-      <img src="/assets/Shoe brand logos/NB.svg" alt="Nike" />
+      <img src="/assets/Shoe brand logos/rebook.svg" alt="Rebook" />
+      <img src="/assets/Shoe brand logos/nike.svg" alt="Nike" />
     </div>
   );
 };
@@ -20,7 +20,7 @@ const BrandLogos = () => {
 const ProductSection = () => {
   return (
     <div className="hot-products-container">
-      <h2 className="hot-products-title">HOT PRODUCTS</h2>
+      <span className="hot-products-title">HOT PRODUCTS</span>
       <div className="hot-products">
         {hotProductsData.map((product) => (
           <div key={product.id} className="product-item">
@@ -29,13 +29,16 @@ const ProductSection = () => {
             <div className="product-price">{product.price}</div>
             <button className="add-to-cart">Add to Cart</button>
           </div>
+          
         ))}
       </div>
+      
       <div className="show-more-container">
-        <span className="show-more-text">Show More</span>
+      <button className="show-more-button">
         <span className="show-more-arrow">
           <FaArrowRight />
         </span>
+      </button>
       </div>
     </div>
   );
