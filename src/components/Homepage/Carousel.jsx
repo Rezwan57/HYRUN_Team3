@@ -1,6 +1,7 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import "./style.css";
 import "swiper/css/pagination";
 import { Pagination, Autoplay } from "swiper/modules";
 import { motion } from "framer-motion";
@@ -25,7 +26,7 @@ function Carousel() {
       >
         {sneakers.map((sneaker, index) => (
           <SwiperSlide key={index}>
-            <div className="flex flex-col-reverse lg:flex-row items-center justify-center h-auto lg:h-[75vh] overflow-hidden">
+            <div className="flex flex-col-reverse lg:flex-row items-center justify-center h-auto lg:h-[75vh] overflow-hidden lg:mt-0 mt-0 lg:p-0 p-10">
               {/* Text Section */}
               <motion.div
                 key={`text-${activeIndex}`}
@@ -33,7 +34,7 @@ function Carousel() {
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "-200%", opacity: 0 }}
                 transition={{ duration: 1.5 }}
-                className="flex flex-col items-center lg:items-start justify-center w-full lg:w-2/3 h-full p-10 lg:p-20 text-center lg:text-left"
+                className="flex flex-col items-center lg:items-start justify-center w-full lg:w-2/3 h-full py-10 lg:p-20 text-center lg:text-left"
               >
                 <h2 className="text-3xl lg:text-[5rem] font-bold">{sneaker.name}</h2>
                 <p className="text-base lg:text-xl mt-5 lg:mt-12 max-w-full lg:max-w-2xl">
@@ -52,8 +53,7 @@ function Carousel() {
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "200%", opacity: 0 }}
                 transition={{ duration: 1 }}
-                className="relative flex items-center justify-center w-[90vw] lg:w-1/2 h-[40vh] lg:h-full rounded-[2.5rem] lg:rounded-s-[3.5rem] lg:rounded-e-none"
-                style={{ backgroundColor: sneaker.bgColor }}
+                className="relative flex items-center justify-center w-[70vw] lg:w-1/2 h-[30vh] lg:h-full rounded-[2.5rem] lg:rounded-s-[3.5rem] lg:rounded-e-none bg-neutral-200"
               >
                 <motion.div
                   key={`image-${activeIndex}`}
@@ -61,14 +61,14 @@ function Carousel() {
                   animate={{ x: 10, opacity: 1 }}
                   exit={{ x: "300%", opacity: 0 }}
                   transition={{ duration: 1.5 }}
-                  className=" lg:absolute top-0  -left-40 -lg:translate-x-60  flex flex-col items-center justify-center w-full h-full"
+                  className="w-full h-full"
                 >
                   <Image
                     src={sneaker.image}
                     alt={sneaker.name}
                     width={400}
                     height={400}
-                    className="w-[80vw] h-auto object-contain mb-6 -rotate-[20deg] drop-shadow-2xl scale-[1.25] lg:scale-100"
+                    className="productShadow"
                   />
                 </motion.div>
               </motion.div>
