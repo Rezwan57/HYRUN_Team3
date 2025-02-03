@@ -60,9 +60,7 @@ export default function Navbar() {
     setInputText(event.target.value);
     if (event.target.value) {
       setShowFullPageSearch(true);
-    } else {
-      setShowFullPageSearch(false);
-    }
+    } 
   };
 
   const toggleCategories = () => {
@@ -73,7 +71,7 @@ export default function Navbar() {
     <header
       className="sticky top-0 z-[999] transition-all duration-300 ease-in-out"
     >
-      <nav className="flex lg:grid grid-cols-6 grid-flow-row w-full bg-white bg-opacity-30 backdrop-blur-3xl px-5 lg:px-0">
+      <nav className="flex lg:grid grid-cols-6 grid-flow-row w-full bg-white bg-opacity-80 backdrop-blur-3xl px-5 lg:px-0">
         <div className="row-span-3 flex items-center justify-center">
           <Link href={"/"}>
             <Image
@@ -81,7 +79,7 @@ export default function Navbar() {
               alt="logo"
               width={512}
               height={512}
-              className="lg:w-40 w-56 h-auto"
+              className="lg:w-40 w-56 h-auto select-none outline-none"
             />
           </Link>
         </div>
@@ -119,7 +117,7 @@ export default function Navbar() {
             <div className="lg:flex items-center justify-center gap-4 hidden text-sm">
               <Link
                 href="/orders"
-                className="flex items-center justify-center gap-1"
+                className="flex items-center justify-center gap-1 hover:text-[var(--primary)]"
               >
                 <IoReceiptOutline className="h-4" />
                 <span className="ml-2">Your Orders</span>
@@ -127,7 +125,7 @@ export default function Navbar() {
               <span className="h-6 border-r-[1px] border-neutral-300" />
               <Link
                 href="/cart"
-                className="flex items-center justify-center gap-1"
+                className="flex items-center justify-center gap-1 hover:text-[var(--primary)]"
               >
                 <SlBasket className="h-4" />
                 <span className="ml-2">Cart</span>
@@ -135,7 +133,7 @@ export default function Navbar() {
               <span className="h-6 border-r-[1px] border-neutral-300" />
               <Link
                 href="/wishlist"
-                className="flex items-center justify-center gap-1"
+                className="flex items-center justify-center gap-1 hover:text-[var(--primary)]"
               >
                 <PiHeart className="h-4" />
                 <span className="ml-2">Wishlist</span>
@@ -143,7 +141,7 @@ export default function Navbar() {
               <span className="h-6 border-r-[1px] border-neutral-300" />
               <Link
                 href="/return"
-                className="flex items-center justify-center gap-1"
+                className="flex items-center justify-center gap-1 hover:text-[var(--primary)]"
               >
                 <IoReturnUpBackOutline className="h-4" />
                 <span className="ml-2">Return</span>
@@ -151,7 +149,7 @@ export default function Navbar() {
               <span className="h-6 border-r-[1px] border-neutral-300" />
               <Link
                 href="/contact-us"
-                className="flex items-center justify-center gap-1"
+                className="flex items-center justify-center gap-1 hover:text-[var(--primary)]"
               >
                 <IoCallOutline className="h-4" />
                 <span className="ml-2">Contact us</span>
