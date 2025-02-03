@@ -16,11 +16,10 @@ import { IoReceiptOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
 
 const categories = [
-  { id: 1, name: "Trainers", link: "/trainers/" },
+  { id: 1, name: "All Trainers", link: "/trainers/" },
   { id: 2, name: "Running Shoes", link: "/running-shoes/" },
-  { id: 3, name: "Football Shoes", link: "/football-shoes/" },
-  { id: 4, name: "Walking Boots", link: "/walking-boots/" },
-  { id: 5, name: "Basketball Shoes", link: "/basketball-shoes/" },
+  { id: 3, name: "Featured products", link: "/products" },
+  { id: 4, name: "20% off sale", link: "/products/" },
 ];
 
 const subcategories = [
@@ -55,12 +54,17 @@ export default function Navbar() {
   const [inputText, setInputText] = useState("");
   const [showCategories, setShowCategories] = useState(false);
   const [showFullPageSearch, setShowFullPageSearch] = useState(false);
+  const [showAccount, setShowAccount] = useState(false);
+
+  const toggleAccount = () => {
+    setShowAccount(!showAccount);
+  };
 
   const handleInputChange = (event) => {
     setInputText(event.target.value);
     if (event.target.value) {
       setShowFullPageSearch(true);
-    } 
+    }
   };
 
   const toggleCategories = () => {
@@ -68,9 +72,7 @@ export default function Navbar() {
   };
 
   return (
-    <header
-      className="sticky top-0 z-[999] transition-all duration-300 ease-in-out"
-    >
+    <header className="sticky top-0 z-[999] transition-all duration-300 ease-in-out">
       <nav className="flex lg:grid grid-cols-6 grid-flow-row w-full bg-white bg-opacity-80 backdrop-blur-3xl px-5 lg:px-0">
         <div className="row-span-3 flex items-center justify-center">
           <Link href={"/"}>
@@ -86,18 +88,53 @@ export default function Navbar() {
 
         <div className="flex items-center justify-end lg:justify-between col-start-2 col-end-7 pr-0 lg:pr-4 py-2 h-14 w-full gap-2">
           {/* section 1 */}
-          <div className="hidden lg:flex items-center justify-end gap-2 h-full w-auto">
-            <button className="hidden lg:flex items-center justify-between  bg-neutral-400 bg-opacity-30 gap-2 h-full w-full rounded-full px-2">
+          <div className="relative hidden lg:flex items-center justify-end gap-2 h-full w-auto">
+            <button
+              className="hidden lg:flex items-center justify-between  bg-neutral-400 bg-opacity-30 gap-2 h-full w-full rounded-full px-2"
+              onClick={toggleAccount}
+            >
               <VscAccount className="h-10 w-10" />
               <span className="flex flex-col items-start justify-center ml-1 w-full">
                 <span>Sign in</span>
               </span>
             </button>
 
-            <div className="hidden lg:flex items-center justify-between  bg-neutral-400 bg-opacity-30 gap-2 h-full w-auto  rounded-full px-2">
+            {/* Menu */}
+            {showAccount && (
+              <div className="absolute hidden lg:flex left-0 top-12 bg-white shadow-xl rounded-xl p-2 w-40">
+                <ul>
+                  <li>
+                    <Link
+                      href="/login"
+                      className="block py-2 px-4 hover:bg-gray-100"
+                    >
+                      Sign In
+                    </Link>
+                  </li>
+                  {/*<li>
+                    <Link
+                      href="/sign-in"
+                      className="block py-2 px-4 hover:bg-gray-100"
+                    >
+                      Orders
+                    </Link>
+                  </li>
+                   <li>
+                    <button className="block py-2 px-4 w-full text-left hover:bg-gray-100">
+                      Logout
+                    </button>
+                  </li> */}
+                </ul>
+              </div>
+            )}
+
+            <Link
+              href="/offers"
+              className="hidden lg:flex items-center justify-between  bg-neutral-400 bg-opacity-30 gap-2 h-full w-auto  rounded-full px-2"
+            >
               <MdLocalOffer className="h-5 w-5" />
               <span className="mr-2">Offers</span>
-            </div>
+            </Link>
           </div>
 
           {/* section 2 */}
@@ -117,7 +154,7 @@ export default function Navbar() {
             <div className="lg:flex items-center justify-center gap-4 hidden text-sm">
               <Link
                 href="/orders"
-                className="flex items-center justify-center gap-1 hover:text-[var(--primary)]"
+                className="flex items-center justify-center gap-1 hover:text-yellow-700"
               >
                 <IoReceiptOutline className="h-4" />
                 <span className="ml-2">Your Orders</span>
@@ -125,7 +162,7 @@ export default function Navbar() {
               <span className="h-6 border-r-[1px] border-neutral-300" />
               <Link
                 href="/cart"
-                className="flex items-center justify-center gap-1 hover:text-[var(--primary)]"
+                className="flex items-center justify-center gap-1 hover:text-yellow-700"
               >
                 <SlBasket className="h-4" />
                 <span className="ml-2">Cart</span>
@@ -133,7 +170,7 @@ export default function Navbar() {
               <span className="h-6 border-r-[1px] border-neutral-300" />
               <Link
                 href="/wishlist"
-                className="flex items-center justify-center gap-1 hover:text-[var(--primary)]"
+                className="flex items-center justify-center gap-1 hover:text-yellow-700"
               >
                 <PiHeart className="h-4" />
                 <span className="ml-2">Wishlist</span>
@@ -141,7 +178,7 @@ export default function Navbar() {
               <span className="h-6 border-r-[1px] border-neutral-300" />
               <Link
                 href="/return"
-                className="flex items-center justify-center gap-1 hover:text-[var(--primary)]"
+                className="flex items-center justify-center gap-1 hover:text-yellow-700"
               >
                 <IoReturnUpBackOutline className="h-4" />
                 <span className="ml-2">Return</span>
@@ -149,7 +186,7 @@ export default function Navbar() {
               <span className="h-6 border-r-[1px] border-neutral-300" />
               <Link
                 href="/contact-us"
-                className="flex items-center justify-center gap-1 hover:text-[var(--primary)]"
+                className="flex items-center justify-center gap-1 hover:text-yellow-700"
               >
                 <IoCallOutline className="h-4" />
                 <span className="ml-2">Contact us</span>
@@ -163,8 +200,38 @@ export default function Navbar() {
               />
             </div>
 
-            <div className="lg:hidden inline col-start-4 col-end-5 place-self-center">
-              <VscAccount className="h-6 w-6" />
+            <div className="relative lg:hidden flex col-start-4 col-end-5 place-self-center">
+              <button onClick={toggleAccount}>
+                <VscAccount className="h-6 w-6" />
+              </button>
+                {/* Menu */}
+                {showAccount && (
+                  <div className="absolute flex lg:hidden right-0 top-6 bg-white shadow-xl rounded-xl p-2 w-40">
+                    <ul>
+                      <li>
+                        <Link
+                          href="/login"
+                          className="block py-2 px-4 hover:bg-gray-100"
+                        >
+                          Sign In
+                        </Link>
+                      </li>
+                      {/*<li>
+                    <Link
+                      href="/sign-in"
+                      className="block py-2 px-4 hover:bg-gray-100"
+                    >
+                      Orders
+                    </Link>
+                  </li>
+                   <li>
+                    <button className="block py-2 px-4 w-full text-left hover:bg-gray-100">
+                      Logout
+                    </button>
+                  </li> */}
+                    </ul>
+                  </div>
+                )}
             </div>
 
             <button
