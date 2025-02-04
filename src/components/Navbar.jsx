@@ -15,11 +15,19 @@ import { MdLocalOffer } from "react-icons/md";
 import { IoReceiptOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
 
-const categories = [
+const navlinks = [
   { id: 1, name: "All Trainers", link: "/trainers/" },
   { id: 2, name: "Running Shoes", link: "/running-shoes/" },
   { id: 3, name: "Featured products", link: "/products" },
   { id: 4, name: "20% off sale", link: "/products/" },
+];
+
+const categories = [
+  { id: 1, name: "Trainers", link: "/trainers/" },
+  { id: 2, name: "Running Shoes", link: "/running-shoes/" },
+  { id: 3, name: "Football Shoes", link: "/football-shoes/" },
+  { id: 4, name: "Walking Boots", link: "/walking-boots/" },
+  { id: 5, name: "Basketball Shoes", link: "/basketball-shoes/" },
 ];
 
 const subcategories = [
@@ -249,7 +257,7 @@ export default function Navbar() {
           <div className="flex items-center w-full px-4 gap-16 text-uppercase">
             <button
               className={`flex items-center gap-1 ${
-                showCategories ? "text-black" : "text-neutral-700"
+                showCategories ? "text-yellow-700" : "text-black"
               }`}
               onClick={toggleCategories}
             >
@@ -258,12 +266,12 @@ export default function Navbar() {
             </button>
 
             <div className="flex items-center justify-between w-full px-4">
-              {categories.map((categories, index) => (
-                <Link href={categories.link} key={index}>
-                  {categories.name}
+              {navlinks.map((navlinks, index) => (
+                <Link href={navlinks.link} key={index} className="hover:underline">
+                  {navlinks.name}
                 </Link>
               ))}
-              <Link href="/" className="flex items-center gap-1">
+              <Link href="/" className="flex items-center gap-1 hover:underline">
                 <PiStarFourFill className="text-md" />
                 <p>New Arrivals</p>
               </Link>
