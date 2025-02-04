@@ -6,7 +6,7 @@ import sneakers from "../../data/HeroSectionData";
 function NewProducts() {
   return (
     <div className="flex flex-col gap-1 w-full h-auto p-4 mr-0 lg:pr-6 lg:p-0 overflow-hidden">
-      <div className="relative flex justify-center items-end bg-gradient-to-r from-teal-900 to-green-900 rounded-3xl lg:rounded-s-none lg:rounded-e-[2rem] w-full h-full lg:pb-0 pb-10 lg:pt-20 pt-28">
+      <div className="relative flex justify-center items-end bg-gradient-to-r from-teal-900 to-green-500 rounded-3xl lg:rounded-s-none lg:rounded-e-[2rem] w-full h-full lg:pb-0 pb-10 lg:pt-20 pt-28">
         <h1 className="w-full absolute top-0 left-0 text-[4.72rem] lg:text-[18vh] font-bold uppercase text-white leading-[0.7]">
           New Arrival
         </h1>
@@ -34,7 +34,7 @@ function NewProducts() {
         </div>
       </div>
 
-      <button className="flex justify-between items-center self-end w-full lg:w-[35vw] h-auto bg-green-900 rounded-full p-2 hover:scale-105 hover:bg-green-950 transition-transform duration-300">
+      <button className="flex justify-between items-center self-end w-full lg:w-[35vw] h-auto bg-green-600 rounded-full p-2 hover:scale-105 hover:bg-green-950 transition-transform duration-300">
         <span className="p-4"></span>
         <span className="text-xl text-white">
           Show More

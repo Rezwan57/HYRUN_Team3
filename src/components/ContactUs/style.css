@@ -32,7 +32,7 @@ label {
     font-weight: 600;
     color: #333;
 }
-input, textarea {
+.input, textarea {
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
@@ -42,7 +42,7 @@ input, textarea {
     background-color: #fdfdfd; 
     box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
 }
-input:focus, textarea:focus {
+.input:focus, textarea:focus {
     border-color: #FFBB00;
     outline: none;
     background-color: #fff;
