@@ -15,6 +15,7 @@ export default function Signup() {
   });
 
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -24,7 +25,7 @@ export default function Signup() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validation
@@ -45,6 +46,40 @@ export default function Signup() {
 
     console.log("Signing up with:", formData);
     setError(""); // Clear errors on success
+
+    try {
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          user_email: formData.email,
+          user_password: formData.password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Something went wrong!");
+        setSuccess("");
+      } else {
+        setSuccess("Account created successfully! You can now log in.");
+        setError("");
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          agreeToTerms: false,
+        });
+      }
+    } catch (error) {
+      setError("Server error. Please try again later.");
+      setSuccess("");
+    }
   };
 
   return (
@@ -53,7 +88,7 @@ export default function Signup() {
         
         {/* Left Side - Background Colour (No Text) */}
         <div
-          className="col-md-6 d-none d-md-block p-0 object-contain h-screen p-2"
+          className="col-md-6 d-none d-md-block object-contain h-screen p-2"
           style={{ // Change this to any colour you want
             borderRadius: "10px 0px 0px 10px"
           }}
