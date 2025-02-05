@@ -1,25 +1,50 @@
-import React from 'react';
-import "./style.css"
-function ContactForm() {
+import React, { useState } from "react";
+import "./style.css";
+
+const ContactForm = () => {
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [responseMessage, setResponseMessage] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:5000/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      setResponseMessage(data.message || "Something went wrong!");
+      setFormData({ name: "", email: "", message: "" }); 
+    } catch (error) {
+      setResponseMessage("Error submitting form. Please try again.");
+    }
+  };
+
   return (
-    <div className="container">
-        <h2>Contact Us Form</h2>
-        <h3>For any inquiries or assistance, please don't hesitate to get in touch with us.</h3>
+    <div className="contact-container">
+      <h2>Contact Us</h2>
+      <form onSubmit={handleSubmit} className="contact-form">
+        <label>Name:</label>
+        <input type="text" name="name" value={formData.name} onChange={handleChange} required />
 
-        <form action="/submit-form" method="post">
-            <label htmlFor="name">Name:</label>
-            <input className='input' type="text" id="name" name="name" required />
+        <label>Email:</label>
+        <input type="email" name="email" value={formData.email} onChange={handleChange} required />
 
-            <label htmlFor="email">Email:</label>
-            <input className='input' type="email" id="email" name="email" required />
+        <label>Message:</label>
+        <textarea name="message" value={formData.message} onChange={handleChange} required />
 
-            <label htmlFor="message">Message:</label>
-            <textarea id="message" name="message" rows="4" required></textarea>
-
-            <button type="submit" className='submit-button'>Submit</button>
-        </form>
+        <button type="submit">Submit</button>
+      </form>
+      {responseMessage && <p className="response">{responseMessage}</p>}
     </div>
   );
-}
+};
 
 export default ContactForm;
