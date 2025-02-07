@@ -35,19 +35,19 @@ const Footer = () => {
           <h3 className="footer-title">Useful Links</h3>
           <ul className="footer-list">
             <li>
-              <Link className="hover:text-[var(--primary)]" href="about-us">About Us</Link>
+              <Link className="hover:underline" href="about-us">About Us</Link>
             </li>
             <li>
-              <Link className="hover:text-[var(--primary)]" href="#">Delivery Information</Link>
+              <Link className="hover:underline" href="#">Delivery Information</Link>
             </li>
             <li>
-              <Link className="hover:text-[var(--primary)]" href="#">Privacy Policy</Link>
+              <Link className="hover:underline" href="#">Privacy Policy</Link>
             </li>
             <li>
-              <Link className="hover:text-[var(--primary)]" href="#">Terms & Conditions</Link>
+              <Link className="hover:underline" href="#">Terms & Conditions</Link>
             </li>
             <li>
-              <Link className="hover:text-[var(--primary)]" href="/contact-us">Contact Us</Link>
+              <Link className="hover:underline" href="/contact-us">Contact Us</Link>
             </li>
           </ul>
         </div>
@@ -57,19 +57,19 @@ const Footer = () => {
           <h3 className="footer-title">My Account</h3>
           <ul className="footer-list">
             <li>
-              <Link className="hover:text-[var(--primary)]" href="/login">Sign In</Link>
+              <Link className="hover:underline" href="/login">Sign In</Link>
             </li>
             <li>
-              <Link className="hover:text-[var(--primary)]" href="#">View Cart</Link>
+              <Link className="hover:underline" href="#">View Cart</Link>
             </li>
             <li>
-              <Link className="hover:text-[var(--primary)]" href="#">Returns</Link>
+              <Link className="hover:underline" href="#">Returns</Link>
             </li>
             <li>
-              <Link className="hover:text-[var(--primary)]" href="#">Order Status</Link>
+              <Link className="hover:underline" href="#">Order Status</Link>
             </li>
             <li>
-              <Link className="hover:text-[var(--primary)]" href="#">Help</Link>
+              <Link className="hover:underline" href="#">Help</Link>
             </li>
           </ul>
         </div>
@@ -131,11 +131,10 @@ const Footer = () => {
           </div>
         </div>
       </div>
-
-      <div className="bg-prime py-2">
-        <p className="footer-copyright">
+      <div className="bg-prime">
+    <p className="footer-copyright">
           Copyright &copy; 2025 - All Right Reserved.
-        </p>
+        </p> 
       </div>
     </footer>
   );

@@ -45,7 +45,7 @@
 }
 
 .footer-icon {
-    color: var(--primary);
+    color: rgb(120, 128, 144);
     cursor: pointer;
     font-size: 20px;
     transition: color 0.3s;
@@ -84,10 +84,13 @@
     width: 55px;
 }
 
+
 .footer-copyright {
     text-align: center;
+    font-weight: 500;
     font-size: 15px;
-    color: #000;
+    color: black;
+    
 }
 
 
