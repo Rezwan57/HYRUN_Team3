@@ -38,7 +38,7 @@ export default function Login() {
 
       console.log("Login Successful!", data);
 
-      window.location.href = "/";
+      // window.location.href = "/";
     } catch (err) {
       setError(err.message);
     } finally {
