@@ -19,3 +19,81 @@ Suppose you want to push a file from src/components/FILE.jsx to your FirstName-d
 $ git add src/components/FILE.jsx
 $ git commit -m "add FILE"
 $ git push origin FirstName-develop
+
+
+
+
+////// CRUD ///////
+import { NextResponse } from "next/server";
+
+
+//GET Data
+export async function GET() {
+  try {
+    const db = await createConnection();
+    const [rows] = await db.execute("SELECT * FROM products");
+    return NextResponse.json(rows);
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+
+
+//Post Data
+export async function POST(req) {
+  try {
+    const db = await createConnection();
+    const body = await req.json();
+    const { name, brand, size, price, color, in_stock, release_date } = body;
+
+    // Check if all required fields are provided
+    if (!name || !brand || !size || !price || !color || !in_stock || !release_date) {
+      return NextResponse.json({ error: "All fields are required" }, { status: 400 });
+    }
+
+    // Insert data into the MySQL database
+    await db.execute(
+      "INSERT INTO products (name, brand, size, price, color, in_stock, release_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [name, brand, size, price, color, in_stock, release_date]
+    );
+
+    return NextResponse.json({ message: "Product added successfully" }, { status: 201 });
+
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+//PUT Data
+export async function PUT(request) {
+  try {
+    const db = await createConnection();
+    const body = await request.json();
+    const [rows] = await db.execute("UPDATE products SET name = ?, brand = ?, size = ?,  price = ?, color = ?, in_stock = ? release_date = ? WHERE id = ?", [
+      body.name,
+      body.brand,
+      body.size,
+      body.price,
+      body.color,
+      body.in_stock,
+      body.release_date,
+      body.id,
+    ]);
+    return NextResponse.json(rows);
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+//DELETE Data
+export async function DELETE(request) { 
+  try {
+    const db = await createConnection();
+    const body = await request.json();
+    const [rows] = await db.execute("DELETE FROM products WHERE id = ?", [body.id]);
+    return NextResponse.json(rows);
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

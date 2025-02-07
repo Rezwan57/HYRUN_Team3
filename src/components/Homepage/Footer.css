@@ -1,7 +1,6 @@
 .footer-container {
     background-color: #010712;
     color: rgb(120, 128, 144);
-    border-radius: 5px;
 }
 
 .footer-content {
@@ -15,6 +14,7 @@
 
 .footer-section {
     display: flex;
+    align-items: start;
     flex-direction: column;
 }
 
@@ -24,8 +24,6 @@
     padding-right: 20px;
     padding-bottom: 30px;
 }
-
-
 
 
 .footer-list li {
