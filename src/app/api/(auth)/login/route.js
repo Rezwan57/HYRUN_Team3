@@ -1,8 +1,5 @@
 import db from "../../../../../lib/db";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-
-const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key"; 
 
 export async function POST(req) {
   try {
@@ -25,12 +22,16 @@ export async function POST(req) {
       return new Response(JSON.stringify({ error: "Invalid credentials!" }), { status: 401 });
     }
 
-    const token = jwt.sign({ userId: user.id, email: user.user_email }, JWT_SECRET, { expiresIn: "7d" });
+    const userData = {
+      id: user.id,
+      email: user.user_email,
+      name: user.user_name,
+    };
 
-    return new Response(JSON.stringify({ message: "Login successful!", token }), { status: 200 });
+    return new Response(JSON.stringify({ message: "Login successful!", user: userData }), { status: 200 });
 
   } catch (error) {
     console.error("Login Error:", error);
-    return new Response(JSON.stringify({ error: error.message || "Server error. Please try again later." }), { status: 500 });
+    return new Response(JSON.stringify({ error: "Server error. Please try again later." }), { status: 500 });
   }
 }
