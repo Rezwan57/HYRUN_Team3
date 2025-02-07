@@ -146,7 +146,7 @@ export default function Navbar() {
                       {gender}
                     </Link>
 
-                    {/* Show Categories when hovering over subcategories */}
+                    {/* Show Categories when hovering*/}
                     {hoveredSubcategory === gender && (
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -158,7 +158,7 @@ export default function Navbar() {
                         onMouseLeave={handleMouseLeave}
                       >
                         {categories.map((category) => {
-                          // Find the link for the selected category and gender
+
                           const subcategoryLink = subcategories.find(
                             (subcategory) =>
                               subcategory.name === gender &&
@@ -168,7 +168,7 @@ export default function Navbar() {
                           return (
                             <Link
                               key={category.id}
-                              href={subcategoryLink || category.link} // If link is found for the combination, use that
+                              href={subcategoryLink || category.link} 
                               className="block px-4 py-2 hover:bg-gray-100 rounded-sm"
                             >
                               {category.name}
@@ -250,7 +250,7 @@ export default function Navbar() {
           </div>
 
           {/* other menu */}
-          <div className="flex items-center justify-center h-full gap-2 w-auto rounded-full   bg-neutral-400  lg:bg-opacity-30 bg-opacity-0 bg-none mr-2 px-0 lg:px-4">
+          <div className="flex items-center justify-center h-full lg:gap-2 gap-5 w-auto rounded-full   bg-neutral-400  lg:bg-opacity-30 bg-opacity-0 bg-none mr-2 px-0 lg:px-4">
             <div className="lg:flex items-center justify-center gap-4 hidden text-sm">
               <Link
                 href="/cart"
@@ -290,7 +290,7 @@ export default function Navbar() {
               </button>
               {/* Menu */}
               {showAccount && (
-                <div className="absolute flex lg:hidden right-0 top-6 bg-white shadow-xl rounded-xl p-2 w-auto">
+                <div className="absolute flex lg:hidden right-0 top-6 bg-white shadow-xl rounded-xl p-2 w-40">
                   <ul className="w-full">
                     <li className="w-full">
                       <Link
@@ -361,7 +361,7 @@ export default function Navbar() {
       )}
       {showFullPageSearch && (
         <motion.div
-          className="fixed inset-0 bg-neutral-400 bg-opacity-80 backdrop-blur-xl z-[999] flex items-start justify-center h-screen"
+          className="fixed inset-0 bg-neutral-300 bg-opacity-90 backdrop-blur-2xl z-[999] flex items-start justify-center h-screen"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

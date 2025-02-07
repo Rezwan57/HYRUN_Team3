@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Image from "next/image";
+import { nav } from "framer-motion/client";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -47,6 +48,8 @@ export default function Signup() {
     console.log("Signing up with:", formData);
     setError(""); // Clear errors on success
 
+
+    // Backend Connection and API Fetch
     try {
       const res = await fetch("/api/signup", {
         method: "POST",
@@ -75,6 +78,7 @@ export default function Signup() {
           confirmPassword: "",
           agreeToTerms: false,
         });
+        navigate("/login");
       }
     } catch (error) {
       setError("Server error. Please try again later.");
@@ -121,6 +125,7 @@ export default function Signup() {
                     placeholder="Your First Name"
                     value={formData.firstName}
                     onChange={handleChange}
+                    
                   />
                 </div>
                 {/* Last Name */}
