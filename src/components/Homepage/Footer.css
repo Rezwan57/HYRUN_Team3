@@ -1,21 +1,21 @@
 .footer-container {
     background-color: #010712;
-    color: rgb(120, 128, 144);
+    color: rgb(149, 151, 155);
 }
 
 .footer-content {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 4rem;
+    gap: 3rem;
     padding: 5rem; 
     margin: auto;
 }
 
 .footer-section {
     display: flex;
-    align-items: start;
     flex-direction: column;
+    
 }
 
 .footer-logo {
@@ -27,7 +27,9 @@
 
 
 .footer-list li {
+    color: rgb(149, 151, 155);
     margin-bottom: 10px;
+    font-size: 15px;
 }
 
 .footer-link {
@@ -43,9 +45,9 @@
 }
 
 .footer-icon {
-    color: var(--primary);
+    color: rgb(149, 151, 155);
     cursor: pointer;
-    font-size: 20px;
+    font-size: 18px;
     transition: color 0.3s;
 }
 
@@ -53,13 +55,13 @@
 .footer-title {
     font-weight: bold;
     font-size: 20px;
-    margin-bottom: 15px;
+    margin-bottom: 14px;
     color: var(--primary);
     text-decoration: underline;
 }
 
 .footer-description {
-    color: rgb(120, 128, 144);
+    color: rgb(149, 151, 155);
     font-size: 16px;
     max-width: 350px;
     line-height: 1.5;
@@ -79,13 +81,16 @@
 }
 
 .footer-payment {
-    width: 55px;
+    width: 50px;
 }
+
 
 .footer-copyright {
     text-align: center;
+    font-weight: 500;
     font-size: 15px;
-    color: #000;
+    color: black;
+
 }
 
 

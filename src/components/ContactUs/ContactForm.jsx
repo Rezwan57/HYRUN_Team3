@@ -19,7 +19,7 @@ const ContactForm = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
+      
       const data = await response.json();
       setResponseMessage(data.message || "Something went wrong!");
       setFormData({ name: "", email: "", message: "" }); 
