@@ -1,10 +1,31 @@
 .vertical-text {
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+
+
+.productShadow {
+  position: absolute;
+  top: 100;
+  left: -50;
+  transform: translate(0%, 0%);
+  filter: drop-shadow(0px 10px 10px #000000e0);
+  rotate: -20deg;
+  transition: all 0.3s ease-in-out;
+  height: auto;
+  scale: 1.65;
+}
+
+
+@media only screen and (max-width: 600px) {
+  .vertical-text {
+    writing-mode: horizontal-tb;
   }
-  
-  @media only screen and (max-width: 600px) {
-    .vertical-text {
-      writing-mode: horizontal-tb ;
-    }
+  .productShadow {
+    top: 0;
+    left: -10;
+    transform: translate(0%, 0%);
+    scale: 1.25;
   }
+}

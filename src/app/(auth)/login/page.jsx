@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -8,8 +8,9 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email || !password) {
@@ -17,27 +18,55 @@ export default function Login() {
       return;
     }
 
-    console.log("Logging in with:", { email, password });
-    setError(""); // Clear errors on success
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_email: email, user_password: password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Login failed. Please try again.");
+      }
+
+      console.log("Login Successful!", data);
+
+      // window.location.href = "/";
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="h-screen px-2">
-      <div className="row">
-        
+    <div className="h-screen px-2 overflow-hidden">
+      <div className="row h-full lg:w-full w-screen">
         {/* Left Side - Background Colour (No Text) */}
         <div
-          className="col-md-6 d-none d-md-block p-0 object-contain h-screen p-2"
-          style={{ // Change this to any colour you want
-            borderRadius: "10px 0px 0px 10px"
+          className="col-md-6 d-none d-md-block object-contain h-screen p-2"
+          style={{
+            borderRadius: "10px 0px 0px 10px",
           }}
         >
-
-            <Image src="/assets/FW/auth.jpg" width={500} height={500} alt="alt" className="h-full w-full rounded-xl"/>
-          </div>
+          <Image
+            src="/assets/FW/auth.jpg"
+            width={500}
+            height={500}
+            alt="alt"
+            className="h-full w-full rounded-xl"
+          />
+        </div>
 
         {/* Right Side - Login Form */}
-        <div className="col-md-6 d-flex align-items-center justify-content-center p-5 bg-white">
+        <div className="col-md-6 d-flex align-items-center justify-content-center lg:p-5 p-0 bg-white">
           <div className="w-75">
             <h2 className="fw-bold">
               Welcome Back<span className="text-warning">!</span>
@@ -79,8 +108,12 @@ export default function Login() {
               </div>
 
               {/* Login Button */}
-              <button type="submit" className="btn btn-warning w-100">
-                Login
+              <button
+                type="submit"
+                className="btn btn-warning w-100"
+                disabled={loading}
+              >
+                {loading ? "Logging in..." : "Login"}
               </button>
             </form>
 
