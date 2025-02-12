@@ -9,7 +9,7 @@ export async function POST(req) {
       return new Response(JSON.stringify({ error: "All fields are required" }), { status: 400 });
     }
 
-    const [existingUser] = await db.query("SELECT * FROM users WHERE user_email = ?", [user_email]);
+    const [existingUser] = await db.query("SELECT * FROM admins WHERE user_email = ?", [user_email]);
 
     if (existingUser.length > 0) {
       return new Response(JSON.stringify({ error: "Email already in use!" }), { status: 409 });
@@ -18,7 +18,7 @@ export async function POST(req) {
     const encyptedPass = await bcrypt.hash(user_password, 10);
 
     await db.query(
-      "INSERT INTO users (first_name, last_name, user_email, user_password) VALUES (?, ?, ?, ?)",
+      "INSERT INTO admins (first_name, last_name, user_email, user_password) VALUES (?, ?, ?, ?)",
       [firstName, lastName, user_email, encyptedPass]
     );
 
