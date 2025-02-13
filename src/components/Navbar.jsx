@@ -69,6 +69,7 @@ export default function Navbar() {
   const [loading, setLoading] = useState(false);
 
   let hoverTimeout;
+  let categoryTimeout;
 
   const toggleAccount = () => {
     setShowAccount(!showAccount);
@@ -83,6 +84,17 @@ export default function Navbar() {
 
   const toggleCategories = () => {
     setShowCategories(!showCategories);
+  };
+
+  const handleMouseEnterCategories = () => {
+    clearTimeout(categoryTimeout);
+    setShowCategories(true);
+  };
+
+  const handleMouseLeaveCategories = () => {
+    categoryTimeout = setTimeout(() => {
+      setShowCategories(false);
+    }, 200);
   };
 
   const handleMouseEnter = (gender) => {
@@ -146,12 +158,45 @@ export default function Navbar() {
                 >
                   <p>Home</p>
                 </Link>
-                <Link
-                  href="/"
-                  className="flex items-center gap-1 hover:underline"
+
+                <div
+                  className="relative group"
+                  onMouseEnter={handleMouseEnterCategories}
+                  onMouseLeave={handleMouseLeaveCategories}
                 >
-                  <p>Categories</p>
-                </Link>
+                  <Link
+                    href="/"
+                    className="flex items-center gap-1 hover:underline"
+                  >
+                    <p>Categories</p>
+                  </Link>
+
+                  {/* Show Categories when hovering*/}
+                  {showCategories && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.5 }}
+                      className="absolute -left-10 mt-2 w-60 bg-white border rounded-lg shadow-xl z-10 p-2 pointer-events-auto"
+                      onMouseEnter={handleMouseEnterCategories} 
+                      onMouseLeave={handleMouseLeaveCategories}
+                    >
+                      
+                      <Link href="/products" className="block px-4 py-2 hover:bg-gray-100 rounded-md">All Products</Link>
+                      {categories.map((category) => (
+                        <Link
+                          key={category.id}
+                          href={category.link}
+                          className="block px-4 py-2 hover:bg-gray-100 rounded-md"
+                        >
+                          {category.name}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </div>
+
                 {genders.map((gender) => (
                   <div
                     key={gender}
@@ -344,69 +389,69 @@ export default function Navbar() {
                 </button>
                 {/* Menu */}
                 {showAccount && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  transition={{ duration: 0.5 }}
-                  className="absolute flex lg:hidden right-0 top-6 bg-white shadow-xl rounded-xl p-2 w-40"
-                >
-                  <ul className="w-full">
-                    {user ? (
-                      <>
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.5 }}
+                    className="absolute flex lg:hidden right-0 top-6 bg-white shadow-xl rounded-xl p-2 w-40"
+                  >
+                    <ul className="w-full">
+                      {user ? (
+                        <>
+                          <li>
+                            <Link
+                              href="/profile"
+                              className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
+                            >
+                              <VscAccount className="h-4" />
+                              <span className="ml-2">Profile</span>
+                            </Link>
+                          </li>
+                        </>
+                      ) : (
                         <li>
                           <Link
-                            href="/profile"
+                            href="/login"
                             className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
                           >
-                            <VscAccount className="h-4" />
-                            <span className="ml-2">Profile</span>
+                            Sign In
                           </Link>
                         </li>
-                      </>
-                    ) : (
+                      )}
                       <li>
                         <Link
-                          href="/login"
+                          href="/orders"
                           className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
                         >
-                          Sign In
+                          <IoReceiptOutline className="h-4" />
+                          <span className="ml-2">Your Orders</span>
                         </Link>
                       </li>
-                    )}
-                    <li>
-                      <Link
-                        href="/orders"
-                        className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
-                      >
-                        <IoReceiptOutline className="h-4" />
-                        <span className="ml-2">Your Orders</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/return"
-                        className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
-                      >
-                        <IoReturnUpBackOutline className="h-4" />
-                        <span className="ml-2">Return</span>
-                      </Link>
-                    </li>
-
-                    {user && (
-                      <li className="border-t border-gray-200 mt-2">
-                        <button
-                          onClick={handleLogout}
-                          className="flex items-center justify-start w-full py-2 px-4 hover:bg-gray-100 rounded-md text-left"
+                      <li>
+                        <Link
+                          href="/return"
+                          className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
                         >
-                          <IoLogOutOutline className="h-4" />
-                          <span className="ml-2">Logout</span>
-                        </button>
+                          <IoReturnUpBackOutline className="h-4" />
+                          <span className="ml-2">Return</span>
+                        </Link>
                       </li>
-                    )}
-                  </ul>
-                </motion.div>
-              )}
+
+                      {user && (
+                        <li className="border-t border-gray-200 mt-2">
+                          <button
+                            onClick={handleLogout}
+                            className="flex items-center justify-start w-full py-2 px-4 hover:bg-gray-100 rounded-md text-left"
+                          >
+                            <IoLogOutOutline className="h-4" />
+                            <span className="ml-2">Logout</span>
+                          </button>
+                        </li>
+                      )}
+                    </ul>
+                  </motion.div>
+                )}
               </div>
 
               <button
@@ -423,7 +468,7 @@ export default function Navbar() {
       </nav>
 
       {showCategories && (
-        <div className="absolute h-screen w-full top-full lg:p-auto p-10 lg:pb-0 pb-20 bg-white bg-opacity-70 backdrop-blur-3xl z-10 lg:overflow-hidden overflow-y-auto ">
+        <div className="absolute lg:hidden flex h-screen w-full top-full lg:p-auto p-10 lg:pb-0 pb-20 bg-white bg-opacity-70 backdrop-blur-3xl z-10 lg:overflow-hidden overflow-y-auto ">
           <div className="flex items-start justify-start flex-wrap gap-0 lg:gap-10 w-full max-w-screen-lg text-black h-screen ">
             {genders.map((gender) => (
               <div key={gender} className="gender-category w-72 p-2">
@@ -479,8 +524,6 @@ export default function Navbar() {
             </button>
           </motion.div>
         </motion.div>
-
-        
       )}
     </header>
   );
