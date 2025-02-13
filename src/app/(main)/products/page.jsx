@@ -11,9 +11,6 @@ const ProductsPage = () => {
   return (
     <div className="container">
 
-      <Headline />    
-      <Navbar />
-
       <div className="header-container">
 
         <h1 className="title">All Products ({Allproducts.length})</h1>
@@ -50,7 +47,6 @@ const ProductsPage = () => {
         ))}
 
       </div>
-        <Footer />
     </div>
   );
 };
