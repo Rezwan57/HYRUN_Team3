@@ -6,13 +6,12 @@ import { motion } from "framer-motion";
 
 const adminLinks = [
   { id: 1, name: "Dashboard", link: "/admin" },
-  { id: 2, name: "Products", link: "/admin/add-product" },
+  { id: 2, name: "Products", link: "/admin/products" },
 ];
 
 const editLinks = [
   { id: 1, name: "Homepage Edit", link: "/admin/edit/homepage" },
   { id: 2, name: "Contact Edit", link: "/admin/edit/contact" },
-  { id: 3, name: "More Important", link: "/admin/edit/important" },
 ];
 
 function Sidebar() {
