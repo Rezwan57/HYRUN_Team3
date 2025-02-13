@@ -1,25 +1,22 @@
-import db from "../../../../lib/db";
+import db from '../../../../lib/db';
 
-export default async function handler(req, res) {
-  if (req.method === "POST") {
-    try {
-      const { name, email, message } = req.body;
-      if (!name || !email || !message) {
-        return res.status(400).json({ error: "All fields are required" });
-      }
-      const [result] = await db.execute(
-        "INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)",
-        [name, email, message]
-      );
-      res
-        .status(201)
-        .json({ message: "Message received!", id: result.insertId });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Database error" });
+export async function POST(req) {
+  try {
+    const { name, email, message } = await req.json();
+
+    if (!name || !email || !message) {
+      return new Response(JSON.stringify({ error: "All fields are required" }), { status: 400 });
     }
-  } else {
-    res.setHeader("Allow", ["POST"]);
-    res.status(405).json({ error: `Method ${req.method} not allowed` });
+
+    const [result] = await db.execute(
+      "INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)",
+      [name, email, message]
+    );
+
+    return new Response(JSON.stringify({ message: "Message sent successfully!" }), { status: 200 });
+
+  } catch (error) {
+    console.error("Database Error:", error);
+    return new Response(JSON.stringify({ error: "Database error. Please try again later." }), { status: 500 });
   }
 }
