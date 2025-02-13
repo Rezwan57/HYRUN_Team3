@@ -388,6 +388,8 @@ export default function Navbar() {
             </button>
           </motion.div>
         </motion.div>
+
+        
       )}
     </header>
   );
