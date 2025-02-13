@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function AddProductForm() {
   const [formData, setFormData] = useState({
@@ -12,6 +12,23 @@ export default function AddProductForm() {
     stock_quantity: "",
     image_url: "",
   });
+
+  const [brands, setBrands] = useState([]);
+
+  // Fetch brands from API
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const res = await fetch("/api/brands");
+        const data = await res.json();
+        setBrands(data);
+      } catch (error) {
+        console.error("Error fetching brands:", error);
+      }
+    };
+
+    fetchBrands();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -63,7 +80,15 @@ export default function AddProductForm() {
           <option value="kids">Kids</option>
         </select>
 
-        <input type="number" name="brand_id" value={formData.brand_id} onChange={handleChange} placeholder="Brand ID" required className="w-full p-2 border rounded" />
+        {/* Brand Selection Dropdown */}
+        <select name="brand_id" value={formData.brand_id} onChange={handleChange} required className="w-full p-2 border rounded">
+          <option value="">Select a Brand</option>
+          {brands.map((brand) => (
+            <option key={brand.id} value={brand.id}>
+              {brand.name}
+            </option>
+          ))}
+        </select>
 
         <input type="number" name="price" value={formData.price} onChange={handleChange} placeholder="Price" required className="w-full p-2 border rounded" />
 
