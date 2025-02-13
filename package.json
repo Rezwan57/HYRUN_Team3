@@ -9,18 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-<<<<<<< HEAD
     "bootstrap": "^5.3.3",
     "express": "^4.21.2",
     "framer-motion": "^12.0.5",
-=======
-    "bcryptjs": "^2.4.3",
-    "bootstrap": "^5.3.3",
-    "express": "^4.21.2",
-    "framer-motion": "^12.0.5",
-    "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.12.0",
->>>>>>> 9f9e0d15d481bf87665383c925396aa0ea556bb5
     "next": "15.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
