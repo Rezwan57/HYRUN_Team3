@@ -1,13 +1,26 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
-import { IoMenu } from "react-icons/io5";
-import { PiStarFourFill } from "react-icons/pi";
-import { RiShoppingBag4Fill } from "react-icons/ri";
-import { FaHeart } from "react-icons/fa6";
-import { IoSearch } from "react-icons/io5";
-import { IoPerson } from "react-icons/io5";
+import React, { useState, useEffect } from "react";
+import {
+  IoMenu,
+  IoSearch,
+  IoReturnUpBackOutline,
+  IoCallOutline,
+} from "react-icons/io5";
+import { PiStarFourFill, PiHeart } from "react-icons/pi";
+import { SlBasket } from "react-icons/sl";
+import { VscAccount } from "react-icons/vsc";
+import { MdLocalOffer } from "react-icons/md";
+import { IoReceiptOutline } from "react-icons/io5";
+import { motion } from "framer-motion";
+
+const navlinks = [
+  { id: 1, name: "All Trainers", link: "/trainers/" },
+  { id: 2, name: "Running Shoes", link: "/running-shoes/" },
+  { id: 3, name: "Featured products", link: "/products" },
+  { id: 4, name: "20% off sale", link: "/products/" },
+];
 
 const categories = [
   { id: 1, name: "Trainers", link: "/trainers/" },
@@ -47,82 +60,265 @@ const CategoryCard = ({ shoeTypeName, link }) => (
 
 export default function Navbar() {
   const [inputText, setInputText] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
+  const [showFullPageSearch, setShowFullPageSearch] = useState(false);
+  const [showAccount, setShowAccount] = useState(false);
+  const [hoveredSubcategory, setHoveredSubcategory] = useState(null);
+
+  let hoverTimeout;
+
+  const toggleAccount = () => {
+    setShowAccount(!showAccount);
+  };
 
   const handleInputChange = (event) => {
     setInputText(event.target.value);
+    if (event.target.value) {
+      setShowFullPageSearch(true);
+    }
   };
 
   const toggleCategories = () => {
     setShowCategories(!showCategories);
   };
 
-  const toggleSearch = () => {
-    setShowSearch(!showSearch); // Toggle the search bar visibility
+  const handleMouseEnter = (gender) => {
+    clearTimeout(hoverTimeout);
+    setHoveredSubcategory(gender);
+  };
+
+  const handleMouseLeave = () => {
+    hoverTimeout = setTimeout(() => {
+      setHoveredSubcategory(null);
+    }, 200); // Small delay to prevent flickering
   };
 
   return (
-    <header className="sticky top-0 z-[999]">
-      <nav className="flex lg:grid grid-cols-5 grid-flow-row w-full bg-white bg-opacity-30 backdrop-blur-3xl px-5 lg:px-0">
+    <header className="sticky top-0 z-[999] transition-all duration-300 ease-in-out">
+      <nav className="flex lg:grid grid-cols-6 grid-flow-row w-full bg-white bg-opacity-80 backdrop-blur-3xl px-5 py-2 lg:px-0">
         <div className="row-span-3 flex items-center justify-center">
           <Link href={"/"}>
             <Image
-              src="/assets/logo/LogoDark.png"
+              src="/assets/logo/LogoYDark.png"
               alt="logo"
               width={512}
               height={512}
-              className="w-56 h-auto"
+              className="lg:w-40 w-56 h-auto select-none outline-none"
             />
           </Link>
         </div>
 
-        <div className="flex justify-end lg:grid grid-cols-5 grid-flow-col col-span-4  lg:px-12 py-2 h-14 w-full gap-4">
-          <div className="hidden lg:inline relative col-start-2 col-end-4 place-content-center h-full">
+        <div className="flex items-center justify-end lg:justify-start col-start-2 col-end-7 pr-0 lg:pr-4 py-2 h-14 w-full gap-6">
+          {/* menu buttons */}
+          <div className="row-span-2 col-span-5 px-2 py-1 hidden lg:flex items-center justify-start text-neutral-700">
+            <div className="flex items-center w-full  gap-4 text-uppercase">
+              {/* <button
+                className={`flex items-center gap-1 ${
+                  showCategories ? "text-yellow-700" : "text-black"
+                }`}
+                onClick={toggleCategories}
+              >
+                <IoMenu className="text-2xl" />
+                <p>Categories</p>
+              </button> */}
+
+              <div className="hidden lg:flex items-center justify-around gap-6 w-full ">
+                <Link
+                  href="/"
+                  className="flex items-center gap-1 hover:underline"
+                >
+                  <p>Home</p>
+                </Link>
+                <Link
+                  href="/"
+                  className="flex items-center gap-1 hover:underline"
+                >
+                  <p>Categories</p>
+                </Link>
+                {genders.map((gender) => (
+                  <div
+                    key={gender}
+                    className="relative group"
+                    onMouseEnter={() => handleMouseEnter(gender)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <Link href="#" className="font-medium hover:underline">
+                      {gender}
+                    </Link>
+
+                    {/* Show Categories when hovering over subcategories */}
+                    {hoveredSubcategory === gender && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.5 }}
+                        className="absolute -left-10 mt-2 w-60 bg-white border rounded-lg shadow-xl z-10 p-2 pointer-events-auto"
+                        onMouseEnter={() => handleMouseEnter(gender)}
+                        onMouseLeave={handleMouseLeave}
+                      >
+                        {categories.map((category) => {
+                          // Find the link for the selected category and gender
+                          const subcategoryLink = subcategories.find(
+                            (subcategory) =>
+                              subcategory.name === gender &&
+                              subcategory.category_id === category.id
+                          )?.link;
+
+                          return (
+                            <Link
+                              key={category.id}
+                              href={subcategoryLink || category.link} // If link is found for the combination, use that
+                              className="block px-4 py-2 hover:bg-gray-100 rounded-sm"
+                            >
+                              {category.name}
+                            </Link>
+                          );
+                        })}
+                      </motion.div>
+                    )}
+                  </div>
+                ))}
+                <Link
+                  href="/"
+                  className="flex items-center gap-1 hover:underline"
+                >
+                  <PiStarFourFill className="text-md" />
+                  <p>New Arrivals</p>
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Search */}
+          <div className="hidden lg:flex relative h-full w-auto">
             <IoSearch className="absolute text-xl inset-0 left-1 translate-x-2/4 translate-y-2/4" />
             <input
               type="text"
-              className="w-full h-full top-3 pl-12 pr-24 rounded-full bg-neutral-500 bg-opacity-30 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+              className="w-60 h-full top-3 pl-12 pr-4 rounded-full  bg-neutral-400 bg-opacity-30 focus:outline-none placeholder:text-neutral-400"
+              placeholder="Search for products"
               value={inputText}
               onChange={handleInputChange}
             />
-            <button
-              className={`absolute right-1 top-1 bg-yellow-400 w-20 h-8 rounded-full transition-transform duration-150 ease-in-out transform ${
-                inputText.trim() ? "scale-100" : "scale-0"
-              }`}
-            >
-              Search
-            </button>
           </div>
 
-          <div className="relative lg:hidden flex col-start-4 col-end-5 place-self-center">
-            <IoSearch className="h-6 w-6" onClick={toggleSearch} />{" "}
-            {/* Add click handler to toggle search */}
-            {showSearch && (
-              <div className="absolute flex gap-2 top-10 right-0 mx-3 translate-x-28 bg-neutral-500 p-2 rounded-full">
-                <input
-                  type="text"
-                  className="w-sreen h-10 pl-6 lg:pl-12 pr-24 rounded-full bg-white focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
-                  value={inputText}
-                  onChange={handleInputChange}
-                />
-                <button className="flex items-center justify-center bg-yellow-400 w-10 h-10 rounded-full transition-transform duration-150 ease-in-out transform">
-                  <IoSearch className="h-6 w-6" />
-                </button>
+          {/* Login */}
+          <div className="relative hidden lg:flex items-center justify-end gap-2 h-full w-auto">
+            <button
+              className="hidden lg:flex items-center justify-between  bg-neutral-400 bg-opacity-30 gap-2 h-full w-full rounded-full px-2"
+              onClick={toggleAccount}
+            >
+              <VscAccount className="h-10 w-10" />
+              <span className="flex flex-col items-start justify-center ml-1 w-full">
+                <span>Sign in</span>
+              </span>
+            </button>
+
+            {/* Menu */}
+            {showAccount && (
+              <div className="absolute hidden lg:flex left-0 top-12 bg-white shadow-xl rounded-xl p-2 w-40">
+                <ul className="w-full">
+                  <li className="w-full">
+                    <Link
+                      href="/login"
+                      className="flex items-center justify-start py-2 px-4 hover:bg-gray-100"
+                    >
+                      Sign In
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/orders"
+                      className="flex items-center justify-start py-2 px-4 hover:bg-gray-100"
+                    >
+                      <IoReceiptOutline className="h-4" />
+                      <span className="ml-2">Your Orders</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/return"
+                      className="flex items-center justify-start py-2 px-4 hover:bg-gray-100"
+                    >
+                      <IoReturnUpBackOutline className="h-4" />
+                      <span className="ml-2">Return</span>
+                    </Link>
+                  </li>
+                </ul>
               </div>
             )}
           </div>
 
-          <div className="lg:hidden inline col-start-4 col-end-5 place-self-center">
-            <IoPerson className="h-6 w-6" />
-          </div>
+          {/* other menu */}
+          <div className="flex items-center justify-center h-full gap-2 w-auto rounded-full   bg-neutral-400  lg:bg-opacity-30 bg-opacity-0 bg-none mr-2 px-0 lg:px-4">
+            <div className="lg:flex items-center justify-center gap-4 hidden text-sm">
+              <Link
+                href="/cart"
+                className="flex items-center justify-center gap-1 hover:text-yellow-700"
+              >
+                <SlBasket className="h-4" />
+                <span className="ml-2">Cart</span>
+              </Link>
+              <span className="h-6 border-r-[1px] border-neutral-300" />
+              <Link
+                href="/wishlist"
+                className="flex items-center justify-center gap-1 hover:text-yellow-700"
+              >
+                <PiHeart className="h-4" />
+                <span className="ml-2">Wishlist</span>
+              </Link>
+              <span className="h-6 border-r-[1px] border-neutral-300" />
+              <Link
+                href="/contact-us"
+                className="flex items-center justify-center gap-1 hover:text-yellow-700"
+              >
+                <IoCallOutline className="h-4" />
+                <span className="ml-2">Contact us</span>
+              </Link>
+            </div>
 
-          <div className="col-start-5 col-end-6 justify-self-end place-self-center flex items-center h-full gap-6">
-            <FaHeart className="hidden lg:inline text-2xl cursor-pointer" />
-            <RiShoppingBag4Fill className="hidden lg:inline text-2xl cursor-pointer" />
-            <button className="hidden lg:inline bg-yellow-400 w-32 h-full rounded-full">
-              Login 
-            </button>
+            <div className="relative lg:hidden flex col-start-4 col-end-5 place-self-center">
+              <IoSearch
+                className="h-6 w-6"
+                onClick={() => setShowFullPageSearch(true)}
+              />
+            </div>
+
+            <div className="relative lg:hidden flex col-start-4 col-end-5 place-self-center">
+              <button onClick={toggleAccount}>
+                <VscAccount className="h-6 w-6" />
+              </button>
+              {/* Menu */}
+              {showAccount && (
+                <div className="absolute flex lg:hidden right-0 top-6 bg-white shadow-xl rounded-xl p-2 w-auto">
+                  <ul className="w-full">
+                    <li className="w-full">
+                      <Link
+                        href="/login"
+                        className="block py-2 px-4 hover:bg-gray-100"
+                      >
+                        Sign In
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/orders"
+                        className="flex items-center justify-center gap-1 hover:text-yellow-700"
+                      >
+                        <IoReceiptOutline className="h-4" />
+                        <span className="ml-2">Your Orders</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <button className="block py-2 px-4 w-full text-left hover:bg-gray-100">
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+
             <button
               className={`lg:hidden flex items-center gap-1 ${
                 showCategories ? "text-black" : "text-neutral-700"
@@ -133,40 +329,14 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-
-        <div className="row-span-2 col-span-4 bg-yellow-400 px-2 py-1 hidden lg:flex items-center justify-start text-neutral-700">
-          <div className="flex items-center w-full px-4 gap-16 text-uppercase">
-            <button
-              className={`flex items-center gap-1 ${
-                showCategories ? "text-black" : "text-neutral-700"
-              }`}
-              onClick={toggleCategories}
-            >
-              <IoMenu className="text-2xl" />
-              <p>Categories</p>
-            </button>
-
-            <div className="flex items-center justify-between w-full px-4">
-              {categories.map((categories, index) => (
-                <Link href={categories.link} key={index}>
-                  {categories.name}
-                </Link>
-              ))}
-              <Link href="/" className="flex items-center gap-1">
-                <PiStarFourFill className="text-md" />
-                <p>New Arrivals</p>
-              </Link>
-            </div>
-          </div>
-        </div>
       </nav>
 
       {showCategories && (
-        <div className="absolute h-auto lg:h-screen w-full top-full p-10 bg-white bg-opacity-30 backdrop-blur-3xl z-10 m-auto">
-          <div className="flex flex-wrap gap-28 w-full max-w-screen-lg p-4 text-black">
+        <div className="absolute h-screen w-full top-full lg:p-auto p-10 lg:pb-0 pb-20 bg-white bg-opacity-70 backdrop-blur-3xl z-10 lg:overflow-hidden overflow-y-auto ">
+          <div className="flex items-start justify-start flex-wrap gap-0 lg:gap-10 w-full max-w-screen-lg text-black h-screen ">
             {genders.map((gender) => (
-              <div key={gender} className="gender-category">
-                <h2 className="text-4xl mb-5 border-b-2 border-neutral-400">
+              <div key={gender} className="gender-category w-72 p-2">
+                <h2 className="text-left text-4xl mb-5 border-b-[2px] border-yellow-400 py-2">
                   {gender}
                 </h2>
                 <div className="subcategory-cards flex flex-col gap-2 text-xl">
@@ -188,6 +358,36 @@ export default function Navbar() {
             ))}
           </div>
         </div>
+      )}
+      {showFullPageSearch && (
+        <motion.div
+          className="fixed inset-0 bg-neutral-400 bg-opacity-80 backdrop-blur-xl z-[999] flex items-start justify-center h-screen"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div
+            className="w-full max-w-2xl p-8 relative"
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -50, opacity: 0 }}
+          >
+            <input
+              type="text"
+              className="w-full h-12 pl-12 pr-24 rounded-full bg-white focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+              value={inputText}
+              onChange={handleInputChange}
+              placeholder="Search..."
+            />
+            <IoSearch className="absolute left-12 top-1/2 transform -translate-y-1/2 text-gray-500 h-6 w-6" />
+            <button
+              className="absolute right-10 top-1/2 transform -translate-y-1/2 bg-yellow-400 text-black px-4 py-2 rounded-full"
+              onClick={() => setShowFullPageSearch(false)}
+            >
+              Cancel
+            </button>
+          </motion.div>
+        </motion.div>
       )}
     </header>
   );

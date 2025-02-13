@@ -2,6 +2,10 @@
 
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+<<<<<<< HEAD
+=======
+import Image from "next/image";
+>>>>>>> 9f9e0d15d481bf87665383c925396aa0ea556bb5
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -14,6 +18,10 @@ export default function Signup() {
   });
 
   const [error, setError] = useState("");
+<<<<<<< HEAD
+=======
+  const [success, setSuccess] = useState("");
+>>>>>>> 9f9e0d15d481bf87665383c925396aa0ea556bb5
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -23,7 +31,11 @@ export default function Signup() {
     }));
   };
 
+<<<<<<< HEAD
   const handleSubmit = (e) => {
+=======
+  const handleSubmit = async (e) => {
+>>>>>>> 9f9e0d15d481bf87665383c925396aa0ea556bb5
     e.preventDefault();
 
     // Validation

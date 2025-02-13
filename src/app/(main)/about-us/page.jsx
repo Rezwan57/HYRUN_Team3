@@ -1,9 +1,9 @@
 import React from 'react'
-import ContactForm from '../../components/ContactUs/ContactForm'
+import AboutUs from '../../../components/about-us/about-us'
 function page() {
   return (
     <div>
-        <ContactForm/> 
+        <AboutUs/> 
     </div>
   )
 }

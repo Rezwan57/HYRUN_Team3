@@ -1,8 +1,13 @@
 'use client'
 
 import React, { useState } from "react";
+<<<<<<< HEAD
 import Image from "next/image";  // Import Next.js Image
 import "bootstrap/dist/css/bootstrap.min.css";
+=======
+import "bootstrap/dist/css/bootstrap.min.css";
+import Image from "next/image";
+>>>>>>> 9f9e0d15d481bf87665383c925396aa0ea556bb5
 
 export default function Login() {
   const [email, setEmail] = useState("");

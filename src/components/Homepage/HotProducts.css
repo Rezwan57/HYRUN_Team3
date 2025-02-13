@@ -1,0 +1,160 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: auto;
+  
+}
+
+/* for shoe brand logos css */
+.brand-logos {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 5px;
+  background: rgb(48, 47, 47); 
+  width: 100%;
+  margin-bottom: 0px;  
+  border-radius: 5px;
+}
+
+
+@keyframes fadeOutIn {
+  0%, 10% { opacity: 1; }  /* Stay visible for the first 10% */
+  40% { opacity: 0; }      /* Fully faded out */
+  70%, 100% { opacity: 1; } /* Fade back in */
+}
+
+
+.brand-logos img {
+  width: 90px;
+  height: auto;
+  opacity: 1; /* Logos are initially visible */
+  animation: fadeOutIn 10s ease-in-out infinite; /* Faster animation */
+}
+
+
+.brand-logos img:nth-child(1) { animation-delay: 0s; }
+.brand-logos img:nth-child(2) { animation-delay: 2s; }
+.brand-logos img:nth-child(3) { animation-delay: 4s; }
+.brand-logos img:nth-child(4) { animation-delay: 6s; }
+.brand-logos img:nth-child(5) { animation-delay: 8s; }
+
+/* for hot-products css */
+
+
+.hot-products-container {
+  display: flex;
+  flex-direction: row;
+  align-items:center;
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  background:  #323233;;
+  border-radius: 5px;
+  border-style: solid;
+  margin-bottom: -70px;
+  margin-top: 10px;
+  position: relative;
+}
+
+
+.hot-products-title {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 4.72rem; 
+  font-size: 18vh; 
+  font-weight: bold;
+  text-transform: uppercase;
+  color: rgb(219, 155, 8);
+  line-height: 0.7;
+  text-align: left ;
+ }
+
+.hot-products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  flex-grow: 1; 
+  position: relative;
+  margin-top: 50px;
+}
+
+
+.product-item {
+  background: rgb(169, 167, 167);
+  padding: 10px;
+  height: 400;
+  border-radius: 10px;
+  text-align: center;
+  width: 260px;
+  margin-top: 30px;
+  transition: all 0.3s ease-in-out;
+  backdrop-filter: blur(10px);
+  
+}
+
+.product-item:hover {
+  transform: scale(1.1);
+ 
+}
+
+.product-image {
+  background-color: rgb(223, 227, 227);
+  width: 150%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.product-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.product-price {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: black;
+  margin-top: 5px;
+}
+
+
+.add-to-cart {
+  background:rgb(219, 155, 8);
+  color: black;
+  border: 1px solid rgb(227, 198, 31);
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.add-to-cart:hover {
+  transform: scale(1.1);
+  background: rgb(48, 38, 38);
+}
+
+
+.show-more-arrow {
+
+  color: rgb(219, 155, 8);
+  padding: 17px;
+  border-radius: 50%;
+  font-size: 2.9rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: auto;
+  transition: transform 0.3s ease-in-out;
+}
+
+.show-more-arrow:hover {
+  transform: scale(1.3);
+}
