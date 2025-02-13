@@ -1,20 +1,20 @@
-import db from "../../../../../lib/db";
+import db from "../../../../../../lib/db";
 import bcrypt from "bcryptjs";
 
 export async function POST(req) {
   try {
-    const { user_email, user_password } = await req.json();
+    const { username, password } = await req.json();
 
-    console.log("Received login request:", { user_email, user_password });
+    console.log("Received login request:", { username, password });
 
-    if (!user_email || !user_password) {
+    if (!username || !password) {
       console.log("Error: Missing fields");
       return new Response(JSON.stringify({ error: "All fields are required!" }), { status: 400 });
     }
 
     const [existingUser] = await db.query(
-      "SELECT first_name, last_name, user_email, user_password FROM users WHERE user_email = ?",
-      [user_email]
+      "SELECT first_name, last_name, username, password FROM admins WHERE username = ?",
+      [username]
     );
 
     console.log("User query result:", existingUser);
@@ -26,7 +26,7 @@ export async function POST(req) {
 
     const user = existingUser[0];
 
-    const isMatch = await bcrypt.compare(user_password, user.user_password);
+    const isMatch = await bcrypt.compare(password, user.password);
     console.log("Password match status:", isMatch);
 
     if (!isMatch) {
@@ -40,7 +40,7 @@ export async function POST(req) {
         user: {
           firstName: user.first_name,
           lastName: user.last_name,
-          email: user.user_email,
+          email: user.username,
         },
       }),
       { status: 200 }
