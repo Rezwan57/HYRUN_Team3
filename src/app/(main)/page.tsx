@@ -5,6 +5,7 @@ import NewProduct from "@/components/Homepage/NewProduct";
 
 
 
+
 export const metadata: Metadata = {
   title: "HYRUN - Home",
   description: "Explore quality sneakers from HYRUN",
@@ -17,6 +18,7 @@ export default function Home() {
       <HeroSection />
       <HotProducts />
       <NewProduct />
+      
     </main>
   );
 }

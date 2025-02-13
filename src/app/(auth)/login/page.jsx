@@ -1,30 +1,57 @@
-'use client'
+"use client";
 
 import React, { useState } from "react";
-<<<<<<< HEAD
 import Image from "next/image";  // Import Next.js Image
 import "bootstrap/dist/css/bootstrap.min.css";
-=======
-import "bootstrap/dist/css/bootstrap.min.css";
-import Image from "next/image";
->>>>>>> 9f9e0d15d481bf87665383c925396aa0ea556bb5
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!email || !password) {
       setError("Both fields are required!");
       return;
     }
-
-    console.log("Logging in with:", { email, password });
-    setError(""); // Clear errors on success
+  
+    setLoading(true);
+    setError("");
+  
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_email: email, user_password: password }),
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        throw new Error(data.error || "Login failed. Please try again.");
+      }
+  
+      console.log("Login Successful!", data);
+  
+      if (data.user) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+        console.log("Stored User:", data.user);  // Debugging
+      }
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      console.log("Stored User:", storedUser);
+      window.location.href = "/";
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
+  
+  
+  
 
   return (
     <div className="container-fluid vh-100">
@@ -86,8 +113,12 @@ export default function Login() {
               </div>
 
               {/* Login Button */}
-              <button type="submit" className="btn btn-warning w-100">
-                Login
+              <button
+                type="submit"
+                className="btn btn-warning w-100"
+                disabled={loading}
+              >
+                {loading ? "Logging in..." : "Login"}
               </button>
             </form>
 

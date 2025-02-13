@@ -1,3 +1,5 @@
+import { BiCategory } from "react-icons/bi";
+
 const sneakers = [
   {
     name: "Air Max 270",

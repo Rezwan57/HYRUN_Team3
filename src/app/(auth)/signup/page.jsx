@@ -2,10 +2,14 @@
 
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-<<<<<<< HEAD
-=======
+
+
 import Image from "next/image";
->>>>>>> 9f9e0d15d481bf87665383c925396aa0ea556bb5
+
+f9e0d15d481bf87665383c925396aa0ea556bb5
+
+import { nav } from "framer-motion/client";
+ origin/main
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -16,12 +20,12 @@ export default function Signup() {
     confirmPassword: "",
     agreeToTerms: false,
   });
-
+}
   const [error, setError] = useState("");
-<<<<<<< HEAD
-=======
+
+
   const [success, setSuccess] = useState("");
->>>>>>> 9f9e0d15d481bf87665383c925396aa0ea556bb5
+f9e0d15d481bf87665383c925396aa0ea556bb5
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -31,11 +35,10 @@ export default function Signup() {
     }));
   };
 
-<<<<<<< HEAD
   const handleSubmit = (e) => {
-=======
+
   const handleSubmit = async (e) => {
->>>>>>> 9f9e0d15d481bf87665383c925396aa0ea556bb5
+ f9e0d15d481bf87665383c925396aa0ea556bb5
     e.preventDefault();
 
     // Validation
@@ -56,6 +59,45 @@ export default function Signup() {
 
     console.log("Signing up with:", formData);
     setError(""); // Clear errors on success
+
+
+
+    // Backend Connection and API Fetch
+    try {
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          user_email: formData.email,
+          user_password: formData.password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Something went wrong!");
+        setSuccess("");
+      } else {
+        setSuccess("Account created successfully! You can now log in.");
+        setError("");
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          agreeToTerms: false,
+        });
+        navigate("/login");
+      }
+    } catch (error) {
+      setError("Server error. Please try again later.");
+      setSuccess("");
+    }
+origin/main
   };
 
   return (
@@ -95,6 +137,7 @@ export default function Signup() {
                     placeholder="Your First Name"
                     value={formData.firstName}
                     onChange={handleChange}
+                    
                   />
                 </div>
                 {/* Last Name */}
@@ -183,3 +226,4 @@ export default function Signup() {
     </div>
   );
 }
+
