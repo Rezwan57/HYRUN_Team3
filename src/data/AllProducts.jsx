@@ -42,6 +42,7 @@ const Allproducts = [
         price: 75,
         image: '/assets/FW/4.png'
       },
+      
   
     
   

@@ -16,7 +16,7 @@
   }
 
   .title {
-    font-size: 4.5vh;
+    font-size: 3.5vh;
     margin: 0;
     font-weight: bold;
   }
@@ -36,7 +36,7 @@
   
   .filter-button {
     border: none;
-    font-size: 2.5vh;
+    font-size: 2.4vh;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -48,8 +48,7 @@
   }
   
   .sort-dropdown {
-    font-size: 2.5vh;
-    padding-right: -110px;
+    font-size: 2.4vh;
   }
 
   
@@ -71,11 +70,11 @@
   }
   
   .productImage {
-    background-color: rgb(238, 244, 249);
+    background-color: rgb(243, 243, 243);
     width: auto;
-    height: auto;
-    padding-left: 20px;
-    padding-right: 20px;
+    height: 80%;
+    padding-left: 40px;
+    padding-right: 40px;
     border-radius: 1rem;
   }
   

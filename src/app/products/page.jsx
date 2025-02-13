@@ -21,7 +21,7 @@ const ProductsPage = () => {
           <button className="filter-button">
             Show Filters <FaFilter size={18} className="filter-icon" />
           </button>
-
+        
           <select className="sort-dropdown">
             <option>Sort By</option>
             <option value="price-low">Price: Low to High</option>
