@@ -2,6 +2,7 @@ const hotProductsData = [
     {
       id: 1,
       name: 'Running shoes',
+      subcategory:'Traines',
       price: '£88.99',
       image: '/assets/FW/1.png'
     },

@@ -7,6 +7,7 @@ import {
   IoSearch,
   IoReturnUpBackOutline,
   IoCallOutline,
+  IoLogOutOutline,
 } from "react-icons/io5";
 import { PiStarFourFill, PiHeart } from "react-icons/pi";
 import { SlBasket } from "react-icons/sl";
@@ -64,6 +65,8 @@ export default function Navbar() {
   const [showFullPageSearch, setShowFullPageSearch] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
   const [hoveredSubcategory, setHoveredSubcategory] = useState(null);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   let hoverTimeout;
 
@@ -90,7 +93,21 @@ export default function Navbar() {
   const handleMouseLeave = () => {
     hoverTimeout = setTimeout(() => {
       setHoveredSubcategory(null);
-    }, 200); // Small delay to prevent flickering
+    }, 200);
+  };
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    setLoading(false);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    window.location.reload();
   };
 
   return (
@@ -108,7 +125,7 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <div className="flex items-center justify-end lg:justify-start col-start-2 col-end-7 pr-0 lg:pr-4 py-2 h-14 w-full gap-6">
+        <div className="flex items-center justify-end lg:justify-between col-start-2 col-end-7 pr-0 lg:pr-4 py-2 h-14 w-full gap-6">
           {/* menu buttons */}
           <div className="row-span-2 col-span-5 px-2 py-1 hidden lg:flex items-center justify-start text-neutral-700">
             <div className="flex items-center w-full  gap-4 text-uppercase">
@@ -149,7 +166,7 @@ export default function Navbar() {
                     {/* Show Categories when hovering*/}
                     {hoveredSubcategory === gender && (
                       <motion.div
-                        initial={{ opacity: 0, y: 10 }}
+                        initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
                         transition={{ duration: 0.5 }}
@@ -158,7 +175,6 @@ export default function Navbar() {
                         onMouseLeave={handleMouseLeave}
                       >
                         {categories.map((category) => {
-
                           const subcategoryLink = subcategories.find(
                             (subcategory) =>
                               subcategory.name === gender &&
@@ -168,8 +184,8 @@ export default function Navbar() {
                           return (
                             <Link
                               key={category.id}
-                              href={subcategoryLink || category.link} 
-                              className="block px-4 py-2 hover:bg-gray-100 rounded-sm"
+                              href={subcategoryLink || category.link}
+                              className="block px-4 py-2 hover:bg-gray-100 rounded-md"
                             >
                               {category.name}
                             </Link>
@@ -190,143 +206,218 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Search */}
-          <div className="hidden lg:flex relative h-full w-auto">
-            <IoSearch className="absolute text-xl inset-0 left-1 translate-x-2/4 translate-y-2/4" />
-            <input
-              type="text"
-              className="w-60 h-full top-3 pl-12 pr-4 rounded-full  bg-neutral-400 bg-opacity-30 focus:outline-none placeholder:text-neutral-400"
-              placeholder="Search for products"
-              value={inputText}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          {/* Login */}
-          <div className="relative hidden lg:flex items-center justify-end gap-2 h-full w-auto">
-            <button
-              className="hidden lg:flex items-center justify-between  bg-neutral-400 bg-opacity-30 gap-2 h-full w-full rounded-full px-2"
-              onClick={toggleAccount}
-            >
-              <VscAccount className="h-10 w-10" />
-              <span className="flex flex-col items-start justify-center ml-1 w-full">
-                <span>Sign in</span>
-              </span>
-            </button>
-
-            {/* Menu */}
-            {showAccount && (
-              <div className="absolute hidden lg:flex left-0 top-12 bg-white shadow-xl rounded-xl p-2 w-40">
-                <ul className="w-full">
-                  <li className="w-full">
-                    <Link
-                      href="/login"
-                      className="flex items-center justify-start py-2 px-4 hover:bg-gray-100"
-                    >
-                      Sign In
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/orders"
-                      className="flex items-center justify-start py-2 px-4 hover:bg-gray-100"
-                    >
-                      <IoReceiptOutline className="h-4" />
-                      <span className="ml-2">Your Orders</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/return"
-                      className="flex items-center justify-start py-2 px-4 hover:bg-gray-100"
-                    >
-                      <IoReturnUpBackOutline className="h-4" />
-                      <span className="ml-2">Return</span>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            )}
-          </div>
-
-          {/* other menu */}
-          <div className="flex items-center justify-center h-full lg:gap-2 gap-5 w-auto rounded-full   bg-neutral-400  lg:bg-opacity-30 bg-opacity-0 bg-none mr-2 px-0 lg:px-4">
-            <div className="lg:flex items-center justify-center gap-4 hidden text-sm">
-              <Link
-                href="/cart"
-                className="flex items-center justify-center gap-1 hover:text-yellow-700"
-              >
-                <SlBasket className="h-4" />
-                <span className="ml-2">Cart</span>
-              </Link>
-              <span className="h-6 border-r-[1px] border-neutral-300" />
-              <Link
-                href="/wishlist"
-                className="flex items-center justify-center gap-1 hover:text-yellow-700"
-              >
-                <PiHeart className="h-4" />
-                <span className="ml-2">Wishlist</span>
-              </Link>
-              <span className="h-6 border-r-[1px] border-neutral-300" />
-              <Link
-                href="/contact-us"
-                className="flex items-center justify-center gap-1 hover:text-yellow-700"
-              >
-                <IoCallOutline className="h-4" />
-                <span className="ml-2">Contact us</span>
-              </Link>
-            </div>
-
-            <div className="relative lg:hidden flex col-start-4 col-end-5 place-self-center">
-              <IoSearch
-                className="h-6 w-6"
-                onClick={() => setShowFullPageSearch(true)}
+          <div className="flex items-center justify-end gap-2 h-full w-auto">
+            {/* Search */}
+            <div className="hidden lg:flex relative h-full w-auto">
+              <IoSearch className="absolute text-xl inset-0 left-1 translate-x-2/4 translate-y-2/4" />
+              <input
+                type="text"
+                className="w-60 h-full top-3 pl-12 pr-4 rounded-full  bg-neutral-400 bg-opacity-30 focus:outline-none placeholder:text-neutral-400"
+                placeholder="Search for products"
+                value={inputText}
+                onChange={handleInputChange}
               />
             </div>
 
-            <div className="relative lg:hidden flex col-start-4 col-end-5 place-self-center">
-              <button onClick={toggleAccount}>
-                <VscAccount className="h-6 w-6" />
+            {/* Login */}
+            <div className="relative hidden lg:flex items-center justify-end gap-2 h-full w-auto">
+              {/* Login / User Info */}
+              <button
+                className="hidden lg:flex items-center justify-between bg-neutral-400 bg-opacity-30 gap-2 h-full w-full rounded-full px-2"
+                onClick={() => setShowAccount(!showAccount)}
+              >
+                <VscAccount className="h-10 w-10" />
+                <span className="flex flex-col items-start justify-center ml-1 w-full">
+                  {user ? (
+                    <span className="text-xs">{user.firstName}</span>
+                  ) : (
+                    <span>Sign in</span>
+                  )}
+                </span>
               </button>
-              {/* Menu */}
+
+              {/* Dropdown Menu */}
               {showAccount && (
-                <div className="absolute flex lg:hidden right-0 top-6 bg-white shadow-xl rounded-xl p-2 w-40">
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute hidden lg:flex left-0 top-12 border shadow-xl bg-white rounded-xl p-2 w-40"
+                >
                   <ul className="w-full">
-                    <li className="w-full">
-                      <Link
-                        href="/login"
-                        className="block py-2 px-4 hover:bg-gray-100"
-                      >
-                        Sign In
-                      </Link>
-                    </li>
+                    {user ? (
+                      <>
+                        <li>
+                          <Link
+                            href="/profile"
+                            className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
+                          >
+                            <VscAccount className="h-4" />
+                            <span className="ml-2">Profile</span>
+                          </Link>
+                        </li>
+                      </>
+                    ) : (
+                      <li>
+                        <Link
+                          href="/login"
+                          className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
+                        >
+                          Sign In
+                        </Link>
+                      </li>
+                    )}
                     <li>
                       <Link
                         href="/orders"
-                        className="flex items-center justify-center gap-1 hover:text-yellow-700"
+                        className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
                       >
                         <IoReceiptOutline className="h-4" />
                         <span className="ml-2">Your Orders</span>
                       </Link>
                     </li>
                     <li>
-                      <button className="block py-2 px-4 w-full text-left hover:bg-gray-100">
-                        Logout
-                      </button>
+                      <Link
+                        href="/return"
+                        className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
+                      >
+                        <IoReturnUpBackOutline className="h-4" />
+                        <span className="ml-2">Return</span>
+                      </Link>
                     </li>
+
+                    {user && (
+                      <li className="border-t border-gray-200 mt-2">
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center justify-start w-full py-2 px-4 hover:bg-gray-100 rounded-md text-left"
+                        >
+                          <IoLogOutOutline className="h-4" />
+                          <span className="ml-2">Logout</span>
+                        </button>
+                      </li>
+                    )}
                   </ul>
-                </div>
+                </motion.div>
               )}
             </div>
 
-            <button
-              className={`lg:hidden flex items-center gap-1 ${
-                showCategories ? "text-black" : "text-neutral-700"
-              }`}
-              onClick={toggleCategories}
-            >
-              <IoMenu className="text-3xl" />
-            </button>
+            {/* other menu */}
+            <div className="flex items-center justify-center h-full lg:gap-2 gap-5 w-auto rounded-full   bg-neutral-400  lg:bg-opacity-30 bg-opacity-0 bg-none mr-2 px-0 lg:px-4">
+              <div className="lg:flex items-center justify-center gap-4 hidden text-sm">
+                <Link
+                  href="/cart"
+                  className="flex items-center justify-center gap-1 hover:text-yellow-700"
+                >
+                  <SlBasket className="h-4" />
+                  <span className="ml-2">Cart</span>
+                </Link>
+                <span className="h-6 border-r-[1px] border-neutral-300" />
+                <Link
+                  href="/wishlist"
+                  className="flex items-center justify-center gap-1 hover:text-yellow-700"
+                >
+                  <PiHeart className="h-4" />
+                  <span className="ml-2">Wishlist</span>
+                </Link>
+                <span className="h-6 border-r-[1px] border-neutral-300" />
+                <Link
+                  href="/contact-us"
+                  className="flex items-center justify-center gap-1 hover:text-yellow-700"
+                >
+                  <IoCallOutline className="h-4" />
+                  <span className="ml-2">Contact us</span>
+                </Link>
+              </div>
+
+              <div className="relative lg:hidden flex col-start-4 col-end-5 place-self-center">
+                <IoSearch
+                  className="h-6 w-6"
+                  onClick={() => setShowFullPageSearch(true)}
+                />
+              </div>
+
+              <div className="relative lg:hidden flex col-start-4 col-end-5 place-self-center">
+                <button onClick={toggleAccount}>
+                  <VscAccount className="h-6 w-6" />
+                </button>
+                {/* Menu */}
+                {showAccount && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute flex lg:hidden right-0 top-6 bg-white shadow-xl rounded-xl p-2 w-40"
+                >
+                  <ul className="w-full">
+                    {user ? (
+                      <>
+                        <li>
+                          <Link
+                            href="/profile"
+                            className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
+                          >
+                            <VscAccount className="h-4" />
+                            <span className="ml-2">Profile</span>
+                          </Link>
+                        </li>
+                      </>
+                    ) : (
+                      <li>
+                        <Link
+                          href="/login"
+                          className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
+                        >
+                          Sign In
+                        </Link>
+                      </li>
+                    )}
+                    <li>
+                      <Link
+                        href="/orders"
+                        className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
+                      >
+                        <IoReceiptOutline className="h-4" />
+                        <span className="ml-2">Your Orders</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/return"
+                        className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
+                      >
+                        <IoReturnUpBackOutline className="h-4" />
+                        <span className="ml-2">Return</span>
+                      </Link>
+                    </li>
+
+                    {user && (
+                      <li className="border-t border-gray-200 mt-2">
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center justify-start w-full py-2 px-4 hover:bg-gray-100 rounded-md text-left"
+                        >
+                          <IoLogOutOutline className="h-4" />
+                          <span className="ml-2">Logout</span>
+                        </button>
+                      </li>
+                    )}
+                  </ul>
+                </motion.div>
+              )}
+              </div>
+
+              <button
+                className={`lg:hidden flex items-center gap-1 ${
+                  showCategories ? "text-black" : "text-neutral-700"
+                }`}
+                onClick={toggleCategories}
+              >
+                <IoMenu className="text-3xl" />
+              </button>
+            </div>
           </div>
         </div>
       </nav>
@@ -388,6 +479,8 @@ export default function Navbar() {
             </button>
           </motion.div>
         </motion.div>
+
+        
       )}
     </header>
   );

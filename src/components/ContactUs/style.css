@@ -14,6 +14,18 @@ h2 {
     font: bold;
     color: #333; 
     margin-bottom: 20px; 
+
+}
+h3 {
+    text-align: center;
+    color: black;
+    font-size: 16px; 
+    font-weight: lighter; 
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 label {
@@ -51,7 +63,7 @@ textarea:focus {
     cursor: pointer; 
     transition: background-color 0.3s; 
 }
-
 .submit-button:hover {
     background-color: #cc8400; 
 }
+
