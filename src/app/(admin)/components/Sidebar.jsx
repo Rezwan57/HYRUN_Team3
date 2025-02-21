@@ -7,6 +7,8 @@ import { motion } from "framer-motion";
 const adminLinks = [
   { id: 1, name: "Dashboard", link: "/admin" },
   { id: 2, name: "Products", link: "/admin/add-product" },
+  { id: 3, name: "Messages", link: "/admin/add-messages"} // make sure it is correct//
+ 
 ];
 
 const editLinks = [
