@@ -2,9 +2,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Footer from "@/components/Homepage/Footer";
-import Navbar from "@/components/Navbar";
-import Headline from "@/components/Headline";
 import { IoTrashOutline } from "react-icons/io5";
 import { IoMdHeart } from "react-icons/io";
 
@@ -54,9 +51,6 @@ const WishlistPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Headline />
-      <Navbar />
-
       <div className="container mx-auto px-4 py-8">
         {/* Wishlist Header */}
         <div className="flex items-center gap-3 mb-8">
@@ -136,8 +130,6 @@ const WishlistPage = () => {
           </div>
         )}
       </div>
-
-      <Footer />
     </div>
   );
 };
