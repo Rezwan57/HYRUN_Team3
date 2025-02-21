@@ -14,7 +14,6 @@ const adminLinks = [
 const editLinks = [
   { id: 1, name: "Homepage Edit", link: "/admin/edit/homepage" },
   { id: 2, name: "Contact Edit", link: "/admin/edit/contact" },
-  { id: 3, name: "More Important", link: "/admin/edit/important" },
 ];
 
 function Sidebar() {
