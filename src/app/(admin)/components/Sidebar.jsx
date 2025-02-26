@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 const adminLinks = [
   { id: 1, name: "Dashboard", link: "/admin" },
-  { id: 2, name: "Products", link: "/admin/add-product" },
+  { id: 2, name: "Products", link: "/admin/products" },
   { id: 3, name: "Messages", link: "/admin/add-messages"} // make sure it is correct//
  
 ];
@@ -20,7 +20,7 @@ function Sidebar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <aside className=" bottom-0 p-4 flex flex-col justify-between flex-shrink-0 gap-10 w-1/6 h-screen bg-neutral-100">
+    <aside className="bottom-0 p-4 flex flex-col justify-between flex-shrink-0 gap-10 w-1/6 h-screen bg-neutral-100">
       <h1>Admin Panel</h1>
 
       <div className="flex flex-col gap-2 h-full w-full">
