@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Image from "next/image";
-import { nav } from "framer-motion/client";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
