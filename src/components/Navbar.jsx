@@ -32,20 +32,20 @@ const categories = [
 ];
 
 const subcategories = [
-  { id: 1, name: "Men", category_id: 1, link: "/trainers/men" },
-  { id: 2, name: "Women", category_id: 1, link: "/trainers/women" },
+  { id: 1, name: "Men", category_id: 1, link: "/trainers/mens" },
+  { id: 2, name: "Women", category_id: 1, link: "/trainers/womens" },
   { id: 3, name: "Kids", category_id: 1, link: "/trainers/kids" },
-  { id: 4, name: "Men", category_id: 2, link: "/running-shoes/men" },
-  { id: 5, name: "Women", category_id: 2, link: "/running-shoes/women" },
+  { id: 4, name: "Men", category_id: 2, link: "/running-shoes/mens" },
+  { id: 5, name: "Women", category_id: 2, link: "/running-shoes/womens" },
   { id: 6, name: "Kids", category_id: 2, link: "/running-shoes/kids" },
-  { id: 7, name: "Men", category_id: 3, link: "/football-shoes/men" },
-  { id: 8, name: "Women", category_id: 3, link: "/football-shoes/women" },
+  { id: 7, name: "Men", category_id: 3, link: "/football-shoes/mens" },
+  { id: 8, name: "Women", category_id: 3, link: "/football-shoes/womens" },
   { id: 9, name: "Kids", category_id: 3, link: "/football-shoes/kids" },
-  { id: 10, name: "Men", category_id: 4, link: "/walking-boots/men" },
-  { id: 11, name: "Women", category_id: 4, link: "/walking-boots/women" },
+  { id: 10, name: "Men", category_id: 4, link: "/walking-boots/mens" },
+  { id: 11, name: "Women", category_id: 4, link: "/walking-boots/womens" },
   { id: 12, name: "Kids", category_id: 4, link: "/walking-boots/kids" },
-  { id: 13, name: "Men", category_id: 5, link: "/basketball-shoes/men" },
-  { id: 14, name: "Women", category_id: 5, link: "/basketball-shoes/women" },
+  { id: 13, name: "Men", category_id: 5, link: "/basketball-shoes/mens" },
+  { id: 14, name: "Women", category_id: 5, link: "/basketball-shoes/womens" },
   { id: 15, name: "Kids", category_id: 5, link: "/basketball-shoes/kids" },
 ];
 

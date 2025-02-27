@@ -55,8 +55,6 @@
   .productList {
     display: grid;
     margin:auto;
-    margin-left: 40px;
-    margin-right: 40px;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     row-gap: 50px; 
@@ -65,15 +63,32 @@
   }
   
   .productCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    max-width: 20rem;
+    height: auto;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .productDetails {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
     text-align: left;
   }
   
   .productImage {
-    background-color: rgb(243, 243, 243);
-    width: auto;
-    height: 80%;
-    padding-left: 40px;
-    padding-right: 40px;
+    width: 19rem;
+    height: auto;
+    object-fit: contain;
+    aspect-ratio: 1/1;
     border-radius: 1rem;
   }
   

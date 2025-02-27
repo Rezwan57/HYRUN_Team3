@@ -1,5 +1,9 @@
-
-import React from 'react'
+"use client";
+import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { IoTrashOutline } from "react-icons/io5";
+import { IoMdHeart } from "react-icons/io";
 import Wishlist from '../../../components/wishlist/wishlist'
 import Breadcrumb from '../../../components/Breadcrumb'
 
@@ -12,14 +16,6 @@ function Page() {
   );
 }
 
-export default Page; 
-
-"use client";
-import React, { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { IoTrashOutline } from "react-icons/io5";
-import { IoMdHeart } from "react-icons/io";
 
 // Mock wishlist data - replace this with data from your backend/API
 const initialWishlistItems = [

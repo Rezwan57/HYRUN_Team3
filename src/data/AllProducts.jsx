@@ -17,7 +17,7 @@ const Allproducts = [
     shortDescription:
       "The Yeezy Boost 350 combines futuristic design with premium comfort. Featuring a modern silhouette and advanced cushioning, these sneakers are a perfect blend of style and functionality, ideal for any wardrobe.",
     category: "Mens",
-    subcategory: "walking shoes",
+    subcategory: "walking boots",
     price: 55,
     image: "/assets/FW/2.png",
   },
@@ -27,7 +27,7 @@ const Allproducts = [
     shortDescription:
       "A timeless classic, the Nike Dunk Low delivers a versatile style that suits any outfit. With a durable design and comfortable fit, these sneakers are a must-have for sneaker enthusiasts and casual wearers alike.",
     category: "Womens",
-    subcategory: "Football Boots",
+    subcategory: "Football Shoes",
     price: 85,
     image: "/assets/FW/3.png",
   },
@@ -38,7 +38,7 @@ const Allproducts = [
       "Engineered for runners, the Adidas Ultraboost offers revolutionary performance with unmatched cushioning and energy return. Whether for long runs or everyday use, these sneakers redefine comfort and support.",
     name: "Running shoes",
     category: "Kids",
-    subcategory: "Running Shoes",
+    subcategory: "Running-Shoes",
     price: 75,
     image: "/assets/FW/4.png",
   },
