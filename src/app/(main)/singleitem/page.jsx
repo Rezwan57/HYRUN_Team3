@@ -11,7 +11,7 @@ import { IoMdArrowBack } from "react-icons/io";
 const product = {
   id: 1,
   name: "Running Shoes",
-  price: 120.0,
+  selling_price: 120.0,
   description:
     "High-performance running shoes designed for maximum comfort and durability. Features advanced cushioning technology and breathable mesh upper.",
   category: "Running",
@@ -24,32 +24,32 @@ const product = {
 };
 
 // Mock similar products
-const similarProducts = [
+const products = [
   {
     id: 2,
     name: "Training Shoes",
-    price: 100.0,
+    selling_price: 100.0,
     rating: 4.2,
     image: "/assets/FW/2.png",
   },
   {
     id: 3,
     name: "Running Shoes Pro",
-    price: 150.0,
+    selling_price: 150.0,
     rating: 4.7,
     image: "/assets/FW/3.png",
   },
   {
     id: 4,
     name: "Sport Runner",
-    price: 130.0,
+    selling_price: 130.0,
     rating: 4.4,
     image: "/assets/FW/4.png",
   },
   {
     id: 5,
     name: "Daily Runner",
-    price: 110.0,
+    selling_price: 110.0,
     rating: 4.3,
     image: "/assets/FW/5.png",
   },
@@ -139,7 +139,7 @@ const ProductDetailPage = () => {
               <p className="text-gray-600">{product.description}</p>
 
               <div className="text-2xl font-bold text-yellow-600">
-                £{product.price.toFixed(2)}
+                £{product.selling_price.toFixed(2)}
               </div>
 
               {/* Size Selection */}
@@ -217,7 +217,7 @@ const ProductDetailPage = () => {
         <div className="mt-12">
           <h2 className="text-2xl font-bold mb-6">Similar Products</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {similarProducts.map((product) => (
+            {products.map((product) => (
               <Link href={`/products/${product.id}`} key={product.id}>
                 <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                   <div className="relative h-40">
@@ -231,7 +231,7 @@ const ProductDetailPage = () => {
                   <div className="p-4">
                     <h3 className="font-semibold mb-1">{product.name}</h3>
                     <p className="text-yellow-600 font-bold">
-                      £{product.price.toFixed(2)}
+                      £{product.selling_price.toFixed(2)}
                     </p>
                     <div className="flex items-center gap-1 mt-1">
                       <div className="text-yellow-500">★</div>

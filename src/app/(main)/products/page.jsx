@@ -62,8 +62,8 @@ const ProductsPage = () => {
       <div className="productList">
         {products.map((product) => (
           <Link
+            key={product.product_id}
             href={`/products/${product.slug}`}
-            key={product.id}
             passHref
             className="productCard"
           >
@@ -101,3 +101,4 @@ const ProductsPage = () => {
 };
 
 export default ProductsPage;
+
