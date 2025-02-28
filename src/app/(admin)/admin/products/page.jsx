@@ -12,7 +12,7 @@ export default function page() {
         .then((data) => setProducts(data))
         .catch((error) => console.error("Error fetching products:", error));
     }, []);
-
+  
   const handleAddProductClick = () => {
     router.push("/admin/products/add-product");
   };
