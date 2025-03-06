@@ -18,11 +18,19 @@ const Product = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`/api/products?slug=${slug}`);
+        console.log('Current slug from useParams:', slug); // Debug slug
+        const res = await fetch(`/api/products?slug=${slug}`, {
+          cache: 'no-store', // Prevent caching
+        });
+        if (!res.ok) {
+          throw new Error(`Product fetch failed with status: ${res.status}`);
+        }
         const data = await res.json();
+        console.log('Raw API response:', data); // Debug full response
 
         if (data.length > 0) {
           const productData = data[0];
+          console.log('Selected product:', productData); // Debug selected product
 
           const imageRes = await fetch(`/api/product_image?product_id=${productData.product_id}`);
           const imageBlob = await imageRes.blob();
@@ -43,12 +51,12 @@ const Product = () => {
             sizes: sizesData.map((size) => size.uk_size),
             colors: colorsData.map((color) => color.color_name),
           });
-
           setMainImage(imageBase64);
           setAdditionalImages(additionalImagesData);
           console.log('Main image:', imageBase64);
           console.log('Additional images:', additionalImagesData);
         } else {
+          console.log('No product found for slug:', slug);
           setProduct(null);
         }
       } catch (error) {
@@ -91,13 +99,13 @@ const Product = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Product Images */}
             <div className="space-y-4">
-              <div className="relative h-64 md:h-72 rounded-lg overflow-hidden">
+              <div className="relative h-full w-full aspect-square md:h-72 rounded-lg overflow-hidden">
                 {mainImage ? (
                   <Image
                     src={mainImage}
                     alt={product.name}
                     fill
-                    className="object-cover"
+                    className="h-full w-full object-cover aspect-square"
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-200 flex items-center justify-center">
@@ -106,12 +114,12 @@ const Product = () => {
                 )}
               </div>
               {additionalImages.length > 1 && (
-                <div className="grid grid-cols-3 gap-4">
+                <div className="flex gap-4">
                   {additionalImages.map((img, index) => (
                     <button
                       key={index}
                       onClick={() => setMainImage(img)}
-                      className={`relative h-16 md:h-20 rounded-lg overflow-hidden border-2 ${
+                      className={`relative h-16 w-auto aspect-square md:h-20 rounded-lg overflow-hidden border-2 ${
                         mainImage === img ? 'border-yellow-500' : 'border-gray-300 hover:border-gray-400'
                       } transition-colors`}
                     >
