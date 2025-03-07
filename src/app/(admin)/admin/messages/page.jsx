@@ -1,20 +1,43 @@
-"use client";
-import React, { useState } from "react";
-import AddProductForm from "../../components/products/AddProductForm";
+"use client"
+import React, { useState, useEffect } from 'react';
 
-export default function page() {
-  const [showAddProductForm, setShowAddProductForm] = useState(false);
+const AdminMessagesPage = () => {
+    const [messages, setMessages] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
-  const handleAddProductClick = () => {
-    setShowAddProductForm(true);
-  };
+    useEffect(() => {
+        setLoading(true);
+        fetch('/api/messages')
+            .then(res => res.json())
+            .then(data => {
+                setMessages(data);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error("Failed to fetch messages:", err);
+                setError('Failed to load messages');
+                setLoading(false);
+            });
+    }, []);
 
-  return (
-    <>
-      <div className="h-[120vh]">
-        <button onClick={handleAddProductClick}>Add Product</button>
-      </div>
-      {showAddProductForm && <AddProductForm />}
-    </>
-  );
-}
+    if (loading) return <p>Loading messages...</p>;
+    if (error) return <p>{error}</p>;
+
+    return (
+        <div>
+            <h1>Manage Messages</h1>
+            <div className="messages-list">
+                {messages.map(message => (
+                    <div key={message.id} className="message">
+                        <p><strong>Name:</strong> {message.name}</p>
+                        <p><strong>Email:</strong> {message.email}</p>
+                        <p><strong>Message:</strong> {message.content}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default AdminMessagesPage;

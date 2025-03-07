@@ -55,7 +55,7 @@ const ContactForm = () => {
             <form onSubmit={handleSubmit} className="contact-form">
                 <div className="input-group">
                     <label htmlFor="name">Name:</label>
-                    <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
+                    <input type="text" className="contact" id="name" name="name" value={formData.name} onChange={handleChange} required />
                 </div>
                 <div className="input-group">
                     <label htmlFor="email">Email:</label>
