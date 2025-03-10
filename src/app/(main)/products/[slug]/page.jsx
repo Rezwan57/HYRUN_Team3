@@ -56,6 +56,7 @@ const Product = () => {
             imageUrl: imageBase64,
             sizes: sizesData.map((size) => size.uk_size),
             colors: colorsData.map((color) => color.color_name),
+            hex: colorsData.map((color) => color.hex),
           });
           setMainImage(imageBase64);
           setAdditionalImages(additionalImagesData);
@@ -131,7 +132,7 @@ const Product = () => {
                     <button
                       key={index}
                       onClick={() => setMainImage(img)}
-                      className={`relative h-10 w-auto aspect-square md:h-20 rounded-md lg:rounded-xl overflow-hidden border-2 ${
+                      className={`relative h-10 w-auto aspect-square md:h-20 rounded-xl lg:rounded-xl overflow-hidden border-2 ${
                         mainImage === img
                           ? "border-yellow-500"
                           : "border-gray-300 hover:border-gray-400"
@@ -152,8 +153,8 @@ const Product = () => {
             {/* Product Info */}
             <div className="rounded-xl space-y-6 lg:p-6 p-0">
               <h1 className="text-xl lg:text-3xl font-bold mb-2">{product.name}</h1>
-              <div className="text-3xl font-bold text-yellow-500">
-                £{product.selling_price}
+              <div className="text-3xl font-bold bg-prime w-fit px-4 py-2 rounded-xl">
+                £ {product.selling_price}
               </div>
 
               {/* Size Selection */}
@@ -164,7 +165,7 @@ const Product = () => {
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`w-16 py-2 rounded-md border ${
+                      className={`w-16 py-2 rounded-xl border ${
                         selectedSize === size
                           ? "border-yellow-500 bg-yellow-50"
                           : "border-gray-300 hover:border-gray-400"
@@ -181,16 +182,17 @@ const Product = () => {
                 <div>
                   <h3 className="font-semibold mb-2">Select Color</h3>
                   <div className="flex gap-4">
-                    {product.colors.map((color) => (
+                    {product.colors.map((color, hex) => (
                       <button
                         key={color}
                         onClick={() => setSelectedColor(color)}
-                        className={`px-4 py-2 rounded-md border ${
+                        className={`px-4 py-2 rounded-xl border ${
                           selectedColor === color
                             ? "border-yellow-500 bg-yellow-50"
                             : "border-gray-300 hover:border-gray-400"
                         }`}
                       >
+                        <span style={{ backgroundColor: hex }} className="w-4 h-4 inline-block rounded-full mr-2" />
                         {color}
                       </button>
                     ))}
@@ -204,14 +206,14 @@ const Product = () => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-3 py-1 border rounded-md hover:bg-gray-100"
+                    className="px-3 py-1 border rounded-xl hover:bg-gray-100"
                   >
                     -
                   </button>
                   <span className="w-12 text-center">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="px-3 py-1 border rounded-md hover:bg-gray-100"
+                    className="px-3 py-1 border rounded-xl hover:bg-gray-100"
                   >
                     +
                   </button>
@@ -220,7 +222,7 @@ const Product = () => {
 
               <button
                 onClick={handleAddToCart}
-                className="w-full py-3 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
+                className="w-full py-3 bg-prime text-black rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
               >
                 Add to Cart
               </button>
