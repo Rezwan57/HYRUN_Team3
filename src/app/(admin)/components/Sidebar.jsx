@@ -6,9 +6,9 @@ import { motion } from "framer-motion";
 
 const adminLinks = [
   { id: 1, name: "Dashboard", link: "/admin" },
-  { id: 2, name: "Products", link: "/admin/products" },
-  { id: 3, name: "Messages", link: "/admin/add-messages"} // make sure it is correct//
- 
+  { id: 2, name: "Orders", link: "/admin/orders" },
+  { id: 3, name: "Products", link: "/admin/products" },
+  { id: 4, name: "Messages", link: "/admin/add-messages"}
 ];
 
 const editLinks = [
@@ -20,16 +20,16 @@ function Sidebar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <aside className="bg-neutral-950 font-admin fixed xl:sticky flex flex-col h-[100vh] w-1/6 top-0 left-0 bottom-0 backdrop-blur-3xl bg-opacity-70 border-neutral-800 z-10 transition-width duration-300 gap-5 text-white px-4 py-6">
+    <aside className="bg-neutral-200 font-admin fixed xl:sticky flex flex-col h-[100vh] w-1/6 top-0 left-0 bottom-0 backdrop-blur-3xl bg-opacity-70 border-neutral-800 z-10 transition-width duration-300 gap-5 px-4 py-6">
 
-      <h1 className="text-white">Admin Panel</h1>
+      <h1 className="">Admin Panel</h1>
 
       <div className="flex flex-col gap-2 h-full w-full">
         {adminLinks.map((link) => (
           <Link
             href={link.link}
             key={link.id}
-            className="hover:text-yellow-600 rounded-md p-2 text-white"
+            className="hover:text-yellow-600 rounded-md p-2"
           >
             {link.name}
           </Link>
@@ -38,7 +38,7 @@ function Sidebar() {
         <div>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex justify-between items-center text-white hover:text-yellow-600 rounded-md p-2 w-full text-left"
+            className="flex justify-between items-center hover:text-yellow-600 rounded-md p-2 w-full text-left"
           >
             <p>Edit Page</p> 
             {isDropdownOpen ? <FaChevronDown /> : <FaChevronRight />}

@@ -12,16 +12,8 @@ import {
 import { PiStarFourFill, PiHeart } from "react-icons/pi";
 import { SlBasket } from "react-icons/sl";
 import { VscAccount } from "react-icons/vsc";
-import { MdLocalOffer } from "react-icons/md";
 import { IoReceiptOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
-
-const navlinks = [
-  { id: 1, name: "All Trainers", link: "/trainers/" },
-  { id: 2, name: "Running Shoes", link: "/running-shoes/" },
-  { id: 3, name: "Featured products", link: "/products" },
-  { id: 4, name: "20% off sale", link: "/products/" },
-];
 
 const categories = [
   { id: 1, name: "Trainers", link: "/trainers/" },
@@ -67,6 +59,8 @@ export default function Navbar() {
   const [hoveredSubcategory, setHoveredSubcategory] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
 
   let hoverTimeout;
   let categoryTimeout;
@@ -76,9 +70,17 @@ export default function Navbar() {
   };
 
   const handleInputChange = (event) => {
-    setInputText(event.target.value);
-    if (event.target.value) {
+    const value = event.target.value;
+    setInputText(value);
+
+    if (value) {
       setShowFullPageSearch(true);
+      const filteredResults = allProducts.filter((product) =>
+        product.name.toLowerCase().includes(value.toLowerCase())
+      );
+      setSearchResults(filteredResults);
+    } else {
+      setSearchResults([]);
     }
   };
 
@@ -116,10 +118,25 @@ export default function Navbar() {
     setLoading(false);
   }, []);
 
+  useEffect(() => {
+    // Fetch all products once on mount
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        setAllProducts(data); // Store all products
+        localStorage.setItem("products", JSON.stringify(data));
+      })
+      .catch((error) => console.error("Error fetching products:", error));
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("user");
     setUser(null);
     window.location.reload();
+  };
+
+  const getImageUrl = (productId) => {
+    return `/api/product_image?product_id=${productId}`;
   };
 
   return (
@@ -140,18 +157,8 @@ export default function Navbar() {
         <div className="flex items-center justify-end lg:justify-between col-start-2 col-end-7 pr-0 lg:pr-4 py-2 h-14 w-full gap-6">
           {/* menu buttons */}
           <div className="row-span-2 col-span-5 px-2 py-1 hidden lg:flex items-center justify-start text-neutral-700">
-            <div className="flex items-center w-full  gap-4 text-uppercase">
-              {/* <button
-                className={`flex items-center gap-1 ${
-                  showCategories ? "text-yellow-700" : "text-black"
-                }`}
-                onClick={toggleCategories}
-              >
-                <IoMenu className="text-2xl" />
-                <p>Categories</p>
-              </button> */}
-
-              <div className="hidden lg:flex items-center justify-around gap-6 w-full ">
+            <div className="flex items-center w-full gap-4 text-uppercase">
+              <div className="hidden lg:flex items-center justify-around gap-6 w-full">
                 <Link
                   href="/"
                   className="flex items-center gap-1 hover:underline"
@@ -171,7 +178,6 @@ export default function Navbar() {
                     <p>Categories</p>
                   </Link>
 
-                  {/* Show Categories when hovering*/}
                   {showCategories && (
                     <motion.div
                       initial={{ opacity: 0, y: -10 }}
@@ -179,11 +185,15 @@ export default function Navbar() {
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.5 }}
                       className="absolute -left-10 mt-2 w-60 bg-white border rounded-lg shadow-xl z-10 p-2 pointer-events-auto"
-                      onMouseEnter={handleMouseEnterCategories} 
+                      onMouseEnter={handleMouseEnterCategories}
                       onMouseLeave={handleMouseLeaveCategories}
                     >
-                      
-                      <Link href="/products" className="block px-4 py-2 hover:bg-gray-100 rounded-md">All Products</Link>
+                      <Link
+                        href="/products"
+                        className="block px-4 py-2 hover:bg-gray-100 rounded-md"
+                      >
+                        All Products
+                      </Link>
                       {categories.map((category) => (
                         <Link
                           key={category.id}
@@ -197,9 +207,9 @@ export default function Navbar() {
                   )}
                 </div>
 
-                {genders.map((gender) => (
+                {genders.map((gender, index) => (
                   <div
-                    key={gender}
+                    key={`${gender}-${index}`}
                     className="relative group"
                     onMouseEnter={() => handleMouseEnter(gender)}
                     onMouseLeave={handleMouseLeave}
@@ -208,7 +218,6 @@ export default function Navbar() {
                       {gender}
                     </Link>
 
-                    {/* Show Categories when hovering*/}
                     {hoveredSubcategory === gender && (
                       <motion.div
                         initial={{ opacity: 0, y: -10 }}
@@ -257,7 +266,7 @@ export default function Navbar() {
               <IoSearch className="absolute text-xl inset-0 left-1 translate-x-2/4 translate-y-2/4" />
               <input
                 type="text"
-                className="w-60 h-full top-3 pl-12 pr-4 rounded-full  bg-neutral-400 bg-opacity-30 focus:outline-none placeholder:text-neutral-400"
+                className="w-60 h-full top-3 pl-12 pr-4 rounded-full bg-neutral-400 bg-opacity-30 focus:outline-none placeholder:text-neutral-400"
                 placeholder="Search for products"
                 value={inputText}
                 onChange={handleInputChange}
@@ -266,7 +275,6 @@ export default function Navbar() {
 
             {/* Login */}
             <div className="relative hidden lg:flex items-center justify-end gap-2 h-full w-auto">
-              {/* Login / User Info */}
               <button
                 className="hidden lg:flex items-center justify-between bg-neutral-400 bg-opacity-30 gap-2 h-full w-full rounded-full px-2"
                 onClick={() => setShowAccount(!showAccount)}
@@ -281,7 +289,6 @@ export default function Navbar() {
                 </span>
               </button>
 
-              {/* Dropdown Menu */}
               {showAccount && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
@@ -349,7 +356,7 @@ export default function Navbar() {
             </div>
 
             {/* other menu */}
-            <div className="flex items-center justify-center h-full lg:gap-2 gap-5 w-auto rounded-full   bg-neutral-400  lg:bg-opacity-30 bg-opacity-0 bg-none mr-2 px-0 lg:px-4">
+            <div className="flex items-center justify-center h-full lg:gap-2 gap-5 w-auto rounded-full bg-neutral-400 lg:bg-opacity-30 bg-opacity-0 bg-none mr-2 px-0 lg:px-4">
               <div className="lg:flex items-center justify-center gap-4 hidden text-sm">
                 <Link
                   href="/cart"
@@ -387,7 +394,6 @@ export default function Navbar() {
                 <button onClick={toggleAccount}>
                   <VscAccount className="h-6 w-6" />
                 </button>
-                {/* Menu */}
                 {showAccount && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
@@ -468,10 +474,13 @@ export default function Navbar() {
       </nav>
 
       {showCategories && (
-        <div className="absolute lg:hidden flex h-screen w-full top-full lg:p-auto p-10 lg:pb-0 pb-20 bg-white bg-opacity-70 backdrop-blur-3xl z-10 lg:overflow-hidden overflow-y-auto ">
-          <div className="flex items-start justify-start flex-wrap gap-0 lg:gap-10 w-full max-w-screen-lg text-black h-screen ">
-            {genders.map((gender) => (
-              <div key={gender} className="gender-category w-72 p-2">
+        <div className="absolute lg:hidden flex h-screen w-full top-full lg:p-auto p-10 lg:pb-0 pb-20 bg-white bg-opacity-70 backdrop-blur-3xl z-10 lg:overflow-hidden overflow-y-auto">
+          <div className="flex items-start justify-start flex-wrap gap-0 lg:gap-10 w-full max-w-screen-lg text-black h-screen">
+            {genders.map((gender, index) => (
+              <div
+                key={`${gender}-${index}`}
+                className="gender-category w-72 p-2"
+              >
                 <h2 className="text-left text-4xl mb-5 border-b-[2px] border-yellow-400 py-2">
                   {gender}
                 </h2>
@@ -497,31 +506,61 @@ export default function Navbar() {
       )}
       {showFullPageSearch && (
         <motion.div
-          className="fixed inset-0 bg-neutral-300 bg-opacity-90 backdrop-blur-2xl z-[999] flex items-start justify-center h-screen"
+          className="fixed inset-0 bg-white bg-opacity-10 backdrop-blur-2xl z-[999] flex items-start justify-center h-screen"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="w-full max-w-2xl p-8 relative"
+            className="w-full max-w-2xl p-8"
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -50, opacity: 0 }}
           >
-            <input
-              type="text"
-              className="w-full h-12 pl-12 pr-24 rounded-full bg-white focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
-              value={inputText}
-              onChange={handleInputChange}
-              placeholder="Search..."
-            />
-            <IoSearch className="absolute left-12 top-1/2 transform -translate-y-1/2 text-gray-500 h-6 w-6" />
-            <button
-              className="absolute right-10 top-1/2 transform -translate-y-1/2 bg-yellow-400 text-black px-4 py-2 rounded-full"
-              onClick={() => setShowFullPageSearch(false)}
-            >
-              Cancel
-            </button>
+            <div className="relative w-full">
+              <input
+                type="text"
+                className="w-full h-12 pl-12 pr-24 rounded-full bg-white focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+                value={inputText}
+                onChange={handleInputChange}
+                placeholder="Search..."
+              />
+              <IoSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 h-6 w-6" />
+              <button
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-yellow-400 text-black px-4 py-2 rounded-full"
+                onClick={() => setShowFullPageSearch(false)}
+              >
+                Cancel
+              </button>
+            </div>
+
+            {searchResults.length > 0 && (
+              <div className="mt-8">
+                <h2 className="text-2xl font-bold mb-4">Search Results</h2>
+                <ul className="grid grid-cols-1 gap-4">
+                  {searchResults.map((result) => (
+                    <li key={result.id} >
+                      <Link
+                        href={`/products/${result.slug}`}
+                        className="flex items-start justify-start p-2 gap-2 hover:bg-gray-100 rounded-xl bg-white shadow-xl"
+                      >
+                        <Image
+                          width={128}
+                          height={128}
+                          src={getImageUrl(result.product_id)}
+                          alt={result.name}
+                          className="w-24 h-24 object-cover rounded-md"
+                        />
+                        <div className="flex flex-col justify-start items-start  gap-2 p-2">
+                          <span className="text-xl font-bold ">{result.name}</span>
+                          <span className="text-xl ">£{result.selling_price}</span>
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </motion.div>
         </motion.div>
       )}
