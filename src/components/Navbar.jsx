@@ -16,12 +16,6 @@ import { MdLocalOffer } from "react-icons/md";
 import { IoReceiptOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
 
-const navlinks = [
-  { id: 1, name: "All Trainers", link: "/trainers/" },
-  { id: 2, name: "Running Shoes", link: "/running-shoes/" },
-  { id: 3, name: "Featured products", link: "/products" },
-  { id: 4, name: "20% off sale", link: "/products/" },
-];
 
 const categories = [
   { id: 1, name: "Trainers", link: "/trainers/" },
@@ -29,6 +23,12 @@ const categories = [
   { id: 3, name: "Football Shoes", link: "/football-shoes/" },
   { id: 4, name: "Walking Boots", link: "/walking-boots/" },
   { id: 5, name: "Basketball Shoes", link: "/basketball-shoes/" },
+];
+
+const navlinks = [
+  { id: 1, name: "Men", link: "/men/" },
+  { id: 2, name: "Women", link: "/women/" },
+  { id: 3, name: "Kids", link: "/kids/" },
 ];
 
 const subcategories = [
