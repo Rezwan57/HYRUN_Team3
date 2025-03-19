@@ -16,9 +16,11 @@ function Page() {
   );
 }
 
+export default Page; 
+
 
 // Mock wishlist data - replace this with data from your backend/API
-const initialWishlistItems = [
+const wishlist_items = [
   {
     id: 1,
     name: "Running Shoes",
@@ -49,7 +51,7 @@ const initialWishlistItems = [
 ];
 
 const WishlistPage = () => {
-  const [wishlistItems, setWishlistItems] = useState(initialWishlistItems);
+  const [wishlistItems, setWishlistItems] = useState(wishlist_items);
 
   const removeFromWishlist = (productId) => {
     setWishlistItems(wishlistItems.filter((item) => item.id !== productId));
@@ -145,6 +147,4 @@ const WishlistPage = () => {
     </div>
   );
 };
-
-export default WishlistPage;
 

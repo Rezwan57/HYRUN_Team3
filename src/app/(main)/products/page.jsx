@@ -39,7 +39,7 @@ const ProductsPage = () => {
         .then((data) => {
           setColors((prevColors) => ({
             ...prevColors,
-            [product.product_id]: data, // Store colors for each product
+            [product.product_id]: data,
           }));
         })
         .catch((error) =>
@@ -133,8 +133,8 @@ const ProductsPage = () => {
       <div className="productList">
         {products.map((product) => (
           <Link
+            key={product.product_id}
             href={`/products/${product.slug}`}
-            key={product.id}
             passHref
             className="productCard"
           >
@@ -172,3 +172,4 @@ const ProductsPage = () => {
 };
 
 export default ProductsPage;
+
