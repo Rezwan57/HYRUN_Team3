@@ -24,7 +24,7 @@ const ProductsPage = () => {
         .then((data) => {
           setColors((prevColors) => ({
             ...prevColors,
-            [product.product_id]: data, // Store colors for each product
+            [product.product_id]: data,
           }));
         })
         .catch((error) =>

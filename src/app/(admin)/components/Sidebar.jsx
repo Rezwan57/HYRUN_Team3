@@ -8,7 +8,8 @@ const adminLinks = [
   { id: 1, name: "Dashboard", link: "/admin" },
   { id: 2, name: "Orders", link: "/admin/orders" },
   { id: 3, name: "Products", link: "/admin/products" },
-  { id: 4, name: "Messages", link: "/admin/add-messages"}
+  { id: 4, name: "Messages", link: "/admin/add-messages"},
+  { id: 5, name: "Users", link: "/admin/users" },
 ];
 
 const editLinks = [
