@@ -1,12 +1,10 @@
-'use client';
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
-import Image from 'next/image';
+"use client";
+import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import Image from "next/image";
 
-const Product = () => {
-  const params = useParams();
-  const { slug } = params;
-
+const Product = () => { 
+  const { gender, category, slug } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 

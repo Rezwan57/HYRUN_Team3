@@ -17,36 +17,36 @@ import { IoReceiptOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
 
 const navlinks = [
-  { id: 1, name: "All Trainers", link: "/trainers/" },
-  { id: 2, name: "Running Shoes", link: "/running-shoes/" },
+  { id: 1, name: "All Trainers", link: "/Trainers/" },
+  { id: 2, name: "Running Shoes", link: "/RunningShoes/" },
   { id: 3, name: "Featured products", link: "/products" },
   { id: 4, name: "20% off sale", link: "/products/" },
 ];
 
 const categories = [
-  { id: 1, name: "Trainers", link: "/trainers/" },
-  { id: 2, name: "Running Shoes", link: "/running-shoes/" },
-  { id: 3, name: "Football Shoes", link: "/football-shoes/" },
-  { id: 4, name: "Walking Boots", link: "/walking-boots/" },
-  { id: 5, name: "Basketball Shoes", link: "/basketball-shoes/" },
+  { id: 1, name: "Trainers", link: "/products/Trainers/" },
+  { id: 2, name: "Running Shoes", link: "/products/RunningShoes/" },
+  { id: 3, name: "Football Shoes", link: "/products/FootballShoes/" },
+  { id: 4, name: "Walking Boots", link: "/products/WalkingBoots/" },
+  { id: 5, name: "Basketball Shoes", link: "/products/BasketballShoes/"},
 ];
 
 const subcategories = [
-  { id: 1, name: "Men", category_id: 1, link: "/trainers/mens" },
-  { id: 2, name: "Women", category_id: 1, link: "/trainers/womens" },
-  { id: 3, name: "Kids", category_id: 1, link: "/trainers/kids" },
-  { id: 4, name: "Men", category_id: 2, link: "/running-shoes/mens" },
-  { id: 5, name: "Women", category_id: 2, link: "/running-shoes/womens" },
-  { id: 6, name: "Kids", category_id: 2, link: "/running-shoes/kids" },
-  { id: 7, name: "Men", category_id: 3, link: "/football-shoes/mens" },
-  { id: 8, name: "Women", category_id: 3, link: "/football-shoes/womens" },
-  { id: 9, name: "Kids", category_id: 3, link: "/football-shoes/kids" },
-  { id: 10, name: "Men", category_id: 4, link: "/walking-boots/mens" },
-  { id: 11, name: "Women", category_id: 4, link: "/walking-boots/womens" },
-  { id: 12, name: "Kids", category_id: 4, link: "/walking-boots/kids" },
-  { id: 13, name: "Men", category_id: 5, link: "/basketball-shoes/mens" },
-  { id: 14, name: "Women", category_id: 5, link: "/basketball-shoes/womens" },
-  { id: 15, name: "Kids", category_id: 5, link: "/basketball-shoes/kids" },
+  { id: 1, name: "Men", category_id: 1, link: "/products/Trainers/mens" },
+  { id: 2, name: "Women", category_id: 1, link: "/products/Trainers/womens" },
+  { id: 3, name: "Kids", category_id: 1, link: "/products/Trainers/kids" },
+  { id: 4, name: "Men", category_id: 2, link: "/products/RunningShoes/mens" },
+  { id: 5, name: "Women", category_id: 2, link: "/products/RunningShoes/womens" },
+  { id: 6, name: "Kids", category_id: 2, link: "/products/RunningShoes/kids" },
+  { id: 7, name: "Men", category_id: 3, link: "/products/FootballShoes/mens" },
+  { id: 8, name: "Women", category_id: 3, link: "/products/FootballShoes/womens" },
+  { id: 9, name: "Kids", category_id: 3, link: "/products/FootballShoes/kids" },
+  { id: 10, name: "Men", category_id: 4, link: "/products/WalkingBoots/mens" },
+  { id: 11, name: "Women", category_id: 4, link: "/products/WalkingBoots/womens" },
+  { id: 12, name: "Kids", category_id: 4, link: "/products/WalkingBoots/kids" },
+  { id: 13, name: "Men", category_id: 5, link: "/products/BasketballShoes/mens" },
+  { id: 14, name: "Women", category_id: 5, link: "/products/BasketballShoes/womens" },
+  { id: 15, name: "Kids", category_id: 5, link: "/products/BasketballShoes/kids" },
 ];
 
 const genders = [...new Set(subcategories.map((sub) => sub.name))];

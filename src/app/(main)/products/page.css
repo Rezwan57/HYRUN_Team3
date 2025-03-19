@@ -118,4 +118,22 @@
     font-size: 20px;
     font-weight: bold;
   }
+
+  .filter-button-container {
+    
+    right:40px;
+   
+  }
+  .open-filter-btn {
+    padding: 10px 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+ 
+  }
+
   
