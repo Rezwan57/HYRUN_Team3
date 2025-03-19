@@ -510,6 +510,7 @@ export default function Navbar() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          onClick={() => setShowFullPageSearch(false)}
         >
           <motion.div
             className="w-full max-w-2xl p-8"
