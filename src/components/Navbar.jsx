@@ -537,12 +537,14 @@ export default function Navbar() {
             {searchResults.length > 0 && (
               <div className="mt-8">
                 <h2 className="text-2xl font-bold mb-4">Search Results</h2>
-                <ul className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 gap-4" >
                   {searchResults.map((result) => (
-                    <li key={result.id} >
+                    
                       <Link
+                      key={result.id}
                         href={`/products/${result.slug}`}
                         className="flex items-start justify-start p-2 gap-2 hover:bg-gray-100 rounded-xl bg-white shadow-xl"
+                        onClick={() => setShowFullPageSearch(false)}
                       >
                         <Image
                           width={128}
@@ -556,9 +558,9 @@ export default function Navbar() {
                           <span className="text-xl ">£{result.selling_price}</span>
                         </div>
                       </Link>
-                    </li>
+                
                   ))}
-                </ul>
+                </div>
               </div>
             )}
           </motion.div>
@@ -567,3 +569,4 @@ export default function Navbar() {
     </header>
   );
 }
+

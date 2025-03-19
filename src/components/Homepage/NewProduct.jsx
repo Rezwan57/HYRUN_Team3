@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
-import sneakers from "../../data/HeroSectionData";
+import AddToCart from "../AddToCart";
 
 function NewProducts() {
   const [products, setProducts] = useState([]);
@@ -46,10 +46,8 @@ function NewProducts() {
               <span className="font-bold text-xl text-white ">
                 £{product.selling_price}
               </span>
-
-              <button className="bg-prime text-black py-3 rounded-2xl w-full hover:bg-yellow-600 hover:text-white">
-                Add to Cart
-              </button>
+              
+              <AddToCart product={product} className="bg-prime text-black py-3 rounded-2xl w-full hover:bg-yellow-600 hover:text-white" />
             </div>
           ))}
         </div>

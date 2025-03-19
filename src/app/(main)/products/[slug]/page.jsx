@@ -1,8 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import {motion} from "framer-motion";
 import Image from "next/image";
 import Breadcrumb from "../../../../components/Breadcrumb";
+import AddToCart from "../../../../components/AddToCart";
+import { IoCheckmarkCircle } from "react-icons/io5";
 
 const Product = () => {
   const { slug } = useParams();
@@ -13,6 +16,8 @@ const Product = () => {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [gender, setGender] = useState("");
+  const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -51,15 +56,21 @@ const Product = () => {
           );
           const colorsData = await colorsRes.json();
 
+          const genderRes = await fetch(
+            `/api/product_genders?product_id=${productData.product_id}`
+          );
+          const genderData = await genderRes.json();
+
           setProduct({
             ...productData,
             imageUrl: imageBase64,
             sizes: sizesData.map((size) => size.uk_size),
             colors: colorsData.map((color) => color.color_name),
-            hex: colorsData.map((color) => color.hex),
+            hex: colorsData.map((color) => color.hex_code),
           });
           setMainImage(imageBase64);
           setAdditionalImages(additionalImagesData);
+          setGender(genderData.gender_name);
           console.log("Main image:", imageBase64);
           console.log("Additional images:", additionalImagesData);
         } else {
@@ -77,14 +88,15 @@ const Product = () => {
     fetchProduct();
   }, [slug]);
 
-  const handleAddToCart = () => {
-    console.log("Added to cart:", {
-      ...product,
-      selectedSize,
-      selectedColor,
-      quantity,
-    });
-  };
+  // Reset isAdded after 5 seconds
+  useEffect(() => {
+    if (isAdded) {
+      const timer = setTimeout(() => {
+        setIsAdded(false);
+      }, 5000); 
+      return () => clearTimeout(timer);
+    }
+  }, [isAdded]);
 
   if (loading) {
     return (
@@ -101,6 +113,17 @@ const Product = () => {
       </div>
     );
   }
+
+  const handleAddToCartClick = (addToCartFn) => {
+    const productWithOptions = {
+      ...product,
+      quantity,
+      selectedSize,
+      selectedColor,
+    };
+    addToCartFn(productWithOptions); // Call the context's addToCart function
+    setIsAdded(true); // Trigger the "added" state
+  };
 
   return (
     <div className="flex items-start justify-center min-h-screen ">
@@ -152,7 +175,12 @@ const Product = () => {
 
             {/* Product Info */}
             <div className="rounded-xl space-y-6 lg:p-6 p-0">
-              <h1 className="text-xl lg:text-3xl font-bold mb-2">{product.name}</h1>
+              <h1 className="text-xl lg:text-3xl font-bold mb-2">
+                {product.name}
+              </h1>
+              <span className="text-xl text-neutral-600 italic">
+                For {gender}
+              </span>
               <div className="text-3xl font-bold bg-prime w-fit px-4 py-2 rounded-xl">
                 £ {product.selling_price}
               </div>
@@ -178,39 +206,44 @@ const Product = () => {
               </div>
 
               {/* Color Selection */}
-              {product.colors && (
-                <div>
-                  <h3 className="font-semibold mb-2">Select Color</h3>
-                  <div className="flex gap-4">
-                    {product.colors.map((color, hex) => (
-                      <button
-                        key={color}
-                        onClick={() => setSelectedColor(color)}
-                        className={`px-4 py-2 rounded-xl border ${
-                          selectedColor === color
-                            ? "border-yellow-500 bg-yellow-50"
-                            : "border-gray-300 hover:border-gray-400"
-                        }`}
-                      >
-                        <span style={{ backgroundColor: hex }} className="w-4 h-4 inline-block rounded-full mr-2" />
-                        {color}
-                      </button>
-                    ))}
+              {product.colors &&
+                product.hex &&
+                product.colors.length === product.hex.length && (
+                  <div>
+                    <h3 className="font-semibold mb-2">Select Color</h3>
+                    <div className="flex gap-4">
+                      {product.colors.map((color, index) => (
+                        <button
+                          key={color}
+                          onClick={() => setSelectedColor(color)}
+                          className={`px-4 py-2 rounded-xl border flex items-center ${
+                            selectedColor === color
+                              ? "border-yellow-500 bg-yellow-50"
+                              : "border-gray-300 hover:border-gray-400"
+                          }`}
+                        >
+                          <span
+                            style={{ backgroundColor: product.hex[index] }}
+                            className="w-4 h-4 inline-block rounded-full border border-gray-400 mr-2"
+                          />
+                          {color}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Quantity Selection */}
               <div>
                 <h3 className="font-semibold mb-2">Quantity</h3>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-0">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     className="px-3 py-1 border rounded-xl hover:bg-gray-100"
                   >
                     -
                   </button>
-                  <span className="w-12 text-center">{quantity}</span>
+                  <span className="w-10 text-center">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
                     className="px-3 py-1 border rounded-xl hover:bg-gray-100"
@@ -220,22 +253,44 @@ const Product = () => {
                 </div>
               </div>
 
-              <button
-                onClick={handleAddToCart}
-                className="w-full py-3 bg-prime text-black rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
-              >
-                Add to Cart
-              </button>
+              {/* Add to Cart with message */}
+              <div className="relative">
+                <AddToCart
+                  product={{
+                    ...product,
+                    quantity,
+                    selectedSize,
+                    selectedColor,
+                  }}
+                  className="w-full py-3 bg-prime text-black rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
+                  onAdd={handleAddToCartClick}
+                />
+              </div>
             </div>
           </div>
 
-
           <div>
-            <h1 className="text-3xl xl:text-6xl font-bold lg:mb-4 mb-2">Details</h1>
-            <p className="text-sm xl:text-xl text-justify leading-2 text-gray-600">{product.description}</p>
+            <h1 className="text-3xl xl:text-6xl font-bold lg:mb-4 mb-2">
+              Details
+            </h1>
+            <p className="text-sm xl:text-xl text-justify leading-2 text-gray-600">
+              {product.description}
+            </p>
           </div>
         </div>
       </div>
+      {isAdded && (
+        <motion.span
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.3 }}
+          className="absolute flex items-center justify-start gap-4 left-50 top-50 px-3 py-3 shadow-lg rounded-2xl bg-opacity-20 backdrop-blur-md text-green-600 bg-white h-50 w-80 border-2 border-green-600"
+        >
+          <IoCheckmarkCircle className="text-5xl text-green-600" />
+          <p className="text-md">Added to cart!</p>
+        </motion.span>
+      )}
     </div>
   );
 };
