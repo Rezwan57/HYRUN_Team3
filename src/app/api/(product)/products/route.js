@@ -51,11 +51,28 @@ export async function POST(req) {
   }
 }
 
-export async function GET() {
-    try {
-        const [rows] = await db.query('SELECT * FROM products'); 
-        return NextResponse.json(rows);
-    } catch (error) {
-        return NextResponse.json({ error: 'Database error', details: error }, { status: 500 });
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const slug = searchParams.get("slug");
+
+  try {
+    if (slug) {
+      const query = "SELECT * FROM products WHERE slug = ?";
+      const [rows] = await db.query(query, [slug]);
+      console.log('Database query result for slug', slug, ':', rows);
+
+      if (rows.length === 0) {
+        return NextResponse.json([], { status: 200 });
+      }
+      return NextResponse.json(rows, { status: 200 });
+    } else {
+      const query = "SELECT * FROM products";
+      const [rows] = await db.query(query);
+      console.log('Fetched all products:', rows);
+      return NextResponse.json(rows, { status: 200 });
     }
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
 }

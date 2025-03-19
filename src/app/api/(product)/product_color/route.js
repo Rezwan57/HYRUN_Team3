@@ -9,21 +9,18 @@ export async function GET(request) {
       return NextResponse.json({ error: "Product ID is required" }, { status: 400 });
     }
 
-    // Validate if productId is a valid number
     if (isNaN(productId)) {
       return NextResponse.json({ error: "Invalid Product ID" }, { status: 400 });
     }
 
     console.log(`Fetching colors for product_id: ${productId}`);
 
-    // Check if the product exists before fetching colors
     const [productExists] = await db.query(`SELECT product_id FROM products WHERE product_id = ?`, [productId]);
 
     if (productExists.length === 0) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
-
-    // Fetch colors associated with the product
+    
     const [rows] = await db.query(
       `SELECT c.color_id, c.color_name, c.hex_code 
        FROM product_color pc 

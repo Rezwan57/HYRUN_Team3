@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import Link from "next/link";
 import Image from "next/image";
+import Logo from "../../../../public/assets/logo/LogoDark.png";
+import { FaArrowLeft } from "react-icons/fa6";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -12,33 +14,33 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!email || !password) {
       setError("Both fields are required!");
       return;
     }
-  
+
     setLoading(true);
     setError("");
-  
+
     try {
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_email: email, user_password: password }),
       });
-  
+
       const data = await res.json();
-  
+
       if (!res.ok) {
         throw new Error(data.error || "Login failed. Please try again.");
       }
-  
+
       console.log("Login Successful!", data);
-  
+
       if (data.user) {
         localStorage.setItem("user", JSON.stringify(data.user));
-        console.log("Stored User:", data.user);  // Debugging
+        console.log("Stored User:", data.user); // Debugging
       }
       const storedUser = JSON.parse(localStorage.getItem("user"));
       console.log("Stored User:", storedUser);
@@ -49,90 +51,107 @@ export default function Login() {
       setLoading(false);
     }
   };
-  
-  
-  
 
   return (
-    <div className="h-screen px-2 overflow-hidden">
-      <div className="row h-full lg:w-full w-screen">
-        {/* Left Side - Background Colour (No Text) */}
+    <div className="flex h-screen">
+      <div className="hidden w-1/2 lg:block h-full p-2">
         <div
-          className="col-md-6 d-none d-md-block object-contain h-screen p-2"
+          className=" h-full bg-cover bg-no-repeat bg-center rounded-xl"
           style={{
-            borderRadius: "10px 0px 0px 10px",
+            backgroundImage: "url(/assets/FW/auth.jpg)",
           }}
-        >
+        />
+      </div>
+
+      <div className="flex flex-col justify-between items-center w-full lg:w-1/2 h-screen bg-white">
+        <div className="flex justify-between items-start w-full p-10">
+          <Link
+            href="/"
+            className="flex items-center justify-center gap-2 w-auto hover:text-amber-500 transition-colors duration-300"
+          >
+            <FaArrowLeft className="text-xl" />
+            <p>Back to Home</p>
+          </Link>
           <Image
-            src="/assets/FW/auth.jpg"
-            width={500}
-            height={500}
-            alt="alt"
-            className="h-full w-full rounded-xl"
+            src={Logo}
+            alt="Logo"
+            width={256}
+            height={256}
+            className="mb-4"
           />
         </div>
+        <div className="text-left w-96">
+          <h2 className="text-3xl font-bold">
+            Welcome Back<span className="text-yellow-500">!</span>
+          </h2>
+          <p className="text-gray-600">Log in to Your Account</p>
 
-        {/* Right Side - Login Form */}
-        <div className="col-md-6 d-flex align-items-center justify-content-center lg:p-5 p-0 bg-white">
-          <div className="w-75">
-            <h2 className="fw-bold">
-              Welcome Back<span className="text-warning">!</span>
-            </h2>
-            <p className="text-muted">Log in to Your Account</p>
+          {/* Error Message */}
+          {error && <p className="text-red-500">{error}</p>}
 
-            {/* Error Message */}
-            {error && <p className="text-danger">{error}</p>}
+          {/* Login Form */}
+          <form onSubmit={handleSubmit} className="mt-8 w-auto">
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold ml-2 mb-1">
+                Email
+              </label>
+              <input
+                type="email"
+                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+                placeholder="someone@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="off"
+              />
+            </div>
 
-            {/* Login Form */}
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label className="form-label">Email</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="someone@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
+            <div className="mb-1">
+              <label className="block text-gray-700 text-sm font-bold ml-2 mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+                placeholder="at least 8 characters"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="off"
+              />
+            </div>
 
-              <div className="mb-3">
-                <label className="form-label">Password</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="at least 8 characters"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-
-              {/* Forgot Password */}
-              <div className="mb-3 text-end">
-                <a href="/forgot-password" className="text-dark fw-bold">
-                  Forgot password?
-                </a>
-              </div>
-
-              {/* Login Button */}
-              <button
-                type="submit"
-                className="btn btn-warning w-100"
-                disabled={loading}
+            {/* Forgot Password */}
+            <div className="mb-6 text-right">
+              <Link
+                href="/forgot-password"
+                className="text-gray-700 hover:text-gray-900"
               >
-                {loading ? "Logging in..." : "Login"}
-              </button>
-            </form>
+                Forgot password?
+              </Link>
+            </div>
 
-            {/* Sign Up Link */}
-            <p className="mt-3 text-center">
-              Don’t have an account?{" "}
-              <a href="/signup" className="text-dark fw-bold">
-                Sign up
-              </a>
-            </p>
+            {/* Login Button */}
+            <button
+              type="submit"
+              className="w-full bg-prime hover:bg-yellow-700 text-white font-bold py-3 px-4 rounded-full focus:outline-none focus:shadow-outline"
+              disabled={loading}
+            >
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </form>
+
+          {/* Sign Up Link */}
+          <div className="flex items-center justify-center gap-2 mt-6 text-cente">
+            <p>Don’t have an account?</p>
+            <Link
+              href="/signup"
+              className="text-amber-600 underline hover:text-gray-900"
+            >
+              Sign up
+            </Link>
           </div>
         </div>
+
+        <span className="mb-4" />
       </div>
     </div>
   );
