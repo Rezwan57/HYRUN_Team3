@@ -11,7 +11,7 @@ const CategoryPage = () => {
     // becasue of this when i try to open categories
     // or mens or womens or kids
     //  its redirecting to the product page i thought because of this
-    // if it's not u remove the comments*/
+    // if it's not u  can remove the comments*/
     
   }, []);
 
