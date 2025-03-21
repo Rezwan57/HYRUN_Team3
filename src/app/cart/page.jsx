@@ -6,41 +6,49 @@ import { SlBasket } from 'react-icons/sl';
 import { IoAdd, IoRemove } from 'react-icons/io5';
 import Navbar from '@/components/Navbar';
 import Headline from "@/components/Headline";
+import Footer from "@/components/Homepage/Footer";
 
-
-{/* Mock cart data */}
-const initialCartData = [
-  {
-    id: 1,
-    name: 'Running Shoes',
-    price: 120,
-    image: '/assets/FW/1.png',
-    quantity: 2,
-  },
-  {
-    id: 2,
-    name: 'Training Shoes',
-    price: 100,
-    image: '/assets/FW/2.png',
-    quantity: 1,
-  },
-];
+// Initial cart data (same as CartPage) - fallback in case localStorage isn't available
+const initialCartItems = [
+    {
+      id: 1,
+      name: "Running Shoes",
+      price: 120,
+      image: "/assets/FW/1.png",
+      quantity: 2,
+    },
+    {
+      id: 2,
+      name: "Training Shoes",
+      price: 100,
+      image: "/assets/FW/2.png",
+      quantity: 1,
+    },
+  ];
 
 const CartPage = () => {
-  const [cartItems, setCartItems] = useState(initialCartData);
+  const [cartItems, setCartItems] = useState(initialCartItems);
 
   const removeItem = (itemId) => {
     setCartItems(cartItems.filter(item => item.id !== itemId));
+    // Save updated cart to localStorage
+    localStorage.setItem('cartItems', JSON.stringify(
+      cartItems.filter(item => item.id !== itemId)
+    ));
   };
 
   const updateQuantity = (itemId, change) => {
-    setCartItems(cartItems.map(item => {
+    const updatedItems = cartItems.map(item => {
       if (item.id === itemId) {
         const newQuantity = Math.max(1, item.quantity + change);
         return { ...item, quantity: newQuantity };
       }
       return item;
-    }));
+    });
+    
+    setCartItems(updatedItems);
+    // Save updated cart to localStorage
+    localStorage.setItem('cartItems', JSON.stringify(updatedItems));
   };
 
   const calculateTotal = () => {
@@ -128,13 +136,16 @@ const CartPage = () => {
                   £{calculateTotal().toFixed(2)}
                 </span>
               </div>
-              <button className="w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600 transition-colors text-lg font-semibold">
-                Proceed to Checkout
-              </button>
+              <Link href="/payment">
+                <button className="w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600 transition-colors text-lg font-semibold">
+                  Proceed to Checkout
+                </button>
+              </Link>
             </div>
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
