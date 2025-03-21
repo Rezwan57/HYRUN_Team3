@@ -1,27 +1,16 @@
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
-
 .brand-logos {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  padding: 20px;
-  background: #f8f8f8;
+  padding: 40px 20px;
+  background: #000000;
   width: 100%;
   margin-bottom: 0px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .brand-logos-container {
-  background-color: #fff;
   text-align: center;
   margin-bottom: 20px;
-  padding: 20px;
 }
 
 .brand-logos-title {
@@ -31,25 +20,10 @@ body, html {
   color: #000;
 }
 
-@keyframes fadeOutIn {
-  0%, 10% { opacity: 1; }
-  40% { opacity: 0; }
-  70%, 100% { opacity: 1; }
-}
-
 .brand-logos img {
-  width: 90px;
-  height: auto;
-  opacity: 0;
-  animation: fadeOutIn 10s ease-in-out infinite;
-  filter: grayscale(50%) brightness(0.1) contrast(0.7);
+  height: 60px;
+  width: 100px;
 }
-
-.brand-logos img:nth-child(1) { animation-delay: 0s; }
-.brand-logos img:nth-child(2) { animation-delay: 2s; }
-.brand-logos img:nth-child(3) { animation-delay: 4s; }
-.brand-logos img:nth-child(4) { animation-delay: 6s; }
-.brand-logos img:nth-child(5) { animation-delay: 8s; }
 
 /* for hot-products css */
 
@@ -169,6 +143,11 @@ body, html {
 }
 
 @media (max-width: 768px) {
+
+  .brand-logos {
+    padding: 20px 10px;
+  }
+
   .brand-logos-title {
     font-size: 1.9rem;
   }
@@ -181,16 +160,9 @@ body, html {
     font-size: 7vh;
   }
 
-  .brand-logos-container,
-  .hot-products-container {
-    padding: 10px;
-    margin-left: 15px;
-    margin-right: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    position: relative;
-    justify-content: center;
-    align-items: center;
+  .brand-logos img {
+    height:20px;
+    width: 50px;
   }
 }
 

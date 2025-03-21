@@ -6,7 +6,10 @@ import { motion } from "framer-motion";
 
 const adminLinks = [
   { id: 1, name: "Dashboard", link: "/admin" },
-  { id: 2, name: "Products", link: "/admin/products" },
+  { id: 2, name: "Orders", link: "/admin/orders" },
+  { id: 3, name: "Products", link: "/admin/products" },
+  { id: 4, name: "Messages", link: "/admin/add-messages"},
+  { id: 5, name: "Users", link: "/admin/users" },
 ];
 
 const editLinks = [
@@ -18,8 +21,9 @@ function Sidebar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <aside className=" bottom-0 p-4 flex flex-col justify-between flex-shrink-0 gap-10 w-1/6 h-screen bg-neutral-100">
-      <h1>Admin Panel</h1>
+    <aside className="bg-neutral-200 font-admin fixed xl:sticky flex flex-col h-[100vh] w-1/6 top-0 left-0 bottom-0 backdrop-blur-3xl bg-opacity-70 border-neutral-800 z-10 transition-width duration-300 gap-5 px-4 py-6">
+
+      <h1 className="">Admin Panel</h1>
 
       <div className="flex flex-col gap-2 h-full w-full">
         {adminLinks.map((link) => (

@@ -9,13 +9,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="relative flex">
+    <div className="flex">
       <Sidebar />
-      <div className="flex flex-col w-full">
+
+      <main className="flex flex-col w-screen">
         <Header />
-        <Breadcrumb />
-        {children}
-      </div>
-    </main>
+
+        <section className="flex flex-col flex-wrap p-0 w-full">
+          <Breadcrumb />
+          {children}
+        </section>
+      </main>
+    </div>
   );
 }

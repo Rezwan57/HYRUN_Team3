@@ -1,20 +1,24 @@
 "use client";
-import React, { useState } from "react";
-import AddProductForm from "../../components/products/AddProductForm";
+import React from "react";
+import AddProductForm from "./add-product/page";
+import { useRouter } from 'next/navigation';
 
 export default function page() {
-  const [showAddProductForm, setShowAddProductForm] = useState(false);
+
+  const router = useRouter()
+  
 
   const handleAddProductClick = () => {
-    setShowAddProductForm(true);
+    router.push("/admin/products/add-product");
   };
 
   return (
     <>
       <div className="h-[120vh]">
         <button onClick={handleAddProductClick}>Add Product</button>
+
       </div>
-      {showAddProductForm && <AddProductForm />}
     </>
   );
 }
+
