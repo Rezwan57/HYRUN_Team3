@@ -54,23 +54,36 @@ export async function POST(req) {
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const slug = searchParams.get("slug");
+  const category = searchParams.get("category") ? decodeURIComponent(searchParams.get("category")) : null;
+  const gender = searchParams.get("gender") ? decodeURIComponent(searchParams.get("gender")) : null;
 
   try {
-    if (slug) {
-      const query = "SELECT * FROM products WHERE slug = ?";
-      const [rows] = await db.query(query, [slug]);
-      console.log('Database query result for slug', slug, ':', rows);
+    let query = `
+      SELECT 
+        p.*, 
+        c.category_name AS category,
+        g.gender_name AS gender
+      FROM products p
+      JOIN categories c ON p.category_id = c.category_id
+      JOIN genders g ON p.gender_id = g.gender_id
+    `;
 
-      if (rows.length === 0) {
-        return NextResponse.json([], { status: 200 });
-      }
-      return NextResponse.json(rows, { status: 200 });
-    } else {
-      const query = "SELECT * FROM products";
-      const [rows] = await db.query(query);
-      console.log('Fetched all products:', rows);
-      return NextResponse.json(rows, { status: 200 });
+    let queryParams = [];
+
+    if (slug && category && gender) {
+      query += " WHERE p.slug = ? AND c.category_name = ? AND g.gender_name = ?";
+      queryParams = [slug, category, gender];
     }
+
+    console.log("Fetching product with:", { slug, category, gender });
+
+    const [rows] = await db.query(query, queryParams);
+
+    if (rows.length === 0) {
+      return NextResponse.json([], { status: 200 });
+    }
+
+    return NextResponse.json(rows, { status: 200 });
   } catch (error) {
     console.error("Error fetching products:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

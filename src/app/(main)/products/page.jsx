@@ -8,16 +8,15 @@ import Image from "next/image";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [colors, setColors] = useState({});
-  
-  // Filter and Sort State
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [tempSortBy, setTempSortBy] = useState('');
+  const [tempSortBy, setTempSortBy] = useState("");
   const [tempFilters, setTempFilters] = useState({
-    size: '',
-    color: '',
-    brand: '',
-    gender: ''
+    size: "",
+    color: "",
+    brand: "",
+    gender: "",
   });
 
   const [availableSizes, setAvailableSizes] = useState([]);
@@ -28,7 +27,10 @@ const ProductsPage = () => {
   useEffect(() => {
     fetch("/api/products")
       .then((res) => res.json())
-      .then((data) => setProducts(data))
+      .then((data) => {
+        setProducts(data);
+        setFilteredProducts(data); // Initialize filtered products
+      })
       .catch((error) => console.error("Error fetching products:", error));
   }, []);
 
@@ -43,74 +45,56 @@ const ProductsPage = () => {
           }));
         })
         .catch((error) =>
-          console.error(
-            `Error fetching colors for product ${product.product_id}:`,
-            error
-          )
+          console.error(`Error fetching colors for product ${product.product_id}:`, error)
         );
     });
   }, [products]);
 
-  // Fetching available filter options (size, color, brand)
-  useEffect(() => {
-    fetch("/api/available_sizes")
-      .then((res) => res.json())
-      .then((data) => setAvailableSizes(data))
-      .catch((error) => console.error("Error fetching sizes:", error));
+  const getImageUrl = (productId) => `/api/product_image?product_id=${productId}`;
 
-    fetch("/api/available_colors")
-      .then((res) => res.json())
-      .then((data) => setAvailableColors(data))
-      .catch((error) => console.error("Error fetching colors:", error));
-
-
-    fetch("/api/available_brands")
-      .then((res) => res.json())
-      .then((data) => setAvailableBrands(data))
-      .catch((error) => console.error("Error fetching brands:", error));
-
-    fetch("/api/available_genders")
-      .then((res) => res.json())
-      .then((data) => setAvailableGenders(data))
-      .catch((error) => console.error("Error fetching genders:", error));
-  }, []);
-
-  const getImageUrl = (productId) => {
-    return `/api/product_image?product_id=${productId}`;
-  };
-
-  // Apply filters and sort logic
   const applyFilters = () => {
-    // Logic for applying filters (size, color, brand, gender, sort order)
-    console.log("Filters applied", tempFilters, tempSortBy);
-    
+    let result = [...products];
+    if (tempFilters.gender) {
+      result = result.filter((p) => p.gender === tempFilters.gender);
+    }
+    if (tempFilters.size) {
+      // Assuming products have a sizes array or field
+      result = result.filter((p) => p.sizes?.includes(tempFilters.size));
+    }
+    if (tempFilters.color) {
+      result = result.filter((p) =>
+        colors[p.product_id]?.some((c) => c.hex_code === tempFilters.color)
+      );
+    }
+    if (tempFilters.brand) {
+      result = result.filter((p) => p.brand === tempFilters.brand);
+    }
+    if (tempSortBy === "price-asc") {
+      result.sort((a, b) => a.selling_price - b.selling_price);
+    } else if (tempSortBy === "price-desc") {
+      result.sort((a, b) => b.selling_price - a.selling_price);
+    }
+    setFilteredProducts(result);
+    setIsSidebarOpen(false); // Close sidebar after applying
   };
 
   const resetFilters = () => {
-    setTempSortBy('');
-    setTempFilters({
-      size: '',
-      color: '',
-      brand: '',
-      gender: ''
-    });
+    setTempSortBy("");
+    setTempFilters({ size: "", color: "", brand: "", gender: "" });
+    setFilteredProducts(products);
   };
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
     <div className="container">
       <Breadcrumb />
       <div className="filter-button-container">
-      <button onClick={toggleSidebar} className="open-filter-btn">
-        Filter & Sort
-      </button>
+        <button onClick={toggleSidebar} className="open-filter-btn">
+          Filter & Sort
+        </button>
       </div>
-      
-      
-      <FilterSidebar 
+      <FilterSidebar
         isOpen={isSidebarOpen}
         onClose={toggleSidebar}
         sortBy={tempSortBy}
@@ -125,17 +109,14 @@ const ProductsPage = () => {
         availableBrands={availableBrands}
         availableGenders={availableGenders}
       />
-
       <div className="header-container">
-        <h1 className="title">All Products ({products.length})</h1>
+        <h1 className="title">All Products ({filteredProducts.length})</h1>
       </div>
-
       <div className="productList">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <Link
             key={product.product_id}
-            href={`/products/${product.slug}`}
-            passHref
+            href={`/products/${product.category}/${product.gender}/${product.slug}`}
             className="productCard"
           >
             <Image
@@ -145,23 +126,19 @@ const ProductsPage = () => {
               alt={product.name}
               className="productImage"
             />
-
             <div className="productDetails">
               <h2 className="productName">{product.name}</h2>
               <p className="productSubcategory">{product.subcategory}</p>
               <p className="productCategory">{product.category}</p>
-
               <div className="productColors flex gap-2 mt-2">
-                {colors[product.product_id] &&
-                  colors[product.product_id].map((color) => (
-                    <span
-                      key={color.color_id}
-                      className="h-6 w-6 rounded-full border"
-                      style={{ backgroundColor: color.hex_code }}
-                    />
-                  ))}
+                {colors[product.product_id]?.map((color) => (
+                  <span
+                    key={color.color_id}
+                    className="h-6 w-6 rounded-full border"
+                    style={{ backgroundColor: color.hex_code }}
+                  />
+                ))}
               </div>
-
               <p className="productPrice">£{product.selling_price}</p>
             </div>
           </Link>
@@ -172,4 +149,3 @@ const ProductsPage = () => {
 };
 
 export default ProductsPage;
-
