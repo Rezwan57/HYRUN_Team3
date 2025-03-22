@@ -5,9 +5,17 @@ import Image from "next/image";
 import { SlBasket } from "react-icons/sl";
 import { IoAdd, IoRemove } from "react-icons/io5";
 import { useCart } from "../../context/CartContext";
+import { useRouter } from "next/navigation";
 
 const CartPage = () => {
   const { cart, removeFromCart, updateCartQuantity } = useCart();
+  const router = useRouter();
+
+
+  {/* Navigate to the checkout page */}
+  const handleProceedToCheckout = () => {
+    router.push("/checkout"); 
+  };
 
   const getImageUrl = (productId) => {
     return productId ? `/api/product_image?product_id=${productId}` : "/placeholder-image.jpg";
@@ -102,6 +110,8 @@ const CartPage = () => {
                   £{calculateTotal()}
                 </span>
               </div>
+              {/* Added navigation to the checkout page */}
+              onClick={handleProceedToCheckout}
               <button className="w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600 transition-colors text-lg font-semibold">
                 Proceed to Checkout
               </button>

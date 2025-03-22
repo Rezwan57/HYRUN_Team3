@@ -170,6 +170,18 @@ select:focus {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
+.input-error {
+  border-color: var(--error-red) !important;
+  background-color: #ffe6e6;
+}
+
+.error-message {
+  border: var(--error-red);
+  color: var(--error-red);
+  font-size: 14px;
+  margin-top: 5px;
+}
+
 /* Responsive styles */
 @media (max-width: 768px) {
   .checkout-container {
