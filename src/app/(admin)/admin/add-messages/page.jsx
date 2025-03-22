@@ -1,60 +1,60 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-export default function Products() {
-    const [products, setProducts] = useState([]);
+export default function Messages() {
+    const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [selectedMessage, setSelectedMessage] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [editData, setEditData] = useState({});
 
     useEffect(() => {
-        const fetchProducts = async () => {
+        const fetchMessages = async () => {
             try {
-                const res = await fetch('http://localhost:3000/admin/products', {
+                const res = await fetch('http://localhost:3000/admin/add-messages', {
                     headers: { Accept: 'application/json' },
                 });
-                if (!res.ok) throw new Error('Failed to fetch products');
+                if (!res.ok) throw new Error('Failed to fetch messages');
                 const data = await res.json();
-                setProducts(data);
+                setMessages(data);
             } catch (error) {
-                console.error('Error fetching products:', error);
+                console.error('Error fetching messages:', error);
             } finally {
                 setLoading(false);
             }
         };
-        fetchProducts();
+        fetchMessages();
     }, []);
 
-    const handleUpdate = async (productId) => {
+    const handleUpdate = async (messageId) => {
         try {
-            const res = await fetch(`http://localhost:3000/admin/products/${productId}`, {
+            const res = await fetch(`http://localhost:3000/admin/add-messages/${messageId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(editData),
             });
-            if (!res.ok) throw new Error('Failed to update product');
-            const updatedProducts = products.map((product) =>
-                product.id === productId ? { ...product, ...editData } : product
+            if (!res.ok) throw new Error('Failed to update message');
+            const updatedMessages = messages.map((msg) =>
+                msg.id === messageId ? { ...msg, ...editData } : msg
             );
-            setProducts(updatedProducts);
+            setMessages(updatedMessages);
             setIsEditing(false);
-            setSelectedProduct(null);
-        } catch ( error) {
-            console.error('Error updating product:', error);
+            setSelectedMessage(null);
+        } catch (error) {
+            console.error('Error updating message:', error);
         }
     };
 
-    const handleDelete = async (productId) => {
-        if (!confirm('Are you sure you want to delete this product?')) return;
+    const handleDelete = async (messageId) => {
+        if (!confirm('Are you sure you want to delete this message?')) return;
         try {
-            const res = await fetch(`http://localhost:3000/admin/products/${productId}`, {
+            const res = await fetch(`http://localhost:3000/admin/add-messages/${messageId}`, {
                 method: 'DELETE',
             });
-            if (!res.ok) throw new Error('Failed to delete product');
-            setProducts(products.filter((product) => product.id !== productId));
+            if (!res.ok) throw new Error('Failed to delete message');
+            setMessages(messages.filter((msg) => msg.id !== messageId));
         } catch (error) {
-            console.error('Error deleting product:', error);
+            console.error('Error deleting message:', error);
         }
     };
 
@@ -63,14 +63,14 @@ export default function Products() {
         setEditData({ ...editData, [name]: value });
     };
 
-    const handleEdit = (product) => {
-        setSelectedProduct(product);
-        setEditData({ ...product }); // Pre-fill with current data
+    const handleEdit = (message) => {
+        setSelectedMessage(message);
+        setEditData({ ...message }); 
         setIsEditing(true);
     };
 
     const handleCancel = () => {
-        setSelectedProduct(null);
+        setSelectedMessage(null);
         setIsEditing(false);
     };
 
@@ -78,31 +78,33 @@ export default function Products() {
 
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-3xl font-bold mb-4">Admin Products</h1>
+            <h1 className="text-3xl font-bold mb-4">Admin Messages</h1>
             <table className="table-auto w-full border-collapse">
                 <thead className="bg-gray-200">
                     <tr>
-                        <th className="p-2">Product ID</th>
-                        <th className="p-2">Name</th>
-                        <th className="p-2">Price</th>
+                        <th className="p-2">Message ID</th>
+                        <th className="p-2">Customer Name</th>
+                        <th className="p-2">Email</th>
+                        <th className="p-2">Message Content</th>
                         <th className="p-2">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {products.map((product) => (
-                        <tr key={product.id} className="border-b">
-                            <td className="p-2">{product.id}</td>
-                            <td className="p-2">{product.name}</td>
-                            <td className="p-2">{product.price}</td>
+                    {messages.map((message) => (
+                        <tr key={message.id} className="border-b">
+                            <td className="p-2">{message.id}</td>
+                            <td className="p-2">{message.customerName}</td>
+                            <td className="p-2">{message.email}</td>
+                            <td className="p-2">{message.content}</td>
                             <td className="p-2 flex gap-2">
                                 <button
-                                    onClick={() => handleEdit(product)}
+                                    onClick={() => handleEdit(message)}
                                     className="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                                 >
                                     Edit
                                 </button>
                                 <button
-                                    onClick={() => handleDelete(product.id)}
+                                    onClick={() => handleDelete(message.id)}
                                     className="px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                                 >
                                     Delete
@@ -113,29 +115,25 @@ export default function Products() {
                 </tbody>
             </table>
 
-            {selectedProduct && (
+            {selectedMessage && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white rounded p-6 w-full max-w-lg">
                         {isEditing ? (
                             <form onSubmit={(e) => {
                                 e.preventDefault();
-                                handleUpdate(selectedProduct.id);
+                                handleUpdate(selectedMessage.id);
                             }}>
-                                <h2 className="text-2xl font-bold mb-4">Edit Product</h2>
+                                <h2 className="text-2xl font-bold mb-4">
+                                    Edit Message
+                                </h2>
                                 <div className="space-y-4">
                                     <input
                                         type="text"
-                                        name="name"
-                                        value={editData.name || ''}
+                                        name="content"
+                                        value={editData.content || ''}
                                         onChange={handleEditChange}
                                         className="border p-2 w-full"
-                                    />
-                                    <input
-                                        type="text"
-                                        name="price"
-                                        value={editData.price || ''}
-                                        onChange={handleEditChange}
-                                        className="border p-2 w-full"
+                                        placeholder="Edit message content"
                                     />
                                     <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
                                         Save Changes
@@ -147,8 +145,7 @@ export default function Products() {
                             </form>
                         ) : (
                             <div>
-                                <p><strong>Product Name:</strong> {selectedProduct.name}</p>
-                                <p><strong>Price:</strong> {selectedProduct.price}</p>
+                                <p><strong>Message Content:</strong> {selectedMessage.content}</p>
                                 <button onClick={() => setIsEditing(true)} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                                     Edit
                                 </button>

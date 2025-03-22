@@ -1,36 +1,54 @@
-import { NextResponse } from "next/server";
-import db from "../../../../../lib/db";  
+"use client";
+import { NextApiResponse, NextApiRequest } from 'next';
+import db from '../../../lib/db'; 
 
-export async function POST(req) {
+async function getMessages(req, res) {
     try {
-        const formData = await req.formData();
-        const name = formData.get("name");
-        const email = formData.get("email");
-        const message = formData.get("message");
-
-        if (!name || !email || !message) {
-            return new Response(JSON.stringify({ error: "Missing required fields" }), { status: 400 });
-        }
-
-        const [result] = await db.query(
-            "INSERT INTO messages (name, email, message) VALUES (?, ?, ?)",
-            [name, email, message]
-        );
-
-        const messageId = result.insertId;
-
-        return new Response(JSON.stringify({ message: "Message received successfully!", id: messageId }), { status: 201 });
+        const result = await db.query("SELECT * FROM messages ORDER BY id DESC");
+        res.status(200).json(result);
     } catch (error) {
-        console.error("Error:", error);
-        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+        console.error("Failed to get messages:", error);
+        res.status(500).json({ error: "Database error while fetching messages" });
     }
 }
 
-export async function GET() {
+async function addMessage(req, res) {
+    const { name, email, message } = req.body;
     try {
-        const [rows] = await db.query('SELECT * FROM messages ORDER BY id DESC');
-        return NextResponse.json(rows);
+        const result = await db.query("INSERT INTO messages (name, email, message) VALUES (?, ?, ?)", [name, email, message]);
+        res.status(200).json({ message: "Message added successfully", id: result.insertId });
     } catch (error) {
-        return new Response(JSON.stringify({ error: 'Database error', details: error }), { status: 500 });
+        console.error("Failed to add message:", error);
+        res.status(500).json({ error: "Database error while adding message" });
+    }
+}
+
+async function resolveMessage(req, res) {
+    const { id } = req.query;
+    try {
+        const result = await db.query("UPDATE messages SET resolved = TRUE WHERE id = ?", [id]);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: "Message not found" });
+        }
+        res.status(200).json({ message: "Message resolved successfully" });
+    } catch (error) {
+        console.error("Failed to resolve message:", error);
+        res.status(500).json({ error: "Database error while resolving message" });
+    }
+}
+
+export default function handler(req, res) {
+    switch (req.method) {
+        case 'GET':
+            return getMessages(req, res);
+        case 'POST':
+            if (req.body.resolve) {
+                return resolveMessage(req, res);
+            } else {
+                return addMessage(req, res);
+            }
+        default:
+            res.setHeader('Allow', ['GET', 'POST']);
+            return res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }

@@ -1,5 +1,5 @@
 // pages/products/[id].jsx
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import ProductPage from '../../components/ProductPage';
 
 export default function Product() {
