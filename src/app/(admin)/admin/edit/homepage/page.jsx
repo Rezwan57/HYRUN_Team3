@@ -19,7 +19,7 @@ export default function HomepageEdit() {
                 });
                 if (!res.ok) throw new Error('Failed to fetch content');
                 const data = await res.json();
-                setContent(data); // assuming backend returns an object with all fields
+                setContent(data); 
             } catch (error) {
                 console.error('Error fetching content:', error);
             } finally {
