@@ -8,7 +8,7 @@ export async function POST(req) {
       return new Response(JSON.stringify({ error: "All fields are required" }), { status: 400 });
     }
 
-    const [result] = await db.execute(
+    await db.execute(
       "INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)",
       [name, email, message]
     );
@@ -20,3 +20,4 @@ export async function POST(req) {
     return new Response(JSON.stringify({ error: "Database error. Please try again later." }), { status: 500 });
   }
 }
+
