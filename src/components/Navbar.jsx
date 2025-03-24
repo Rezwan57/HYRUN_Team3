@@ -51,7 +51,7 @@ const CategoryCard = ({ shoeTypeName, link }) => (
     <Link href={link} className="hover:text-yellow-600">
       {shoeTypeName}
     </Link>
-  </div>
+  </div> 
 );
 
 export default function Navbar() {
