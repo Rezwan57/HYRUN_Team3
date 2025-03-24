@@ -510,6 +510,7 @@ export default function Navbar() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          onClick={() => setShowFullPageSearch(false)}
         >
           <motion.div
             className="w-full max-w-2xl p-8"
@@ -542,7 +543,7 @@ export default function Navbar() {
                     
                       <Link
                       key={result.id}
-                        href={`/products/${result.slug}`}
+                        href={`/products/${result.gender}/${result.category}/${result.slug}`}
                         className="flex items-start justify-start p-2 gap-2 hover:bg-gray-100 rounded-xl bg-white shadow-xl"
                         onClick={() => setShowFullPageSearch(false)}
                       >

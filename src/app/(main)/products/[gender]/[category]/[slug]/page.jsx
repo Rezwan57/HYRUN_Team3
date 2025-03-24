@@ -1,14 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import Breadcrumb from "../../../../components/Breadcrumb";
-import AddToCart from "../../../../components/AddToCart";
+import Breadcrumb from "../../../../../../components/Breadcrumb";
+import AddToCart from "../../../../../../components/AddToCart";
 import { IoCheckmarkCircle } from "react-icons/io5";
 
 const Product = () => {
-  const { slug } = useParams();
+  const { category, gender, slug } = useParams(); // Get all dynamic params
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mainImage, setMainImage] = useState("");
@@ -16,15 +16,17 @@ const Product = () => {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [gender, setGender] = useState("");
+  const [productGender, setProductGender] = useState("");
   const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`/api/products?slug=${slug}`, {
-          cache: "no-store",
-        });
+        // Fetch product using category, gender, and slug
+        const res = await fetch(
+          `/api/products?category=${category}&gender=${gender}&slug=${slug}`,
+          { cache: "no-store" }
+        );
         if (!res.ok) {
           throw new Error(`Product fetch failed with status: ${res.status}`);
         }
@@ -33,6 +35,7 @@ const Product = () => {
         if (data.length > 0) {
           const productData = data[0];
 
+          // Fetch main image
           const imageRes = await fetch(
             `/api/product_image?product_id=${productData.product_id}`
           );
@@ -42,20 +45,25 @@ const Product = () => {
             imageArrayBuffer
           ).toString("base64")}`;
 
+          // Fetch additional images
           const additionalImagesRes = await fetch(
             `/api/product_image?product_id=${productData.product_id}&all=true`
           );
           const additionalImagesData = await additionalImagesRes.json();
 
+          // Fetch sizes
           const sizesRes = await fetch(
             `/api/product_size?product_id=${productData.product_id}`
           );
           const sizesData = await sizesRes.json();
+
+          // Fetch colors
           const colorsRes = await fetch(
             `/api/product_color?product_id=${productData.product_id}`
           );
           const colorsData = await colorsRes.json();
 
+          // Fetch gender
           const genderRes = await fetch(
             `/api/product_genders?product_id=${productData.product_id}`
           );
@@ -70,9 +78,7 @@ const Product = () => {
           });
           setMainImage(imageBase64);
           setAdditionalImages(additionalImagesData);
-          setGender(genderData.gender_name);
-          console.log("Main image:", imageBase64);
-          console.log("Additional images:", additionalImagesData);
+          setProductGender(genderData.gender_name);
         } else {
           console.log("No product found for slug:", slug);
           setProduct(null);
@@ -86,14 +92,14 @@ const Product = () => {
     };
 
     fetchProduct();
-  }, [slug]);
+  }, [category, gender, slug]); // Depend on all params
 
   // Reset isAdded after 5 seconds
   useEffect(() => {
     if (isAdded) {
       const timer = setTimeout(() => {
         setIsAdded(false);
-      }, 5000); 
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [isAdded]);
@@ -121,12 +127,12 @@ const Product = () => {
       selectedSize,
       selectedColor,
     };
-    addToCartFn(productWithOptions); // Call the context's addToCart function
-    setIsAdded(true); // Trigger the "added" state
+    addToCartFn(productWithOptions);
+    setIsAdded(true);
   };
 
   return (
-    <div className="flex items-start justify-center min-h-screen ">
+    <div className="flex items-start justify-center min-h-screen">
       <div className="px-4 py-2 w-full lg:w-[90vw]">
         <Breadcrumb />
 
@@ -179,7 +185,7 @@ const Product = () => {
                 {product.name}
               </h1>
               <span className="text-xl text-neutral-600 italic">
-                For {gender}
+                For {productGender}
               </span>
               <div className="text-3xl font-bold bg-prime w-fit px-4 py-2 rounded-xl">
                 £ {product.selling_price}
@@ -253,7 +259,7 @@ const Product = () => {
                 </div>
               </div>
 
-              {/* Add to Cart with message */}
+              {/* Add to Cart */}
               <div className="relative">
                 <AddToCart
                   product={{

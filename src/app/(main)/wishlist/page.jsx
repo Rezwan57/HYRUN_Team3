@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { IoTrashOutline } from "react-icons/io5";
 import { IoMdHeart } from "react-icons/io";
-import Wishlist from '../../../components/wishlist/wishlist'
+import Wishlist from '../../../components/Wishlist/wishlist'
 import Breadcrumb from '../../../components/Breadcrumb'
 
 function Page() {  
