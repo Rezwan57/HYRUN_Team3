@@ -543,7 +543,7 @@ export default function Navbar() {
                     
                       <Link
                       key={result.id}
-                        href={`/products/${result.slug}`}
+                        href={`/products/${result.gender}/${result.category}/${result.slug}`}
                         className="flex items-start justify-start p-2 gap-2 hover:bg-gray-100 rounded-xl bg-white shadow-xl"
                         onClick={() => setShowFullPageSearch(false)}
                       >
