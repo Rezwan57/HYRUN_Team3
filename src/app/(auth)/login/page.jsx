@@ -67,10 +67,10 @@ export default function Login() {
         <div className="flex justify-between items-start w-full p-10">
           <Link
             href="/"
-            className="flex items-center justify-center gap-2 w-auto hover:text-amber-500 transition-colors duration-300"
+            className="flex items-center justify-center gap-2 w-[20vw] lg:w-auto hover:text-amber-500 transition-colors duration-300"
           >
             <FaArrowLeft className="text-xl" />
-            <p>Back to Home</p>
+            <p className="hidden lg:block">Back to Home</p>
           </Link>
           <Image
             src={Logo}
@@ -80,7 +80,7 @@ export default function Login() {
             className="mb-4"
           />
         </div>
-        <div className="text-left w-96">
+        <div className="flex flex-col justify-center items-center text-left">
           <h2 className="text-3xl font-bold">
             Welcome Back<span className="text-yellow-500">!</span>
           </h2>
@@ -90,7 +90,7 @@ export default function Login() {
           {error && <p className="text-red-500">{error}</p>}
 
           {/* Login Form */}
-          <form onSubmit={handleSubmit} className="mt-8 w-auto">
+          <form onSubmit={handleSubmit} className="mt-8 w-[80%] lg:w-[100%]">
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold ml-2 mb-1">
                 Email
