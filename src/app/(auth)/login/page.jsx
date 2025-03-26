@@ -4,16 +4,24 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "../../../../public/assets/logo/LogoDark.png";
+import { useAuth } from "../../context/AuthContext";
 import { FaArrowLeft } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const userId = 1; 
+    login(userId); 
+    router.push("/checkout");
 
     if (!email || !password) {
       setError("Both fields are required!");
@@ -156,3 +164,4 @@ export default function Login() {
     </div>
   );
 }
+

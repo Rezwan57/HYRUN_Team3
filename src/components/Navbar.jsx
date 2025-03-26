@@ -309,7 +309,7 @@ export default function Navbar() {
                       <>
                         <li>
                           <Link
-                            href="/profile"
+                            href="/user"
                             className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
                           >
                             <VscAccount className="h-4" />
@@ -414,7 +414,7 @@ export default function Navbar() {
                         <>
                           <li>
                             <Link
-                              href="/profile"
+                              href="/user"
                               className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
                             >
                               <VscAccount className="h-4" />
