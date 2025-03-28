@@ -23,7 +23,7 @@ export async function POST(request) {
   try {
     const body = await request.json();
     const orderId = await generateOrderId(db);
-    const [result] = await db.execute(
+    await db.execute(
       'INSERT INTO orders (order_id, customer_name, customer_email, order_date, status, total_amount) VALUES (?, ?, ?, ?, ?, ?)',
       [
         orderId,
