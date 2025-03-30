@@ -111,8 +111,9 @@ const CartPage = () => {
                 </span>
               </div>
               {/* Added navigation to the checkout page */}
+              <button 
               onClick={handleProceedToCheckout}
-              <button className="w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600 transition-colors text-lg font-semibold">
+              className="w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600 transition-colors text-lg font-semibold">
                 Proceed to Checkout
               </button>
             </div>

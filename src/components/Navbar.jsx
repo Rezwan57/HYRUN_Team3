@@ -220,7 +220,7 @@ export default function Navbar() {
                     {/* here below i have made the gender links and below 
                         one also the i have made the new arrivals links*/ }
 
-                    <Link href={`/${gender.toLowerCase()}`}  className="font-medium hover:underline">
+                    <Link href={`/products/${gender.toLowerCase()}`}  className="font-medium hover:underline">
                       {gender}
                     </Link>
 
