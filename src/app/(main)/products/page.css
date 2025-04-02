@@ -106,3 +106,201 @@
   transition: background-color 0.2s;
 
 }
+
+.filter-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.filter-button:hover {
+  background-color: #e5e5e5;
+}
+
+
+/* new one 
+/* Add this to your page.css file */
+
+/* Active filters display */
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 10px;
+  width: 100%;
+  gap: 10px;
+}
+
+.active-filters-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: 1;
+}
+
+.active-filter-tag {
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.remove-filter {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin-left: 4px;
+}
+
+.clear-filters {
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 4px 8px;
+  font-size: 14px;
+}
+
+/* Existing filter sidebar styles */
+.filter-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+
+.filter-sidebar {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 320px;
+  height: 100%;
+  background-color: white;
+  z-index: 999;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease;
+  overflow-y: auto;
+}
+
+.filter-sidebar.open {
+  right: 0;
+}
+
+.filter-sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.filter-sidebar-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.close-filter-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.filter-sidebar-content {
+  padding: 15px 20px;
+}
+
+.sidebar-section {
+  margin-bottom: 20px;
+}
+
+.sidebar-section h4 {
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.sort-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sort-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.filter-select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.filter-sidebar-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+}
+
+.reset-filters-btn {
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.apply-filters-btn {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reset-button {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.loading, .no-products {
+  text-align: center;
+  padding: 40px 0;
+  font-size: 18px;
+}
+
+.no-products {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
