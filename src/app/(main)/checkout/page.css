@@ -1,5 +1,14 @@
 /* Base styles */
 :root {
+  --primary-yellow: #FFC107;
+  --primary-black: #222222;
+  --primary-white: #FFFFFF;
+  --light-gray: #F5F5F5;
+  --medium-gray: #E0E0E0;
+  --dark-gray: #555555;
+  --highlight-yellow: #FFA000;
+  --error-red: #f31d1d;
+  --border-radius: 6px;
   --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   --transition-speed: 0.2s;
   --primary-white: #ffffff;
@@ -18,15 +27,18 @@
   padding: 20px;
 }
 
+
+
+
 .heading{
   font-size: 28px;
   font-weight: 700;
-  color: black;
+  color:  #333;
   text-align: center;
+  letter-spacing: 2px;
+  text-shadow: 4px 2px 4px rgba(6, 6, 6, 0.3); 
   margin-bottom: 30px;
- 
 }
-
 
 h2 {
   font-size: 22px;
@@ -64,6 +76,7 @@ h3 {
   flex: 1 1 calc(50% - 10px);
   min-width: 250px;
   margin-bottom: 20px;
+  position: relative;
 }
 
 label {
@@ -74,34 +87,11 @@ label {
   color: var(--primary-dark-gray);
 }
 
-input:required:focus {
-  border-color: var(--error-red);
-  /*box-shadow: 0 0 5px rgba(229, 189, 44, 0.5);*/
-}
 
-#lastName:focus,
-#firstName:focus,
-#street:focus,
-#city:focus,
-#postcode:focus,
-#addressLine2:focus,
-#billing-postcode:focus,
-#email:focus,
-#contactNumber:focus,
-select:focus {
-  border-color: var(--primary);
-  outline: var(--primary);
-}
 
-#lastName,
-#firstName,
-#street,
-#city,
-#postcode,
-#addressLine2,
-#billing-postcode,
-#email,
-#contactNumber,
+input[type="text"],
+input[type="email"],
+input[type="tel"],
 select {
   width: 100%;
   padding: 14px;
@@ -110,11 +100,20 @@ select {
   transition: all var(--transition-speed);
   background-color: rgb(238, 238, 238);
 }
-select {
-  padding: 16px;
+
+/* inpus for required fields */
+input:required:focus {
+  border-color: var(--error-red);
+  /*box-shadow: 0 0 5px rgba(229, 189, 44, 0.5);*/
 }
-#postcode {
-  text-transform: uppercase;
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+select:focus {
+  border-color: var(--primary-yellow);
+  outline: none;
+ 
 }
 
 /* Privacy notice */
@@ -139,7 +138,7 @@ select {
 }
 
 /* Checkout button */
-.checkout-btn {
+.submit-button {
   display: block;
   width: 100%;
   padding: 16px;
@@ -157,14 +156,19 @@ select {
 }
 
 .checkout-btn:hover {
-  background-color: rgb(0, 70, 201);
+  background-color: var(--highlight-yellow);
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.checkout-btn:active {
+.submit-button:active {
   transform: translateY(0);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.input-error {
+  border-color: var(--error-red) !important;
+  background-color: #ffe6e6;
 }
 
 .error-message {
@@ -184,4 +188,3 @@ select {
     flex: 1 1 100%;
   }
 }
-
