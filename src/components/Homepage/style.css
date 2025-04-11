@@ -4,12 +4,16 @@
 }
 
 
+.productImage {
+  position: absolute;
+  top: 20%;
+  right: 20%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease-in-out;
+}
+
 
 .productShadow {
-  position: absolute;
-  top: 100;
-  left: -50;
-  transform: translate(0%, 0%);
   filter: drop-shadow(0px 10px 10px #000000e0);
   transition: all 0.3s ease-in-out;
   height: auto;
@@ -21,10 +25,19 @@
   .vertical-text {
     writing-mode: horizontal-tb;
   }
+
+  .productImage {
+    top: 15%;
+    left: 20%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  
   .productShadow {
-    top: 0;
-    left: -10;
-    transform: translate(0%, 0%);
-    scale: 1.25;
+    filter: drop-shadow(0px 10px 10px #000000e0);
+    transition: all 0.3s ease-in-out;
+    height: auto;
+    scale: 1.3;
   }
 }

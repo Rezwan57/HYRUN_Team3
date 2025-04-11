@@ -90,7 +90,7 @@ export default function Login() {
         </div>
         <div className="flex flex-col justify-center items-center text-left">
           <h2 className="text-3xl font-bold">
-            Welcome Back<span className="text-yellow-500">!</span>
+            Welcome Back<span className="text-sky-500">!</span>
           </h2>
           <p className="text-gray-600">Log in to Your Account</p>
 
@@ -105,7 +105,7 @@ export default function Login() {
               </label>
               <input
                 type="email"
-                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500"
                 placeholder="someone@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -119,7 +119,7 @@ export default function Login() {
               </label>
               <input
                 type="password"
-                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500"
                 placeholder="at least 8 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -140,7 +140,7 @@ export default function Login() {
             {/* Login Button */}
             <button
               type="submit"
-              className="w-full bg-prime hover:bg-yellow-700 text-white font-bold py-3 px-4 rounded-full focus:outline-none focus:shadow-outline"
+              className="w-full bg-prime hover:bg-sky-700 text-white font-bold py-3 px-4 rounded-full focus:outline-none focus:shadow-outline"
               disabled={loading}
             >
               {loading ? "Logging in..." : "Login"}

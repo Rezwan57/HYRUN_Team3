@@ -124,7 +124,7 @@ export default function Signup() {
         </div>
         <div className="w-75">
           <h2 className="text-3xl font-bold mb-2">
-            Create Your Account<span className="text-yellow-500">!</span>
+            Create Your Account<span className="text-sky-500">!</span>
           </h2>
           <p className="text-gray-600">Join Our Community!</p>
 
@@ -142,7 +142,7 @@ export default function Signup() {
                 <input
                   type="text"
                   name="firstName"
-                  className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+                  className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500"
                   placeholder="Your First Name"
                   value={formData.firstName}
                   onChange={handleChange}
@@ -156,7 +156,7 @@ export default function Signup() {
                 <input
                   type="text"
                   name="lastName"
-                  className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+                  className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500"
                   placeholder="Your Last Name"
                   value={formData.lastName}
                   onChange={handleChange}
@@ -172,7 +172,7 @@ export default function Signup() {
               <input
                 type="email"
                 name="email"
-                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500"
                 placeholder="someone@example.com"
                 value={formData.email}
                 onChange={handleChange}
@@ -187,7 +187,7 @@ export default function Signup() {
               <input
                 type="password"
                 name="password"
-                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500"
                 placeholder="at least 8 characters"
                 value={formData.password}
                 onChange={handleChange}
@@ -202,7 +202,7 @@ export default function Signup() {
               <input
                 type="password"
                 name="confirmPassword"
-                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500"
                 placeholder="repeat your password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
@@ -215,7 +215,7 @@ export default function Signup() {
                 <input
                   type="checkbox"
                   name="agreeToTerms"
-                  className="focus:ring-yellow-500 h-4 w-4 text-yellow-600 border-gray-300 rounded"
+                  className="focus:ring-sky-500 h-4 w-4 text-sky-600 border-gray-300 rounded"
                   checked={formData.agreeToTerms}
                   onChange={handleChange}
                 />
@@ -223,11 +223,11 @@ export default function Signup() {
               <div className="ml-3 text-sm">
                 <label className="text-gray-700">
                   I agree to the{" "}
-                  <Link href="#" className="text-yellow-600 hover:underline">
+                  <Link href="#" className="text-sky-600 hover:underline">
                     Terms of Service
                   </Link>{" "}
                   and{" "}
-                  <Link href="#" className="text-yellow-600 hover:underline">
+                  <Link href="#" className="text-sky-600 hover:underline">
                     Privacy Policy
                   </Link>
                   .
@@ -238,7 +238,7 @@ export default function Signup() {
             {/* Signup Button */}
             <button
               type="submit"
-              className="w-full bg-prime hover:bg-yellow-700 text-white font-bold py-3 px-4 rounded-full focus:outline-none focus:shadow-outline"
+              className="w-full bg-prime hover:bg-sky-700 text-white font-bold py-3 px-4 rounded-full focus:outline-none focus:shadow-outline"
             >
               Sign up
             </button>
