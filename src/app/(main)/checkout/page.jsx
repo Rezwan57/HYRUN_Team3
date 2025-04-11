@@ -1,443 +1,502 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import './page.css';
+import { useAuth } from "../../context/AuthContext";
+import "./page.css";
 
 const CheckoutPage = () => {
+  const { user, loading } = useAuth(); // Add loading from context
   const router = useRouter();
   const [sameAsBilling, setSameAsBilling] = useState(true);
-  const [formSubmitted, setFormSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
-  
-  const [UserDetails, setUserDetails] = useState({
-    FirstName: "",
-    LastName: "",
-    Email: "",
-    ContactNumber: "",
-    DeliveryAddress: {
-      HouseNumber: "",
-      Street: "",
-      City: "",
-      Postcode: "",
-      State: ""
+  const [saveInfo, setSaveInfo] = useState(false);
+  const [userDetails, setUserDetails] = useState({
+    firstName: "",
+    lastName: "",
+    contactNumber: "",
+    email: "",
+    deliveryAddress: {
+      street: "",
+      city: "",
+      state: "",
+      postcode: "",
+      country: "United Kingdom",
     },
-    BillingAddress: {
-      HouseNumber: "",
-      Street: "",
-      City: "",
-      Postcode: "",
-      State: ""
-    }
+    billingAddress: {
+      street: "",
+      city: "",
+      state: "",
+      postcode: "",
+      country: "United Kingdom",
+    },
+    deliveryOption: "standard",
   });
 
-// Updates the user details state whenever an input field is changed.
-  // Also triggers validation if the form has already been submitted.  
-    const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUserDetails(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  const validateField = (name, value, section = null) => {
+    let error = "";
 
-    // Validate the field if form has been submitted already
-    if (formSubmitted) {
-      const error = getFieldError(name, value);
-      setErrors(prev => ({
-        ...prev,
-        [name]: error
-      }));
-    }
-  };
-
-  // it will updates   same like the user details.
-  const handleAddressChange = (type, e) => {
-    const { name, value } = e.target;
-    setUserDetails(prev => ({
-      ...prev,
-      [type]: {
-        ...prev[type],
-        [name]: value
-      }
-    }));
-
-    // Validate the field if form has been submitted already
-    if (formSubmitted) {
-      const error = getFieldError(name, value);
-      setErrors(prev => ({
-        ...prev,
-        [`${type}.${name}`]: error
-      }));
-    }
-  };
-
-  // Toggles the 'same as billing' checkbox and copies delivery address to billing if checked.
-  // Also clears any validation errors related to the billing address if the addresses are synced.
-  const handleCheckboxChange = () => {
-    setSameAsBilling(!sameAsBilling);
-    
-    // If checked done, copy delivery address to billing address
-    if (!sameAsBilling) {
-      setUserDetails(prev => ({
-        ...prev,
-        BillingAddress: { ...prev.DeliveryAddress }
-      }));
-
-      // Clear billing address errors if we're copying from delivery
-      if (formSubmitted) {
-        let newErrors = { ...errors };
-        Object.keys(newErrors)
-          .filter(key => key.startsWith('BillingAddress'))
-          .forEach(key => delete newErrors[key]);
-        setErrors(newErrors);
+    if (!value.trim()) {
+      error = `${name.replace(/([A-Z])/g, " $1")} is required`;
+    } else {
+      switch (name) {
+        case "firstName":
+        case "lastName":
+          if (!/^[A-Za-z\s]+$/.test(value)) error = "Only letters are allowed";
+          break;
+        case "email":
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+            error = "Invalid Email format";
+          break;
+        case "contactNumber":
+          if (!/^\d{10,15}$/.test(value)) error = "Must be 10-15 digits";
+          break;
+        case "postcode":
+          if (!/^[A-Z0-9 ]{5,8}$/i.test(value))
+            error = "Invalid UK Postcode format";
+          break;
+        default:
+          break;
       }
     }
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [section ? `${section}.${name}` : name]: error,
+    }));
+
+    return !error;
   };
 
-  //Returns error messages based on validation rules for different fields.
-  const getFieldError = (name, value) => {
-    if (!value || !value.toString().trim()) {
-      return `${name.replace(/([A-Z])/g, " $1").trim()} is required`;
-    }
-    
-    switch (name) {
-      case "FirstName":
-      case "LastName":
-        if (!/^[A-Za-z\s]+$/.test(value)) return "Only letters are allowed";
-        break;
-      case "Email":
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "Invalid Email format";
-        break;
-      case "ContactNumber":
-        if (!/^\d{10,15}$/.test(value)) return "Must be 10-15 digits";
-        break;
-      case "Postcode":
-        if (!/^[A-Z0-9]{1,4} ?[0-9][A-Z]{2}$/i.test(value)) return "Invalid UK Postcode format";
-        break;
-      case "HouseNumber":
-        if (!/^[0-9a-zA-Z\s\-\/\.]+$/.test(value)) return "Invalid house number format";
-        break;
-    }
-    
-    return "";
+  const handleInputChange = (e, section = null) => {
+    const { name, value } = e.target;
+    setUserDetails((prev) => ({
+      ...prev,
+      [section ? section : name]: section
+        ? { ...prev[section], [name]: value }
+        : value,
+    }));
+    validateField(name, value, section);
   };
 
-  // Validate all form fields
-  const validateAllFields = () => {
+  const handleSameAsBillingChange = (e) => {
+    const checked = e.target.checked;
+    setSameAsBilling(checked);
+    if (checked) {
+      setUserDetails((prev) => ({
+        ...prev,
+        billingAddress: { ...prev.deliveryAddress },
+      }));
+    }
+  };
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login");
+    }
+  }, [user, loading, router]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    if (!user?.id) {
+      alert("Please log in to proceed with checkout.");
+      router.push("/login");
+      return;
+    }
+  
     let newErrors = {};
     let isValid = true;
-
-    
-    ["FirstName", "LastName", "Email", "ContactNumber"].forEach(field => {
-      const error = getFieldError(field, UserDetails[field]);
-      if (error) {
-        newErrors[field] = error;
-        isValid = false;
-      }
-    });
-
-    
-    Object.entries(UserDetails.DeliveryAddress).forEach(([key, value]) => {
-      if (key !== "State") { // Skip optional State field
-        const error = getFieldError(key, value);
-        if (error) {
-          newErrors[`DeliveryAddress.${key}`] = error;
-          isValid = false;
-        }
-      }
-    });
-
-   
-    if (!sameAsBilling) {
-      Object.entries(UserDetails.BillingAddress).forEach(([key, value]) => {
-        if (key !== "State") { // Skip optional State field
-          const error = getFieldError(key, value);
-          if (error) {
-            newErrors[`BillingAddress.${key}`] = error;
+  
+    Object.entries(userDetails).forEach(([key, value]) => {
+      if (typeof value === "object") {
+        Object.entries(value).forEach(([subKey, subValue]) => {
+          const isValidField = validateField(subKey, subValue, key);
+          if (!isValidField) {
+            newErrors[`${key}.${subKey}`] = true;
             isValid = false;
+            console.log(`Validation failed for ${key}.${subKey}: ${subValue}`); // Debug log
           }
+        });
+      } else {
+        const isValidField = validateField(key, value);
+        if (!isValidField) {
+          newErrors[key] = true;
+          isValid = false;
+          console.log(`Validation failed for ${key}: ${value}`); // Debug log
         }
-      });
-    }
-
-    // Update errors state with all validation results at once
+      }
+    });
+  
+    console.log("Errors:", newErrors); // Log all errors
+    console.log("Is Valid:", isValid); // Log final validity
+  
     setErrors(newErrors);
-    return isValid;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Set formSubmitted to true BEFORE validation
-    setFormSubmitted(true);
-    
-    const isValid = validateAllFields();
-    
+  
     if (isValid) {
-      console.log("Checkout data submitted:", UserDetails);
-      alert("Proceeding to payment...");
-      router.push("/payment");
+      console.log("Checkout data submitted:", userDetails);
+      // ... rest of your submit logic
     } else {
-      //this will ensure that css styles are applied immediately
-      setTimeout(() => {
-        // Find and scroll to the first error element
-        const firstErrorElement = document.querySelector('.input-error');
-        if (firstErrorElement) {
-          firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          firstErrorElement.focus();
-        }
-      }, 0);
-      
-      alert("Please fill in all required fields before proceeding.");
+      alert("Please correct the errors before proceeding.");
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="checkout-container">
-      <h1 className="heading">Checkout</h1>
-      
-      <form onSubmit={handleSubmit} noValidate>
+      <h1 className="heading">Contact Information</h1>
+      <form onSubmit={handleSubmit}>
         <section className="checkout-section">
-          <h2>Personal Details</h2>
-          
-          <div className="form-row">
-            <div className={`form-group ${errors.FirstName ? "has-error" : ""}`}>
-              <label htmlFor="FirstName" className="required">First Name</label>
-              <input
-                type="text"
-                id="FirstName"
-                name="FirstName"
-                value={UserDetails.FirstName}
-                onChange={handleInputChange}
-                className={errors.FirstName ? "input-error" : ""}
-              />
-              {errors.FirstName && <span className="error-message">{errors.FirstName}</span>}
+          <h2>1. Delivery Options</h2>
+          <div className="delivery-method-options">
+            <h3>Delivery Method</h3>
+            <div className="radio-group">
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="deliveryOption"
+                  value="standard"
+                  checked={userDetails.deliveryOption === "standard"}
+                  onChange={(e) =>
+                    setUserDetails({
+                      ...userDetails,
+                      deliveryOption: e.target.value,
+                    })
+                  }
+                />
+                <span className="radio-text">
+                  Standard Delivery (4-7 working days)
+                </span>
+              </label>
             </div>
-            
-            <div className={`form-group ${errors.LastName ? "has-error" : ""}`}>
-              <label htmlFor="LastName" className="required">Last Name</label>
-              <input
-                type="text"
-                id="LastName"
-                name="LastName"
-                value={UserDetails.LastName}
-                onChange={handleInputChange}
-                className={errors.LastName ? "input-error" : ""}
-              />
-              {errors.LastName && <span className="error-message">{errors.LastName}</span>}
-            </div>
-          </div>
-          
-          <div className="form-row">
-            <div className={`form-group ${errors.Email ? "has-error" : ""}`}>
-              <label htmlFor="Email" className="required">Email Address</label>
-              <input
-                type="email"
-                id="Email"
-                name="Email"
-                value={UserDetails.Email}
-                onChange={handleInputChange}
-                className={errors.Email ? "input-error" : ""}
-              />
-              {errors.Email && <span className="error-message">{errors.Email}</span>}
-            </div>
-            
-            <div className={`form-group ${errors.ContactNumber ? "has-error" : ""}`}>
-              <label htmlFor="ContactNumber" className="required">Contact Number</label>
-              <input
-                type="tel"
-                id="ContactNumber"
-                name="ContactNumber"
-                value={UserDetails.ContactNumber}
-                onChange={handleInputChange}
-                className={errors.ContactNumber ? "input-error" : ""}
-              />
-              {errors.ContactNumber && <span className="error-message">{errors.ContactNumber}</span>}
+            <div className="radio-group">
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="deliveryOption"
+                  value="express"
+                  checked={userDetails.deliveryOption === "express"}
+                  onChange={(e) =>
+                    setUserDetails({
+                      ...userDetails,
+                      deliveryOption: e.target.value,
+                    })
+                  }
+                />
+                <span className="radio-text">
+                  Express Delivery (1-2 working days)
+                </span>
+              </label>
             </div>
           </div>
         </section>
-        
+
         <section className="checkout-section">
-          <h2>Delivery Address</h2>
-          
-          <div className="form-row">
-            <div className={`form-group ${errors['DeliveryAddress.HouseNumber'] ? "has-error" : ""}`}>
-              <label htmlFor="dHouseNumber" className="required">House Number</label>
-              <input
-                type="text"
-                id="dHouseNumber"
-                name="HouseNumber"
-                value={UserDetails.DeliveryAddress.HouseNumber}
-                onChange={(e) => handleAddressChange('DeliveryAddress', e)}
-                className={errors['DeliveryAddress.HouseNumber'] ? "input-error" : ""}
-              />
-              {errors['DeliveryAddress.HouseNumber'] && 
-                <span className="error-message">{errors['DeliveryAddress.HouseNumber']}</span>}
-            </div>
-            
-            <div className={`form-group ${errors['DeliveryAddress.Street'] ? "has-error" : ""}`}>
-              <label htmlFor="dStreet" className="required">Street</label>
-              <input
-                type="text"
-                id="dStreet"
-                name="Street"
-                value={UserDetails.DeliveryAddress.Street}
-                onChange={(e) => handleAddressChange('DeliveryAddress', e)}
-                className={errors['DeliveryAddress.Street'] ? "input-error" : ""}
-              />
-              {errors['DeliveryAddress.Street'] && 
-                <span className="error-message">{errors['DeliveryAddress.Street']}</span>}
-            </div>
-          </div>
-          
-          <div className="form-row">
-            <div className={`form-group ${errors['DeliveryAddress.City'] ? "has-error" : ""}`}>
-              <label htmlFor="dCity" className="required">City</label>
-              <input
-                type="text"
-                id="dCity"
-                name="City"
-                value={UserDetails.DeliveryAddress.City}
-                onChange={(e) => handleAddressChange('DeliveryAddress', e)}
-                className={errors['DeliveryAddress.City'] ? "input-error" : ""}
-              />
-              {errors['DeliveryAddress.City'] && 
-                <span className="error-message">{errors['DeliveryAddress.City']}</span>}
-            </div>
-            
-            <div className={`form-group ${errors['DeliveryAddress.Postcode'] ? "has-error" : ""}`}>
-              <label htmlFor="dPostcode" className="required">Postcode</label>
-              <input
-                type="text"
-                id="dPostcode"
-                name="Postcode"
-                value={UserDetails.DeliveryAddress.Postcode}
-                onChange={(e) => handleAddressChange('DeliveryAddress', e)}
-                className={errors['DeliveryAddress.Postcode'] ? "input-error" : ""}
-              />
-              {errors['DeliveryAddress.Postcode'] && 
-                <span className="error-message">{errors['DeliveryAddress.Postcode']}</span>}
-            </div>
-          </div>
-          
+          <h2>2. Contact Details</h2>
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="dState">County/State (optional)</label>
+              <label htmlFor="firstName">First Name *</label>
               <input
                 type="text"
-                id="dState"
-                name="State"
-                value={UserDetails.DeliveryAddress.State}
-                onChange={(e) => handleAddressChange('DeliveryAddress', e)}
+                id="firstName"
+                name="firstName"
+                value={userDetails.firstName}
+                onChange={handleInputChange}
+                className={errors.firstName ? "input-error" : ""}
+                required
               />
+              {errors.firstName && (
+                <p className="error-message">{errors.firstName}</p>
+              )}
+            </div>
+            <div className="form-group">
+              <label htmlFor="lastName">Last Name *</label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={userDetails.lastName}
+                onChange={handleInputChange}
+                className={errors.lastName ? "input-error" : ""}
+                required
+              />
+              {errors.lastName && (
+                <p className="error-message">{errors.lastName}</p>
+              )}
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="email">Email Address *</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={userDetails.email}
+                onChange={handleInputChange}
+                className={errors.email ? "input-error" : ""}
+                required
+              />
+              {errors.email && <p className="error-message">{errors.email}</p>}
+            </div>
+            <div className="form-group">
+              <label htmlFor="contactNumber">Contact Number *</label>
+              <input
+                type="tel"
+                id="contactNumber"
+                name="contactNumber"
+                value={userDetails.contactNumber}
+                onChange={handleInputChange}
+                className={errors.contactNumber ? "input-error" : ""}
+                required
+              />
+              {errors.contactNumber && (
+                <p className="error-message">{errors.contactNumber}</p>
+              )}
             </div>
           </div>
         </section>
-        
+
         <section className="checkout-section">
-          <h2>Billing Address</h2>
-          
-          <div className="checkbox-group">
+          <h2>3. Delivery Address</h2>
+          <div className="form-group">
+            <label htmlFor="street">Street Address *</label>
             <input
-              type="checkbox"
-              id="sameAsBilling"
-              checked={sameAsBilling}
-              onChange={handleCheckboxChange}
+              type="text"
+              id="street"
+              name="street"
+              value={userDetails.deliveryAddress.street}
+              onChange={(e) => handleInputChange(e, "deliveryAddress")}
+              className={errors["deliveryAddress.street"] ? "input-error" : ""}
+              required
             />
-            <label htmlFor="sameAsBilling">Same as delivery address</label>
+            {errors["deliveryAddress.street"] && (
+              <p className="error-message">
+                {errors["deliveryAddress.street"]}
+              </p>
+            )}
           </div>
-          
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="city">City/Town *</label>
+              <input
+                type="text"
+                id="city"
+                name="city"
+                value={userDetails.deliveryAddress.city}
+                onChange={(e) => handleInputChange(e, "deliveryAddress")}
+                className={errors["deliveryAddress.city"] ? "input-error" : ""}
+                required
+              />
+              {errors["deliveryAddress.city"] && (
+                <p className="error-message">
+                  {errors["deliveryAddress.city"]}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="postcode">Postcode *</label>
+              <input
+                type="text"
+                id="postcode"
+                name="postcode"
+                value={userDetails.deliveryAddress.postcode}
+                onChange={(e) => handleInputChange(e, "deliveryAddress")}
+                className={
+                  errors["deliveryAddress.postcode"] ? "input-error" : ""
+                }
+                required
+              />
+              {errors["deliveryAddress.postcode"] && (
+                <p className="error-message">
+                  {errors["deliveryAddress.postcode"]}
+                </p>
+              )}
+            </div>
+            <div className="form-group">
+              <label htmlFor="country">Country *</label>
+              <select
+                id="country"
+                name="country"
+                value={userDetails.deliveryAddress.country}
+                onChange={(e) => handleInputChange(e, "deliveryAddress")}
+                className={
+                  errors["deliveryAddress.country"] ? "input-error" : ""
+                }
+                required
+              >
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Ireland">Ireland</option>
+                <option value="France">France</option>
+                <option value="Germany">Germany</option>
+              </select>
+              {errors["deliveryAddress.country"] && (
+                <p className="error-message">
+                  {errors["deliveryAddress.country"]}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="checkbox-group">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={sameAsBilling}
+                onChange={handleSameAsBillingChange}
+              />
+              <span>Billing address same as delivery address</span>
+            </label>
+          </div>
+
           {!sameAsBilling && (
-            <>
-              <div className="form-row">
-                <div className={`form-group ${errors['BillingAddress.HouseNumber'] ? "has-error" : ""}`}>
-                  <label htmlFor="bHouseNumber" className="required">House Number</label>
-                  <input
-                    type="text"
-                    id="bHouseNumber"
-                    name="HouseNumber"
-                    value={UserDetails.BillingAddress.HouseNumber}
-                    onChange={(e) => handleAddressChange('BillingAddress', e)}
-                    className={errors['BillingAddress.HouseNumber'] ? "input-error" : ""}
-                  />
-                  {errors['BillingAddress.HouseNumber'] && 
-                    <span className="error-message">{errors['BillingAddress.HouseNumber']}</span>}
-                </div>
-                
-                <div className={`form-group ${errors['BillingAddress.Street'] ? "has-error" : ""}`}>
-                  <label htmlFor="bStreet" className="required">Street</label>
-                  <input
-                    type="text"
-                    id="bStreet"
-                    name="Street"
-                    value={UserDetails.BillingAddress.Street}
-                    onChange={(e) => handleAddressChange('BillingAddress', e)}
-                    className={errors['BillingAddress.Street'] ? "input-error" : ""}
-                  />
-                  {errors['BillingAddress.Street'] && 
-                    <span className="error-message">{errors['BillingAddress.Street']}</span>}
-                </div>
+            <div className="billing-address">
+              <h3>Billing Address</h3>
+              <div className="form-group">
+                <label htmlFor="billing-street">Street Address *</label>
+                <input
+                  type="text"
+                  id="billing-street"
+                  name="street"
+                  value={userDetails.billingAddress.street}
+                  onChange={(e) => handleInputChange(e, "billingAddress")}
+                  className={
+                    errors["billingAddress.street"] ? "input-error" : ""
+                  }
+                  required
+                />
+                {errors["billingAddress.street"] && (
+                  <p className="error-message">
+                    {errors["billingAddress.street"]}
+                  </p>
+                )}
               </div>
-              
-              <div className="form-row">
-                <div className={`form-group ${errors['BillingAddress.City'] ? "has-error" : ""}`}>
-                  <label htmlFor="bCity" className="required">City</label>
-                  <input
-                    type="text"
-                    id="bCity"
-                    name="City"
-                    value={UserDetails.BillingAddress.City}
-                    onChange={(e) => handleAddressChange('BillingAddress', e)}
-                    className={errors['BillingAddress.City'] ? "input-error" : ""}
-                  />
-                  {errors['BillingAddress.City'] && 
-                    <span className="error-message">{errors['BillingAddress.City']}</span>}
-                </div>
-                
-                <div className={`form-group ${errors['BillingAddress.Postcode'] ? "has-error" : ""}`}>
-                  <label htmlFor="bPostcode" className="required">Postcode</label>
-                  <input
-                    type="text"
-                    id="bPostcode"
-                    name="Postcode"
-                    value={UserDetails.BillingAddress.Postcode}
-                    onChange={(e) => handleAddressChange('BillingAddress', e)}
-                    className={errors['BillingAddress.Postcode'] ? "input-error" : ""}
-                  />
-                  {errors['BillingAddress.Postcode'] && 
-                    <span className="error-message">{errors['BillingAddress.Postcode']}</span>}
-                </div>
-              </div>
-              
+
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="bState">County/State (optional)</label>
+                  <label htmlFor="billing-city">City/Town *</label>
                   <input
                     type="text"
-                    id="bState"
-                    name="State"
-                    value={UserDetails.BillingAddress.State}
-                    onChange={(e) => handleAddressChange('BillingAddress', e)}
+                    id="billing-city"
+                    name="city"
+                    value={userDetails.billingAddress.city}
+                    onChange={(e) => handleInputChange(e, "billingAddress")}
+                    className={
+                      errors["billingAddress.city"] ? "input-error" : ""
+                    }
+                    required
                   />
+                  {errors["billingAddress.city"] && (
+                    <p className="error-message">
+                      {errors["billingAddress.city"]}
+                    </p>
+                  )}
+                </div>
+                <div className="form-group">
+                  <label htmlFor="billing-state">County</label>
+                  <input
+                    type="text"
+                    id="billing-state"
+                    name="state"
+                    value={userDetails.billingAddress.state}
+                    onChange={(e) => handleInputChange(e, "billingAddress")}
+                    className={
+                      errors["billingAddress.state"] ? "input-error" : ""
+                    }
+                  />
+                  {errors["billingAddress.state"] && (
+                    <p className="error-message">
+                      {errors["billingAddress.state"]}
+                    </p>
+                  )}
                 </div>
               </div>
-            </>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="billing-postcode">Postcode *</label>
+                  <input
+                    type="text"
+                    id="billing-postcode"
+                    name="postcode"
+                    value={userDetails.billingAddress.postcode}
+                    onChange={(e) => handleInputChange(e, "billingAddress")}
+                    className={
+                      errors["billingAddress.postcode"] ? "input-error" : ""
+                    }
+                    required
+                  />
+                  {errors["billingAddress.postcode"] && (
+                    <p className="error-message">
+                      {errors["billingAddress.postcode"]}
+                    </p>
+                  )}
+                </div>
+                <div className="form-group">
+                  <label htmlFor="billing-country">Country *</label>
+                  <select
+                    id="billing-country"
+                    name="country"
+                    value={userDetails.billingAddress.country}
+                    onChange={(e) => handleInputChange(e, "billingAddress")}
+                    className={
+                      errors["billingAddress.country"] ? "input-error" : ""
+                    }
+                    required
+                  >
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="Scotland">Scotland</option>
+                    <option value="Wales">Wales</option>
+                    <option value="Germany">Germany</option>
+                  </select>
+                  {errors["billingAddress.country"] && (
+                    <p className="error-message">
+                      {errors["billingAddress.country"]}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
           )}
         </section>
-        
-        <div className="privacy-notice">
-          <p>
-            By submitting this form, you agree to our <a href="/privacy-policy">Privacy Policy</a> and 
-            <a href="/terms-of-service"> Terms of Service</a>. Your personal information will be processed 
-            in accordance with our policies.
-          </p>
-        </div>
-        
-        <button type="submit" className="submit-button">
-          Proceed to Payment
-        </button>
+
+        <section className="checkout-section">
+          <div className="privacy-notice">
+            <p>
+              We will use your information in accordance with our{" "}
+              <a href="#">privacy notice</a>. Updated April 2025.
+            </p>
+          </div>
+
+          <label
+            htmlFor="savePaymentMethod"
+            className="flex items-center justify-start gap-2"
+          >
+            <input
+              type="checkbox"
+              className="bg-neutral-100 text-black py-4 px-4 rounded-[0.5rem]"
+              name="savePaymentMethod"
+              checked={saveInfo} // Bind to saveInfo state
+              onChange={(e) => setSaveInfo(e.target.checked)} // Update saveInfo
+            />
+            <span>Save information for future payment</span>
+          </label>
+
+          <button type="submit" className="checkout-btn">
+            Proceed to Payment
+          </button>
+        </section>
       </form>
     </div>
   );
 };
 
 export default CheckoutPage;
+
