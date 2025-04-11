@@ -48,7 +48,7 @@ const genders = [...new Set(subcategories.map((sub) => sub.name))];
 
 const CategoryCard = ({ shoeTypeName, link }) => (
   <div className="card">
-    <Link href={link} className="hover:text-yellow-600">
+    <Link href={link} className="hover:text-sky-600">
       {shoeTypeName}
     </Link>
   </div> 
@@ -367,7 +367,7 @@ export default function Navbar() {
               <div className="lg:flex items-center justify-center gap-4 hidden text-sm">
                 <Link
                   href="/cart"
-                  className="flex items-center justify-center gap-1 hover:text-yellow-700"
+                  className="flex items-center justify-center gap-1 hover:text-sky-700"
                 >
                   <SlBasket className="h-4" />
                   <span className="ml-2">Cart</span>
@@ -375,7 +375,7 @@ export default function Navbar() {
                 <span className="h-6 border-r-[1px] border-neutral-300" />
                 <Link
                   href="/wishlist"
-                  className="flex items-center justify-center gap-1 hover:text-yellow-700"
+                  className="flex items-center justify-center gap-1 hover:text-sky-700"
                 >
                   <PiHeart className="h-4" />
                   <span className="ml-2">Wishlist</span>
@@ -383,7 +383,7 @@ export default function Navbar() {
                 <span className="h-6 border-r-[1px] border-neutral-300" />
                 <Link
                   href="/contact-us"
-                  className="flex items-center justify-center gap-1 hover:text-yellow-700"
+                  className="flex items-center justify-center gap-1 hover:text-sky-700"
                 >
                   <IoCallOutline className="h-4" />
                   <span className="ml-2">Contact us</span>
@@ -489,7 +489,7 @@ export default function Navbar() {
                 key={`${gender}-${index}`}
                 className="gender-category w-72 p-2"
               >
-                <h2 className="text-left text-4xl mb-5 border-b-[2px] border-yellow-400 py-2">
+                <h2 className="text-left text-4xl mb-5 border-b-[2px] border-sky-400 py-2">
                   {gender}
                 </h2>
                 <div className="subcategory-cards flex flex-col gap-2 text-xl">
@@ -529,14 +529,14 @@ export default function Navbar() {
             <div className="relative w-full">
               <input
                 type="text"
-                className="w-full h-12 pl-12 pr-24 rounded-full bg-white focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+                className="w-full h-12 pl-12 pr-24 rounded-full bg-white focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500"
                 value={inputText}
                 onChange={handleInputChange}
                 placeholder="Search..."
               />
               <IoSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 h-6 w-6" />
               <button
-                className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-yellow-400 text-black px-4 py-2 rounded-full"
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-sky-400 shadow-[0px_0px_10px_1.5px] shadow-sky-400 text-white px-4 py-2 rounded-full"
                 onClick={() => setShowFullPageSearch(false)}
               >
                 Cancel

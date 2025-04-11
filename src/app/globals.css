@@ -25,6 +25,27 @@ body {
 }
 
 
+@font-face {
+  font-family: 'GostekExtraBoldItalic';
+  src: url('/fonts/HostGrotesk-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 900;
+}
+
+.font-GostekBoldItalic {
+  font-family: 'GostekExtraBoldItalic';
+}
+
+@font-face {
+  font-family: 'GostekBold';
+  src: url('/fonts/HostGrotesk-Bold.ttf') format('truetype');
+  font-weight: 900;
+}
+
+.font-GostekBold {
+  font-family: 'GostekBold';
+}
+
+
 
 /* Primary color  */
 .text-prime {
@@ -74,8 +95,8 @@ body {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: radial-gradient(farthest-side,#ffbb00 94%,#0000) top/9px 9px no-repeat,
-         conic-gradient(#0000 30%,#ffbb00);
+  background: radial-gradient(farthest-side,#00AAFF,#0000) top/9px 9px no-repeat,
+         conic-gradient(#0000 30%,#00AAFF);
   mask: radial-gradient(farthest-side,#0000 calc(100% - 9px),#000 0);
   animation: spinner-c7wet2 1s infinite linear;
   -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 9px),#000 0);

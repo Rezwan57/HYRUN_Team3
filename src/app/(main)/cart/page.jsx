@@ -57,7 +57,7 @@ const CartPage = () => {
                           "No size or color selected"
                         )}
                       </p>
-                      <p className="text-2xl font-bold text-yellow-600">
+                      <p className="text-2xl font-bold text-sky-600">
                         £{((Number(item.selling_price) || 0) * item.quantity).toFixed(2)}
                       </p>
                       <p className="text-sm text-gray-500">
@@ -93,7 +93,7 @@ const CartPage = () => {
             ) : (
               <div className="text-center py-8">
                 <p className="text-gray-600 mb-4">Your cart is empty.</p>
-                <Link href="/" className="text-yellow-500 hover:text-yellow-600 transition-colors">
+                <Link href="/" className="text-prime hover:text-sky-600 transition-colors">
                   Continue Shopping
                 </Link>
               </div>
@@ -104,13 +104,13 @@ const CartPage = () => {
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex justify-between items-center mb-6">
                 <span className="text-xl font-semibold">Total</span>
-                <span className="text-3xl font-bold text-yellow-600">
+                <span className="text-3xl font-bold text-sky-600">
                   £{calculateTotal().toFixed(2)}
                 </span>
               </div>
               <button
                 onClick={handleProceedToCheckout}
-                className="w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600 transition-colors text-lg font-semibold"
+                className="w-full bg-prime text-white py-3 rounded-lg hover:bg-sky-600 transition-colors text-lg font-semibold"
               >
                 Proceed to Checkout
               </button>

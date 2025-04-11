@@ -8,13 +8,12 @@ import "./HotProducts.css";
 const BrandLogos = () => {
   return (
     <div className="brand-logos-container">
-      <h2 className="brand-logos-title">Brands You Love</h2>
       <div className="brand-logos">
-        <img src="/assets/Shoe brand logos/Adidas.svg" alt="Adidas" />
-        <img src="/assets/Shoe brand logos/NB.svg" alt="New-Balance" />
-        <img src="/assets/Shoe brand logos/puma.svg" alt="Puma" />
-        <img src="/assets/Shoe brand logos/rebook.svg" alt="Rebook" />
-        <img src="/assets/Shoe brand logos/nike.svg" alt="Nike" />
+        <Image src="/assets/Shoe brand logos/Adidas.svg" width={200} height={200} alt="Adidas" />
+        <Image src="/assets/Shoe brand logos/NB.svg" width={200} height={200} alt="New-Balance" />
+        <Image src="/assets/Shoe brand logos/puma.svg" width={200} height={200} alt="Puma" />
+        <Image src="/assets/Shoe brand logos/rebook.svg" width={200} height={200} alt="Rebook" />
+        <Image src="/assets/Shoe brand logos/nike.svg" width={200} height={200} alt="Nike" />
       </div>
     </div>
   );
