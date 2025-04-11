@@ -42,7 +42,7 @@ function Carousel() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "-200%", opacity: 0 }}
               transition={{ duration: 1.5 }}
-              className="relative flex flex-col-reverse lg:flex-row items-center justify-start h-[75vh] lg:h-full overflow-hidden lg:mt-0 mt-0 lg:m-5 m-5 bg-gradient-to-br from-[#f5f5f5] to-[#dddddd] rounded-3xl"
+              className="relative flex flex-col-reverse lg:flex-row items-center justify-end lg:justify-start h-[75vh] lg:h-full overflow-hidden lg:mt-0 mt-0 lg:m-5 m-5 bg-gradient-to-br from-[#f5f5f5] to-[#dddddd] rounded-3xl"
             >
               {/* Text Section */}
               <motion.div
@@ -51,12 +51,12 @@ function Carousel() {
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "-200%", opacity: 0 }}
                 transition={{ duration: 1.5 }}
-                className="flex flex-col items-center lg:items-start justify-end lg:justify-start w-4/5 lg:w-2/3 h-full py-32 lg:pl-24 text-center lg:text-left gap-0 lg:gap-2 z-10"
+                className="flex flex-col items-center lg:items-start justify-end lg:justify-start w-4/5 lg:w-2/3 h-full lg:py-32 py-8 lg:pl-24 text-center lg:text-left gap-0 lg:gap-2 z-10"
               >
                 <h2 className="text-xl lg:text-[3.5rem]  leading-none font-GostekBoldItalic">
                   {sneaker.name}
                 </h2>
-                <p className="text-xs lg:text-xl mt-5 lg:mt-4 max-w-full lg:max-w-2xl lg:leading-relaxed leading-normal">
+                <p className="text-[12px] lg:text-xl mt-5 lg:mt-4 max-w-full lg:max-w-2xl lg:leading-relaxed leading-normal">
                   {sneaker.shortDescription}
                 </p>
                 <Link href="/products" className="bg-prime text-white py-3 px-8 lg:py-4 lg:px-14 rounded-full mt-6 lg:mt-10">
@@ -74,14 +74,14 @@ function Carousel() {
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "200%", opacity: 0 }}
                 transition={{ duration: 1 }}
-                className="absolute lg:top-5 top-[5%] left-[10%] lg:left-1/2 transform -translate-x-1/2 -translate-y-[150%] flex items-center justify-center w-[72.5vw] lg:w-[95vw] h-auto lg:h-full"
+                className="productImage"
               >
                 <Image
                   src={sneaker.image}
                   alt={sneaker.name}
                   width={450}
                   height={450}
-                className="productShadow w-125 h-125 lg:w-[30vw] lg:h-auto object-contain"
+                className="productShadow"
                 />
               </motion.div>
             </motion.div>
