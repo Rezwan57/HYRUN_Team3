@@ -1,3 +1,6 @@
+
+/* 2nd version i kept for the backup purpose if 1st is not working properly */
+/*
 .container {
   margin:auto;
 }
@@ -9,7 +12,7 @@
   padding-top: 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;   
   padding: 10px 20px;
 }
 
@@ -61,10 +64,10 @@
   border-radius: 1rem;
 }
 
-/*.productLabel {
+{ /*.productLabel {
   color: rgb(138, 39, 213);
   font-weight: bold;
-} */
+} *
 
 .productName {
   font-size: 18px;
@@ -81,7 +84,7 @@
 
 /*.productColors {
   color: gray;
-} */
+} *
 
 .productPrice {
   font-size: 20px;
@@ -128,7 +131,7 @@
 /* new one 
 /* Add this to your page.css file */
 
-/* Active filters display */
+/* Active filters display *
 .active-filters {
   display: flex;
   flex-wrap: wrap;
@@ -177,7 +180,7 @@
   font-size: 14px;
 }
 
-/* Existing filter sidebar styles */
+/* Existing filter sidebar styles *
 .filter-overlay {
   position: fixed;
   top: 0;
@@ -304,3 +307,4 @@
   flex-direction: column;
   align-items: center;
 }
+  */

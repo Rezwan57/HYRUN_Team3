@@ -27,21 +27,21 @@ const categories = [
 ];
 
 const subcategories = [
-  { id: 1, name: "Men", category_id: 1, link: "/products/Trainers/mens" },
-  { id: 2, name: "Women", category_id: 1, link: "/products/Trainers/womens" },
-  { id: 3, name: "Kids", category_id: 1, link: "/products/Trainers/kids" },
-  { id: 4, name: "Men", category_id: 2, link: "/products/RunningShoes/mens" },
-  { id: 5, name: "Women", category_id: 2, link: "/products/RunningShoes/womens" },
-  { id: 6, name: "Kids", category_id: 2, link: "/products/RunningShoes/kids" },
-  { id: 7, name: "Men", category_id: 3, link: "/products/FootballShoes/mens" },
-  { id: 8, name: "Women", category_id: 3, link: "/products/FootballShoes/womens" },
-  { id: 9, name: "Kids", category_id: 3, link: "/products/FootballShoes/kids" },
-  { id: 10, name: "Men", category_id: 4, link: "/products/WalkingBoots/mens" },
-  { id: 11, name: "Women", category_id: 4, link: "/products/WalkingBoots/womens" },
-  { id: 12, name: "Kids", category_id: 4, link: "/products/WalkingBoots/kids" },
-  { id: 13, name: "Men", category_id: 5, link: "/products/BasketballShoes/mens" },
-  { id: 14, name: "Women", category_id: 5, link: "/products/BasketballShoes/womens" },
-  { id: 15, name: "Kids", category_id: 5, link: "/products/BasketballShoes/kids" },
+  { id: 1, name: "Men", category_id: 1, link: "/products/mens/Trainers" },
+  { id: 2, name: "Women", category_id: 1, link: "/products/womens/Trainers" },
+  { id: 3, name: "Kids", category_id: 1, link: "/products/kids/Trainers" },
+  { id: 4, name: "Men", category_id: 2, link: "/products/mens/RunningShoes" },
+  { id: 5, name: "Women", category_id: 2, link: "/products/womens/RunningShoes" },
+  { id: 6, name: "Kids", category_id: 2, link: "/products/kids/RunningShoes" },
+  { id: 7, name: "Men", category_id: 3, link: "/products/mens/FootballShoes" },
+  { id: 8, name: "Women", category_id: 3, link: "/products/womens/FootballShoes" },
+  { id: 9, name: "Kids", category_id: 3, link: "/products/kids/FootballShoes" },
+  { id: 10, name: "Men", category_id: 4, link: "/products/mens/WalkingBoots" },
+  { id: 11, name: "Women", category_id: 4, link: "/products/womens/WalkingBoots" },
+  { id: 12, name: "Kids", category_id: 4, link: "/products/kids/WalkingBoots" },
+  { id: 13, name: "Men", category_id: 5, link: "/products/mens/BasketballShoes" },
+  { id: 14, name: "Women", category_id: 5, link: "/products/womens/BasketballShoes" },
+  { id: 15, name: "Kids", category_id: 5, link: "/products/kids/BasketballShoes" },
 ];
 
 const genders = [...new Set(subcategories.map((sub) => sub.name))];

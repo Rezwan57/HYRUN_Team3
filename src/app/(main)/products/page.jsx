@@ -1,4 +1,16 @@
 "use client";
+import DynamicPages from "@/components/ProductsPage/page";
+
+export default function AllproductsPage() {
+  return <DynamicPages />;
+}
+
+
+
+
+
+/* below is the 2nd versio of the code /*
+/*"use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -44,7 +56,7 @@ const ProductsPage = () => {
   /* We could use this to go from ID back to name, but we're not using it currently
   const brandIdToName = Object.entries(brandMap).reduce(
     (acc, [name, id]) => ({ ...acc, [id]: name }), {}
-  );*/
+  );
 
 
 
@@ -350,7 +362,7 @@ const ProductsPage = () => {
             Show Filters <FaFilter size={18} className="filter-icon" />
           </button>
           
-          {/* Show filters are currently applied */}
+          /* Show filters are currently applied 
           {hasActiveFilters() && (
             <div className="active-filters">
               <div className="active-filters-list">
@@ -379,7 +391,7 @@ const ProductsPage = () => {
       </div>
 
       
-      {/* Side panel with all our filter options */}
+      {/* Side panel with all our filter options 
       <FilterSidebar
         isOpen={isFilterOpen}
         onClose={closeFilter}
@@ -446,10 +458,11 @@ const ProductsPage = () => {
   );
 };
 
-export default ProductsPage;
+export default ProductsPage; 
+*/
 
 
-/* Below is the previous version of the code before adding the filters
+/* Below is the previous 1st version of the code before adding the filters
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
