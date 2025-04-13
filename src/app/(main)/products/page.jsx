@@ -41,8 +41,10 @@ const ProductsPage = () => {
   };
 
   return (
-    <div className="container">
-      <Breadcrumb />
+    <div className="w-full">
+      <div className="p-5"> 
+        <Breadcrumb />
+      </div>
       <div className="header-container">
         <h1 className="title">All Products ({products.length})</h1>
         <div className="filter-sort-container">
@@ -67,25 +69,27 @@ const ProductsPage = () => {
             passHref
             className="productCard"
           >
-            <Image
-              width={1000}
-              height={1000}
-              src={getImageUrl(product.product_id)}
-              alt={product.name}
-              className="productImage"
-            />
+            <span className="aspect-square">
+              <Image
+                width={1000}
+                height={1000}
+                src={getImageUrl(product.product_id)}
+                alt={product.name}
+                className="productImage bg-neutral-100"
+              />
+            </span>
 
             <div className="productDetails">
               <h2 className="productName">{product.name}</h2>
               <p className="productSubcategory">{product.subcategory} </p>
               <p className="productCategory">{product.category} </p>
 
-              <div className="productColors flex gap-2 mt-2">
+              <div className="productColors flex gap-1 lg:gap-2 mt-2">
                 {colors[product.product_id] &&
                   colors[product.product_id].map((color) => (
                     <span
                       key={color.color_id}
-                      className="h-6 w-6 rounded-full border"
+                      className="w-3 h-3 lg:h-6 lg:w-6 rounded-full border"
                       style={{ backgroundColor: color.hex_code }}
                     />
                   ))}
