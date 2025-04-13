@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="flex flex-col gap-32 mb-10">
+    <main className="flex flex-col gap-10 mb-10">
       <HeroSection />
       <HotProducts />
       <NewProduct />

@@ -20,8 +20,8 @@ function NewProducts() {
 
   return (
     <div className="flex flex-col gap-1 w-full h-auto p-4 mr-0 lg:pr-6 lg:p-0 overflow-hidden">
-      <div className="relative flex justify-center items-end bg-gradient-to-r from-yellow-100 to-yellow-200 rounded-3xl lg:rounded-s-none lg:rounded-e-[2rem] w-full h-full lg:pb-2 pb-10 lg:pt-20 pt-28">
-        <h1 className="w-full absolute top-0 left-0 text-[4.72rem] lg:text-[18vh] font-bold uppercase text-prime leading-[0.7]">
+      <div className="relative flex justify-center items-end bg-gradient-to-r from-sky-200 to-[var(--primary)] rounded-3xl lg:rounded-s-none lg:rounded-e-[2rem] w-full h-full lg:pb-2 pb-10 lg:pt-20 pt-28">
+        <h1 className="w-full absolute top-0 left-0 text-[4.72rem] lg:text-[18vh] font-bold uppercase text-black leading-[0.7]">
           New Arrival
         </h1>
 
@@ -29,7 +29,7 @@ function NewProducts() {
           {products.map((product, index) => (
             <div
               key={index}
-              className="flex flex-col gap-4 justify-center items-center p-2 shadow-xl bg-black rounded-3xl bg-opacity-60 backdrop-blur-xl m-2 hover:scale-110 transition-transform duration-300 cursor-pointer overflow-hidden"
+              className="flex flex-col gap-4 justify-center items-center p-2 shadow-xl bg-black rounded-3xl bg-opacity-30 backdrop-blur-xl m-2 hover:scale-110 transition-transform duration-300 cursor-pointer overflow-hidden"
             >
               <span className="flex justify-center items-center">
                 <Image
@@ -47,7 +47,7 @@ function NewProducts() {
                 £{product.selling_price}
               </span>
               
-              <AddToCart product={product} className="bg-prime text-black py-3 rounded-2xl w-full hover:bg-yellow-600 hover:text-white" />
+              <AddToCart product={product} className="bg-prime text-black py-3 rounded-2xl w-full hover:bg-sky-600 hover:text-white" />
             </div>
           ))}
         </div>
@@ -55,11 +55,11 @@ function NewProducts() {
 
       <button
         onClick={() => window.location.href = '/products'}
-        className="flex justify-between items-center self-end w-full lg:w-[35vw] h-auto bg-prime rounded-full p-2 hover:scale-105 hover:bg-yellow-600 transition-transform duration-300"
+        className="flex justify-between items-center self-end w-full lg:w-[35vw] h-auto bg-prime rounded-full p-2 hover:scale-105 hover:bg-sky-600 transition-transform duration-300"
       >
         <span className="p-4"></span>
         <span className="text-xl text-black">Show More</span>
-        <span className="bg-yellow-800 bg-opacity-40 text-white p-2 rounded-full text-xl">
+        <span className="bg-sky-800 bg-opacity-40 text-white p-2 rounded-full text-xl">
           <FaArrowRight />
         </span>
       </button>

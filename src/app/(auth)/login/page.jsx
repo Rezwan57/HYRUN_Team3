@@ -4,16 +4,24 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "../../../../public/assets/logo/LogoDark.png";
+import { useAuth } from "../../context/AuthContext";
 import { FaArrowLeft } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const userId = 1; 
+    login(userId); 
+    router.push("/checkout");
 
     if (!email || !password) {
       setError("Both fields are required!");
@@ -67,10 +75,10 @@ export default function Login() {
         <div className="flex justify-between items-start w-full p-10">
           <Link
             href="/"
-            className="flex items-center justify-center gap-2 w-auto hover:text-amber-500 transition-colors duration-300"
+            className="flex items-center justify-center gap-2 w-[20vw] lg:w-auto hover:text-amber-500 transition-colors duration-300"
           >
             <FaArrowLeft className="text-xl" />
-            <p>Back to Home</p>
+            <p className="hidden lg:block">Back to Home</p>
           </Link>
           <Image
             src={Logo}
@@ -80,9 +88,9 @@ export default function Login() {
             className="mb-4"
           />
         </div>
-        <div className="text-left w-96">
+        <div className="flex flex-col justify-center items-center text-left">
           <h2 className="text-3xl font-bold">
-            Welcome Back<span className="text-yellow-500">!</span>
+            Welcome Back<span className="text-sky-500">!</span>
           </h2>
           <p className="text-gray-600">Log in to Your Account</p>
 
@@ -90,14 +98,14 @@ export default function Login() {
           {error && <p className="text-red-500">{error}</p>}
 
           {/* Login Form */}
-          <form onSubmit={handleSubmit} className="mt-8 w-auto">
+          <form onSubmit={handleSubmit} className="mt-8 w-[80%] lg:w-[100%]">
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold ml-2 mb-1">
                 Email
               </label>
               <input
                 type="email"
-                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500"
                 placeholder="someone@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -111,7 +119,7 @@ export default function Login() {
               </label>
               <input
                 type="password"
-                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500"
+                className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500"
                 placeholder="at least 8 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -132,7 +140,7 @@ export default function Login() {
             {/* Login Button */}
             <button
               type="submit"
-              className="w-full bg-prime hover:bg-yellow-700 text-white font-bold py-3 px-4 rounded-full focus:outline-none focus:shadow-outline"
+              className="w-full bg-prime hover:bg-sky-700 text-white font-bold py-3 px-4 rounded-full focus:outline-none focus:shadow-outline"
               disabled={loading}
             >
               {loading ? "Logging in..." : "Login"}
@@ -156,3 +164,4 @@ export default function Login() {
     </div>
   );
 }
+
