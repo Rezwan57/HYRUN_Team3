@@ -92,9 +92,8 @@ const Product = () => {
     };
 
     fetchProduct();
-  }, [category, gender, slug]); // Depend on all params
+  }, [category, gender, slug]);
 
-  // Reset isAdded after 5 seconds
   useEffect(() => {
     if (isAdded) {
       const timer = setTimeout(() => {

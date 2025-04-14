@@ -37,7 +37,7 @@ function NewProducts() {
                   height={512}
                   src={getImageUrl(product.product_id)}
                   alt={product.name}
-                  className="lg:w-auto lg:max-w-56 h-auto object-contain rounded-2xl"
+                  className="lg:max-w-56 h-auto object-contain rounded-2xl aspect-square"
                 />
               </span>
               <span className="font-bold text-md text-white ">

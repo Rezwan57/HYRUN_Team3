@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const ProductForm = () => {
   const [formData, setFormData] = useState({
@@ -70,7 +71,7 @@ const ProductForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const submitData = new FormData();
-
+  
     Object.keys(formData).forEach((key) => {
       if (Array.isArray(formData[key])) {
         formData[key].forEach((val) => submitData.append(`${key}[]`, val));
@@ -78,15 +79,13 @@ const ProductForm = () => {
         submitData.append(key, formData[key]);
       }
     });
-
-    formData.images.forEach((file) => submitData.append("images[]", file));
-
+  
     try {
       const response = await fetch("/api/products", {
         method: "POST",
         body: submitData,
       });
-
+  
       if (response.ok) {
         alert("Product added successfully!");
         setFormData({
@@ -110,6 +109,7 @@ const ProductForm = () => {
       console.error("Error:", error);
     }
   };
+  
 
   const handleSizeChange = (size_id) => {
     const newSizes = formData.size_id.includes(size_id)
@@ -276,15 +276,44 @@ const ProductForm = () => {
           </div>
         </div>
 
-        <input
-          type="file"
-          name="images"
-          onChange={handleChange}
-          accept="image/*"
-          multiple
-          className="border p-2 w-full"
-          required
-        />
+        <div className="border p-2 w-full">
+          <label className="block mb-2">
+            <span className="sr-only">Choose images</span>
+            <input
+              type="file"
+              name="images"
+              onChange={handleChange}
+              accept="image/*"
+              multiple
+              className="block w-full text-sm text-gray-500
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-full file:border-0
+                file:text-sm file:font-semibold
+                file:bg-blue-50 file:text-blue-700
+                hover:file:bg-blue-100
+                focus:outline-none focus:ring-2 focus:ring-blue-200
+              "
+              required
+            />
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {formData.images.map((image, index) => (
+              <div key={index} className="relative">
+                <Image src={URL.createObjectURL(image)} alt={`Preview ${index}`} width={200} height={200} className="w-20 h-20 object-cover rounded-md" />
+                <button
+                  type="button"
+                  className="absolute flex justify-center items-center top-0 right-0 bg-red-500 h-5 w-5 text-white rounded-full p-1"
+                  onClick={() => {
+                    const newImages = formData.images.filter((_, i) => i !== index);
+                    setFormData({ ...formData, images: newImages });
+                  }}
+                >
+                  &times;
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
 
         <button
           type="submit"
