@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 import FilterSidebar from "@/components/filter_sidebar/page";
@@ -9,6 +9,9 @@ import { FaFilter } from "react-icons/fa";
 import "./page.css";
 
 const DynamicPages = () => {
+  // Add router for navigation when clearing URL filters
+  const router = useRouter();
+
   // Banner images mapping
   const BANNER_IMAGES = {
     Men: '/assets/gender/Men.webp',
@@ -87,12 +90,6 @@ const DynamicPages = () => {
     return BANNER_IMAGES.default;
   };
 
-  // Debug logging for me to check parameters working or not 
-  // once done i will remove it this code
-  console.log("URL parameters:", params);
-  console.log("Detected parameters:", { gender, category });
-
-
   // All variables we are using in the page
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -101,6 +98,16 @@ const DynamicPages = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+  
+  // Tracking the manually applied filters
+  // This will help us to know if the filter is applied by the user or not
+  const [manuallyAppliedFilters, setManuallyAppliedFilters] = useState({
+    size: false,
+    color: false,
+    brand: false,
+    gender: false,
+    category: false
+  });
 
   // Set initial filters based on improved URL parameter detection
   const initialFilters = {
@@ -147,7 +154,7 @@ const DynamicPages = () => {
   // React to URL parameters change
   useEffect(() => {
     if (initialLoadComplete) {
-      // Re-determine parameters after URL change
+      // Re-determing the parameters after URL change 
       const { gender: newGender, category: newCategory } = determineParameters();
       
       const updatedFilters = {
@@ -156,7 +163,12 @@ const DynamicPages = () => {
         category: newCategory,
       };
       
-      console.log("URL params changed, new detected params:", { newGender, newCategory });
+      // Reset manually applied status for gender and category when URL changes
+      setManuallyAppliedFilters(prev => ({
+        ...prev,
+        gender: false,
+        category: false
+      }));
       
       setFilters(updatedFilters);
       setTempFilters(updatedFilters);
@@ -169,7 +181,6 @@ const DynamicPages = () => {
   // Apply filters when they change
   useEffect(() => {
     if (initialLoadComplete) {
-      console.log("Applying filters:", filters);
       applyFiltersToProducts();
     }
   }, [filters, sortBy, initialLoadComplete]);
@@ -217,10 +228,6 @@ const DynamicPages = () => {
       console.error("Error fetching colors:", error);
     }
   };
-
-  
-  {/*This function is trying to determine if two product categories are similar or the same, 
-     even if they aren't written exactly the same way */}
 
   // Improved category matching function
   const categoriesMatch = (category1, category2) => {
@@ -281,8 +288,6 @@ const DynamicPages = () => {
       const res = await fetch("/api/products");
       const data = await res.json();
       
-      console.log("Fetched products:", data.slice(0, 3)); // Log first few products
-      
       // Add normalized fields to products for consistent filtering
       const productsWithNormalizedFields = data.map(product => ({
         ...product,
@@ -323,27 +328,6 @@ const DynamicPages = () => {
       
       // Store all products
       setAllProducts(productsWithSizes);
-      
-      // Log normalized data for debugging
-      console.log("Products with normalized fields:", 
-        productsWithSizes.slice(0, 3).map(p => ({
-          id: p.product_id, 
-          name: p.name,
-          gender: p.gender,
-          normalizedGender: p.normalizedGender,
-          category: p.category,
-          normalizedCategory: p.normalizedCategory
-        }))
-      );
-      
-      // Check for category patterns
-      const categoryPatterns = new Set();
-      productsWithSizes.forEach(p => {
-        if (p.category) {
-          categoryPatterns.add(p.category);
-        }
-      });
-      console.log("Available category patterns:", [...categoryPatterns]);
       
       // Initial filter application
       applyFiltersToProducts(initialFilters, productsWithSizes);
@@ -390,8 +374,6 @@ const DynamicPages = () => {
     let result = [...productList];
     const activeFilters = currentFilters || filters;
     
-    console.log("Current filters being applied:", activeFilters);
-    
     // Apply brand filter
     if (activeFilters.brand) {
       const brandId = brandMap[activeFilters.brand];
@@ -402,51 +384,22 @@ const DynamicPages = () => {
 
     // Apply category filter with improved matching
     if (activeFilters.category) {
-      console.log(`Filtering by category: '${activeFilters.category}'`);
-      
       result = result.filter(product => {
         if (!product.category) return false;
-        
-        const isMatch = categoriesMatch(product.category, activeFilters.category);
-        
-        // Log detailed debug info for first few products
-        if (product.product_id <= 3) {
-          console.log(`Product #${product.product_id} (${product.name})`);
-          console.log(`  Product category: '${product.category}'`);
-          console.log(`  Filter category: '${activeFilters.category}'`);
-          console.log(`  Match: ${isMatch}`);
-        }
-        
-        return isMatch;
+        return categoriesMatch(product.category, activeFilters.category);
       });
-      
-      console.log(`After category filter: ${result.length} products remain`);
     }
     
     // Apply gender filter with improved matching
     if (activeFilters.gender) {
-      console.log(`Filtering by gender: '${activeFilters.gender}'`);
-      
       result = result.filter(product => {
         if (!product.gender) return false;
         
         const productGender = normalizeGender(product.gender);
         const filterGender = normalizeGender(activeFilters.gender);
         
-        const isMatch = productGender === filterGender;
-        
-        if (product.product_id <= 3) {
-          console.log(`Product #${product.product_id} (${product.name})`);
-          console.log(`  Product gender: '${product.gender}'`);
-          console.log(`  Normalized product gender: '${productGender}'`);
-          console.log(`  Filter gender: '${filterGender}'`);
-          console.log(`  Match: ${isMatch}`);
-        }
-        
-        return isMatch;
+        return productGender === filterGender;
       });
-      
-      console.log(`After gender filter: ${result.length} products remain`);
     }
     
     // Apply color filter
@@ -477,8 +430,6 @@ const DynamicPages = () => {
     if (sortBy !== 'relevance') {
       result = sortProducts(result, sortBy);
     }
-    
-    console.log(`Filtered products: ${result.length} out of ${productList.length}`);
     
     setFilteredProducts(result);
     setLoading(false);
@@ -542,6 +493,17 @@ const DynamicPages = () => {
 
   const applyFiltersCallback = () => {
     setSortBy(tempSortBy);
+    
+    // Mark any changed filters as manually applied
+    Object.keys(tempFilters).forEach(key => {
+      if (tempFilters[key] !== filters[key]) {
+        setManuallyAppliedFilters(prev => ({
+          ...prev,
+          [key]: tempFilters[key] !== "" // Only mark as true if the filter has a value
+        }));
+      }
+    });
+    
     setFilters({...tempFilters});
     closeFilter();
   };
@@ -560,30 +522,16 @@ const DynamicPages = () => {
     });
   };
 
-  const clearAllFilters = () => {
-    // Keep only current URL parameters
-    const { gender: currentGender, category: currentCategory } = determineParameters();
-    
-    const baseFilters = {
-      size: '',
-      color: '',
-      brand: '',
-      gender: currentGender,
-      category: currentCategory
-    };
-    
-    setSortBy('relevance');
-    setFilters(baseFilters);
+  // Check if any filter was manually applied (not from URL)
+  const hasManuallyAppliedFilters = () => {
+    return manuallyAppliedFilters.size || 
+           manuallyAppliedFilters.color || 
+           manuallyAppliedFilters.brand ||
+           (manuallyAppliedFilters.gender && filters.gender) ||
+           (manuallyAppliedFilters.category && filters.category);
   };
 
-  // Check if any additional filters (beyond URL params) are active
-  const hasActiveFilters = () => {
-    return filters.size !== '' || 
-          filters.color !== '' || 
-          filters.brand !== '';
-  };
-
-  // Remove individual filter while preserving URL parameters
+  // Remove a filter
   const removeFilter = (key) => {
     // Make a copy of current filters
     const newFilters = {...filters};
@@ -591,18 +539,93 @@ const DynamicPages = () => {
     // Clear the specified filter
     newFilters[key] = '';
     
-    // Make sure we preserve URL parameters
-    const { gender: currentGender, category: currentCategory } = determineParameters();
+    // Mark this filter as not manually applied anymore
+    setManuallyAppliedFilters(prev => ({
+      ...prev,
+      [key]: false
+    }));
     
-    if (key === 'gender') {
-      newFilters.gender = currentGender;
-    }
-    
-    if (key === 'category') {
-      newFilters.category = currentCategory;
+    // If removing a URL parameter filter (gender or category), we should redirect
+    if ((key === 'gender' || key === 'category') && manuallyAppliedFilters[key]) {
+      // Get the original URL parameters
+      const { gender: urlGender, category: urlCategory } = determineParameters();
+      
+      // If we're removing a filter that wasn't in the original URL, just update the filters
+      if ((key === 'gender' && filters.gender !== urlGender) || 
+          (key === 'category' && filters.category !== urlCategory)) {
+        // Just reset this filter to the original URL value
+        newFilters[key] = key === 'gender' ? urlGender : urlCategory;
+        setFilters(newFilters);
+        return;
+      }
+      
+      // If we're removing a URL parameter, we need to redirect
+      // Determine the new URL based on remaining filters
+      if (key === 'gender' && newFilters.category) {
+        // Redirect to just the category
+        router.push(`/products/${newFilters.category}`);
+        return;
+      } else if (key === 'category' && newFilters.gender) {
+        // Redirect to just the gender
+        router.push(`/products/${newFilters.gender}`);
+        return;
+      } else {
+        // Redirect to all products
+        router.push('/products');
+        return;
+      }
     }
     
     setFilters(newFilters);
+  };
+
+  // Clear all filters - UPDATED FUNCTION
+  const clearAllFilters = () => {
+    // Get the URL parameters to preserve them
+    const { gender: urlGender, category: urlCategory } = determineParameters();
+    
+    // Reset manually applied status for all filters
+    setManuallyAppliedFilters({
+      size: false,
+      color: false,
+      brand: false,
+      gender: false,
+      category: false
+    });
+    
+    // Only clear the manually applied filters, keep the URL-based ones
+    const baseFilters = {
+      size: '',
+      color: '',
+      brand: '',
+      gender: urlGender, // Keep the URL gender
+      category: urlCategory, // Keep the URL category
+    };
+    
+    setSortBy('relevance');
+    setFilters(baseFilters);
+    
+    // No need to redirect since we're keeping the current URL parameters
+  };
+
+  // Format filter display text for better readability
+  const formatFilterDisplayText = (key, value) => {
+    if (key === 'gender') {
+      // Capitalize first letter
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+    
+    if (key === 'category') {
+      // Convert camelCase to Title Case with spaces
+      return value
+        .replace(/([A-Z])/g, ' $1')
+        .toLowerCase()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    }
+    
+    return value;
   };
 
   // Page title based on active filters
@@ -668,27 +691,39 @@ const DynamicPages = () => {
               Show Filters <FaFilter size={18} className="filter-icon" />
             </button>
             
-            {/* Showing filters that are currently applied */}
-            {hasActiveFilters() && (
+            {/* Only show actively applied filters (not URL-based ones unless manually applied) */}
+            {hasManuallyAppliedFilters() && (
               <div className="active-filters">
                 <div className="active-filters-list">
+                  {filters.gender && manuallyAppliedFilters.gender && (
+                    <span className="active-filter-tag">
+                      gender: {formatFilterDisplayText('gender', filters.gender)}
+                      <button className="remove-filter" onClick={() => removeFilter('gender')}>×</button>
+                    </span>
+                  )}
                   
-                  {/* Only show size, color, and brand filters - not URL parameters */}
-                  {filters.size && (
+                  {filters.category && manuallyAppliedFilters.category && (
+                    <span className="active-filter-tag">
+                      category: {formatFilterDisplayText('category', filters.category)}
+                      <button className="remove-filter" onClick={() => removeFilter('category')}>×</button>
+                    </span>
+                  )}
+                  
+                  {filters.size && manuallyAppliedFilters.size && (
                     <span className="active-filter-tag">
                       size: {filters.size}
                       <button className="remove-filter" onClick={() => removeFilter('size')}>×</button>
                     </span>
                   )}
                   
-                  {filters.color && (
+                  {filters.color && manuallyAppliedFilters.color && (
                     <span className="active-filter-tag">
                       color: {filters.color}
                       <button className="remove-filter" onClick={() => removeFilter('color')}>×</button>
                     </span>
                   )}
                   
-                  {filters.brand && (
+                  {filters.brand && manuallyAppliedFilters.brand && (
                     <span className="active-filter-tag">
                       brand: {filters.brand}
                       <button className="remove-filter" onClick={() => removeFilter('brand')}>×</button>
@@ -737,19 +772,21 @@ const DynamicPages = () => {
                   href={`/products/${product.gender}/${product.category}/${product.slug}`}    
                   passHref
                   className="productCard"
-                >
-                  <Image
-                    width={1000}
-                    height={1000}
-                    src={getImageUrl(product.product_id)}
-                    alt={product.name}
-                    className="productImage"
-                  />
+                  >
+                  <div className="product-image-container">
+                    <Image
+                      width={1000}
+                      height={1000}
+                      src={getImageUrl(product.product_id)}
+                      alt={product.name}
+                      className="productImage"
+                    />
+                  </div>
                   <div className="productDetails">
                     <h2 className="productName">{product.name}</h2>
                     <p className="productSubcategory">{product.subcategory}</p>
                     <p className="productCategory">{product.category}</p>
-                    <div className="productColors flex gap-2 mt-2">
+                    <div className="productColors">
                       {colors[product.product_id] &&
                         colors[product.product_id].map((color) => (
                           <span
@@ -764,11 +801,11 @@ const DynamicPages = () => {
                 </Link>
               ))
             )}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
-  );
-};
-
-export default DynamicPages;
+    );
+  };
+  
+  export default DynamicPages;
