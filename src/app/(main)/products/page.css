@@ -15,8 +15,6 @@
   font-weight: bold;
 }
 
-
-
 .productList {
   display: flex;
   margin: auto;
@@ -28,8 +26,6 @@
   margin-bottom: 40px;
   width: 100%;
 }
-
-
 
 .productCard {
   display: flex;
