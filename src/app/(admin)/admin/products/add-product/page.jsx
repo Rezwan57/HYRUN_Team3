@@ -109,6 +109,7 @@ const ProductForm = () => {
       console.error("Error:", error);
     }
   };
+  
 
   const handleSizeChange = (size_id) => {
     const newSizes = formData.size_id.includes(size_id)

@@ -1,5 +1,8 @@
-"use client";
 import DynamicPages from "@/components/ProductsPage/page";
+
+export const metadata = {
+  title: "HYRUN - Products",
+};
 
 export default function AllproductsPage() {
   return <DynamicPages />;

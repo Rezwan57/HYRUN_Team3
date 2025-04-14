@@ -12,7 +12,7 @@ export default function Breadcrumb() {
         if (pathname) {
             const pathArray = pathname.split('/').filter((item) => item !== '');
             const breadcrumbArray = pathArray.map((item, index) => ({
-                name: item.charAt(0).toUpperCase() + item.slice(1),
+                name: item.replace(/%20/g, ' ').charAt(0).toUpperCase() + item.replace(/%20/g, ' ').slice(1),
                 href: "/" + pathArray.slice(0, index + 1).join('/'),
             }))
             setBreadcrumb(breadcrumbArray);
@@ -38,7 +38,7 @@ export default function Breadcrumb() {
                   : "text-neutral-600 hover:underline"
               }`}
             >
-              {crumb.name}
+              {crumb.name.replace(/%20/g, ' ')}
             </Link>
             {index < breadcrumb.length - 1 && <span className="text-[var(--primary)]">/</span>}
           </li>
@@ -47,3 +47,4 @@ export default function Breadcrumb() {
     </nav>
   )
 }
+

@@ -10,14 +10,17 @@
   
   .filter-sidebar {
     position: fixed;
+    border-radius: 20px;
+    margin: 10px 20px 0 0;
     top: 0; 
     right: -320px; 
     width: 300px;
-    height: 100vh;
-    background-color: white;
+    height: 98%;
+    backdrop-filter: blur(20px);
+    background-color: rgba(255, 255, 255, 0.85);
     box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
     z-index: 1000; 
-    transition: right 0.3s ease;
+    transition: right 0.25s ease-in-out;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -31,7 +34,7 @@
     position: sticky;
     top: 0;
     z-index: 5;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.25);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -94,15 +97,25 @@
     position: sticky;
     bottom: 0;
     z-index: 5;
-    background-color: white;
+    background-color:  rgba(255, 255, 255, 0.25);
     padding: 16px;
     border-top: 1px solid #eee;
     display: flex;
     justify-content: space-between;
+    gap: 8px;
   }
   
-  .reset-filters-btn, 
+  .reset-filters-btn {
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+   
   .apply-filters-btn {
+    background-color: var(--primary);
+    width: 100%;
     padding: 10px 16px;
     border-radius: 4px;
     font-size: 14px;
@@ -116,11 +129,7 @@
     color: #666;
   }
   
-  .apply-filters-btn {
-    background-color: #1a1a1a;
-    border: 1px solid #1a1a1a;
-    color: white;
-  }
+
   
   .reset-filters-btn:hover {
     background-color: #f5f5f5;
