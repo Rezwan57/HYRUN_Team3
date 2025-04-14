@@ -8,7 +8,7 @@ import AddToCart from "../../../../../../components/AddToCart";
 import { IoCheckmarkCircle } from "react-icons/io5";
 
 const Product = () => {
-  const { category, gender, slug } = useParams(); // Get all dynamic params
+  const { gender, category, slug } = useParams(); // Get all dynamic params
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mainImage, setMainImage] = useState("");
