@@ -11,19 +11,15 @@ const CartPage = () => {
   const { cart, removeFromCart, updateCartQuantity } = useCart();
   const router = useRouter();
 
-
-  {/* Navigate to the checkout page */}
   const handleProceedToCheckout = () => {
-    router.push("/checkout"); 
+    router.push("/checkout");
   };
 
-  const getImageUrl = (productId) => {
-    return productId ? `/api/product_image?product_id=${productId}` : "/placeholder-image.jpg";
-  };
+  const getImageUrl = (productId) =>
+    productId ? `/api/product_image?product_id=${productId}` : "/placeholder-image.jpg";
 
-  const calculateTotal = () => {
-    return cart.reduce((total, item) => total + (Number(item.selling_price) || 0) * item.quantity, 0);
-  };
+  const calculateTotal = () =>
+    cart.reduce((total, item) => total + (Number(item.selling_price) || 0) * item.quantity, 0);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -37,7 +33,7 @@ const CartPage = () => {
             {cart.length > 0 ? (
               cart.map((item, index) => (
                 <div
-                  key={`${item.product_id}-${item.selectedSize || 'no-size'}-${item.selectedColor || 'no-color'}-${index}`}
+                  key={`${item.product_id}-${item.selectedSize || "no-size"}-${item.selectedColor || "no-color"}-${index}`}
                   className="flex items-center justify-between border-b py-4"
                 >
                   <div className="flex items-center gap-4">
@@ -54,16 +50,18 @@ const CartPage = () => {
                       {/* Display selected size and color */}
                       <p className="text-sm text-gray-600">
                         {(item.selectedSize || item.selectedColor) ? (
-                          `${item.selectedSize ? `Size: ${item.selectedSize}` : ''}${item.selectedSize && item.selectedColor ? ', ' : ''}${item.selectedColor ? `Color: ${item.selectedColor}` : ''}`
+                          `${item.selectedSize ? `Size: ${item.selectedSize}` : ""}${
+                            item.selectedSize && item.selectedColor ? ", " : ""
+                          }${item.selectedColor ? `Color: ${item.selectedColor}` : ""}`
                         ) : (
                           "No size or color selected"
                         )}
                       </p>
-                      <p className="text-2xl font-bold text-yellow-600">
-                        £{((Number(item.selling_price) || 0) * item.quantity)}
+                      <p className="text-2xl font-bold text-sky-600">
+                        £{((Number(item.selling_price) || 0) * item.quantity).toFixed(2)}
                       </p>
                       <p className="text-sm text-gray-500">
-                        £{(Number(item.selling_price) || 0)} each
+                        £{(Number(item.selling_price) || 0).toFixed(2)} each
                       </p>
                     </div>
                   </div>
@@ -95,7 +93,7 @@ const CartPage = () => {
             ) : (
               <div className="text-center py-8">
                 <p className="text-gray-600 mb-4">Your cart is empty.</p>
-                <Link href="/" className="text-yellow-500 hover:text-yellow-600 transition-colors">
+                <Link href="/" className="text-prime hover:text-sky-600 transition-colors">
                   Continue Shopping
                 </Link>
               </div>
@@ -106,13 +104,14 @@ const CartPage = () => {
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex justify-between items-center mb-6">
                 <span className="text-xl font-semibold">Total</span>
-                <span className="text-3xl font-bold text-yellow-600">
-                  £{calculateTotal()}
+                <span className="text-3xl font-bold text-sky-600">
+                  £{calculateTotal().toFixed(2)}
                 </span>
               </div>
-              {/* Added navigation to the checkout page */}
-              onClick={handleProceedToCheckout}
-              <button className="w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600 transition-colors text-lg font-semibold">
+              <button
+                onClick={handleProceedToCheckout}
+                className="w-full bg-prime text-white py-3 rounded-lg hover:bg-sky-600 transition-colors text-lg font-semibold"
+              >
                 Proceed to Checkout
               </button>
             </div>
