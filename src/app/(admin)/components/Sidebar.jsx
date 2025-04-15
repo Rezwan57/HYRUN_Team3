@@ -1,8 +1,20 @@
-'use client';
+"use client";
 import Link from "next/link";
 import React, { useState } from "react";
-import { FaHome, FaShoppingCart, FaBoxOpen, FaEnvelope, FaUsers, FaEdit, FaPhoneAlt,FaChevronRight, FaChevronDown  } from "react-icons/fa";
+import {
+  FaHome,
+  FaShoppingCart,
+  FaBoxOpen,
+  FaEnvelope,
+  FaUsers,
+  FaEdit,
+  FaPhoneAlt,
+  FaChevronRight,
+  FaChevronDown,
+  FaUndo 
+} from "react-icons/fa";
 import { motion } from "framer-motion";
+
 
 const adminLinks = [
   { id: 1, name: "Dashboard", link: "/admin", icon: <FaHome /> },
@@ -10,6 +22,7 @@ const adminLinks = [
   { id: 3, name: "Products", link: "/admin/products", icon: <FaBoxOpen /> },
   { id: 4, name: "Messages", link: "/admin/add-messages", icon: <FaEnvelope /> },
   { id: 5, name: "Users", link: "/admin/users", icon: <FaUsers /> },
+  { id: 6, name: "Returns", link: "/admin/returns", icon: <FaUndo /> }, 
 ];
 
 const editLinks = [
@@ -71,4 +84,3 @@ function Sidebar() {
 }
 
 export default Sidebar;
-

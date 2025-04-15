@@ -63,7 +63,7 @@ const Footer = () => {
               <Link className="hover:underline" href="#">View Cart</Link>
             </li>
             <li>
-              <Link className="hover:underline" href="#">Returns</Link>
+            <Link className="hover:underline" href="/returns">Returns</Link>
             </li>
             <li>
               <Link className="hover:underline" href="#">Order Status</Link>
