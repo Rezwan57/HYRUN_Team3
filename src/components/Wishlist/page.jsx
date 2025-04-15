@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FaShoppingCart, FaTrash } from "react-icons/fa";
 import "./page.css";
 import { getWishlist, saveWishlist } from './corewishlist';
-import AddToCart from "../AddToCart"; // Navigate one level up and then import
+import AddToCart from "../AddToCart"; 
 
 const Wishlist = () => {
   const [items, setItems] = useState([]);

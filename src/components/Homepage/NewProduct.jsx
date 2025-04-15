@@ -57,7 +57,7 @@ function NewProducts() {
       </div>
 
       <button
-        onClick={() => window.location.href = '/collections'}
+        onClick={() => window.location.href = '/collections/newarrivals'}
         className="flex justify-between items-center self-end w-full lg:w-[35vw] h-auto bg-prime rounded-full p-2 hover:scale-105 hover:bg-sky-600 transition-transform duration-300"
       >
         <span className="p-4"></span>
