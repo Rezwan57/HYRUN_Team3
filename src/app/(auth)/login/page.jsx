@@ -19,9 +19,9 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userId = 1; 
-    login(userId); 
-    router.push("/checkout");
+    const userId = 1;
+    login(userId);
+    router.push("/");
 
     if (!email || !password) {
       setError("Both fields are required!");
@@ -98,52 +98,54 @@ export default function Login() {
           {error && <p className="text-red-500">{error}</p>}
 
           {/* Login Form */}
-          <form onSubmit={handleSubmit} className="mt-8 w-[80%] lg:w-[100%]">
+          <form className="mt-8 w-[80%] lg:w-[100%]" onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold ml-2 mb-1">
+              <label
+                htmlFor="email"
+                className="block text-gray-700 text-sm font-bold ml-2 mb-1"
+              >
                 Email
               </label>
               <input
-                type="email"
+                id="email"
+                autoComplete="off"
                 className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500"
                 placeholder="someone@example.com"
+                type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="off"
+                onChange={(e) => setEmail(e.target.value)} // Update email state
               />
             </div>
-
             <div className="mb-1">
-              <label className="block text-gray-700 text-sm font-bold ml-2 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-gray-700 text-sm font-bold ml-2 mb-1"
+              >
                 Password
               </label>
               <input
-                type="password"
+                id="password"
+                autoComplete="off"
                 className="w-full h-12 px-4 py-2 rounded-full bg-neutral-200 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500"
                 placeholder="at least 8 characters"
+                type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="off"
+                onChange={(e) => setPassword(e.target.value)} // Update password state
               />
             </div>
-
-            {/* Forgot Password */}
             <div className="mb-6 text-right">
-              <Link
-                href="/forgot-password"
+              <a
                 className="text-gray-700 hover:text-gray-900"
+                href="/forgot-password"
               >
                 Forgot password?
-              </Link>
+              </a>
             </div>
-
-            {/* Login Button */}
             <button
-              type="submit"
               className="w-full bg-prime hover:bg-sky-700 text-white font-bold py-3 px-4 rounded-full focus:outline-none focus:shadow-outline"
-              disabled={loading}
+              type="submit"
             >
-              {loading ? "Logging in..." : "Login"}
+              Login
             </button>
           </form>
 
@@ -164,4 +166,3 @@ export default function Login() {
     </div>
   );
 }
-
