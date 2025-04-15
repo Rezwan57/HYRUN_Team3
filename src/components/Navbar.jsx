@@ -257,7 +257,7 @@ export default function Navbar() {
                 ))}
 
                 <Link
-                  href="/NewArrivals"
+                  href="/collections/newarrivals"
                   className="flex items-center gap-1 hover:underline"
                 >
                   <PiStarFourFill className="text-md" />

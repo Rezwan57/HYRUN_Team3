@@ -5,7 +5,7 @@ import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 import FilterSidebar from "@/components/filter_sidebar/page";
 import Image from "next/image";
-import { FaFilter } from "react-icons/fa";
+import { FaFilter, FaHeart, FaRegHeart } from "react-icons/fa";
 import "./page.css";
 
 
@@ -103,6 +103,23 @@ const DynamicPages = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+  
+  // Add state to track wishlist items
+  const [wishlistItems, setWishlistItems] = useState([]);
+  
+  // Function to toggle wishlist status
+  const toggleWishlist = (e, productId) => {
+    e.preventDefault(); // Prevent Link navigation
+    e.stopPropagation(); // Prevent event bubbling
+    
+    setWishlistItems(prev => {
+      if (prev.includes(productId)) {
+        return prev.filter(id => id !== productId);
+      } else {
+        return [...prev, productId];
+      }
+    });
+  };
 
   // Tracking the manually applied filters
   // This will help us to know if the filter is applied by the user or not
@@ -868,7 +885,20 @@ const DynamicPages = () => {
                       alt={product.name}
                       className="productImage"
                     />
+                    
+                    {/* Wishlist button */}
+                    <button 
+                      className="wishlist-button"
+                      onClick={(e) => toggleWishlist(e, product.product_id)}
+                    >
+                      {wishlistItems.includes(product.product_id) ? (
+                        <FaHeart className="wishlist-icon filled" />
+                      ) : (
+                        <FaRegHeart className="wishlist-icon" />
+                      )}
+                    </button>
                   </div>
+                
                   <div className="productDetails">
                     <h2 className="productName">{product.name}</h2>
                     <p className="productSubcategory">{product.subcategory}</p>
@@ -897,4 +927,3 @@ const DynamicPages = () => {
 };
 
 export default DynamicPages;
-

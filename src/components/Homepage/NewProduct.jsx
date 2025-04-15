@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import AddToCart from "../AddToCart";
@@ -26,9 +27,11 @@ function NewProducts() {
         </h1>
 
         <div className="flex lg:flex-row flex-col justify-center w-full items-center">
-          {products.map((product, index) => (
-            <div
+        {products.map((product, index) => (
+            <Link
               key={index}
+              href={`/products/${product.gender}/${product.category}/${product.slug}`}
+              passHref
               className="flex flex-col gap-4 justify-center items-center p-2 shadow-xl bg-black rounded-3xl bg-opacity-30 backdrop-blur-xl m-2 hover:scale-110 transition-transform duration-300 cursor-pointer overflow-hidden"
             >
               <span className="flex justify-center items-center">
@@ -48,13 +51,13 @@ function NewProducts() {
               </span>
               
               <AddToCart product={product} className="bg-prime text-black py-3 rounded-2xl w-full hover:bg-sky-600 hover:text-white" />
-            </div>
+            </Link>
           ))}
         </div>
       </div>
 
       <button
-        onClick={() => window.location.href = '/products'}
+        onClick={() => window.location.href = '/collections'}
         className="flex justify-between items-center self-end w-full lg:w-[35vw] h-auto bg-prime rounded-full p-2 hover:scale-105 hover:bg-sky-600 transition-transform duration-300"
       >
         <span className="p-4"></span>

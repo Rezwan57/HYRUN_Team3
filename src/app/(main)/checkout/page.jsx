@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
 import "./page.css";
@@ -89,24 +89,18 @@ const CheckoutPage = () => {
     }
   };
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push("/login");
-    }
-  }, [user, loading, router]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!user?.id) {
       alert("Please log in to proceed with checkout.");
       router.push("/login");
       return;
     }
-  
+
     let newErrors = {};
     let isValid = true;
-  
+
     Object.entries(userDetails).forEach(([key, value]) => {
       if (typeof value === "object") {
         Object.entries(value).forEach(([subKey, subValue]) => {
@@ -114,7 +108,6 @@ const CheckoutPage = () => {
           if (!isValidField) {
             newErrors[`${key}.${subKey}`] = true;
             isValid = false;
-            console.log(`Validation failed for ${key}.${subKey}: ${subValue}`); // Debug log
           }
         });
       } else {
@@ -122,19 +115,15 @@ const CheckoutPage = () => {
         if (!isValidField) {
           newErrors[key] = true;
           isValid = false;
-          console.log(`Validation failed for ${key}: ${value}`); // Debug log
         }
       }
     });
-  
-    console.log("Errors:", newErrors); // Log all errors
-    console.log("Is Valid:", isValid); // Log final validity
-  
+
     setErrors(newErrors);
-  
+
     if (isValid) {
       console.log("Checkout data submitted:", userDetails);
-      // ... rest of your submit logic
+      // Proceed with the checkout process
     } else {
       alert("Please correct the errors before proceeding.");
     }
@@ -204,6 +193,21 @@ const CheckoutPage = () => {
                 name="firstName"
                 value={userDetails.firstName}
                 onChange={handleInputChange}
+                className={errors.firstName ? "input-error" : ""}
+                required
+              />
+              {errors.firstName && (
+                <p className="error-message">{errors.firstName}</p>
+              )}
+            </div>
+            <div className="form-group">
+              <label htmlFor="lastName">Last Name *</label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={userDetails.lastName}
+                onChang={handleInputChange}
                 className={errors.firstName ? "input-error" : ""}
                 required
               />
