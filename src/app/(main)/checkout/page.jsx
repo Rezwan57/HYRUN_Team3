@@ -30,7 +30,6 @@ const CheckoutPage = () => {
   };
 
   const handleApplyCoupon = () => {
-    // Example coupon code: 'DISCOUNT10' gives a 10% discount
     if (couponCode === "DISCOUNT10") {
       setDiscount(0.1); // 10% discount
     } else {
@@ -41,8 +40,15 @@ const CheckoutPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Persist the delivery address
+    // Validate required fields
+    if (!address.fullName || !address.email) {
+      alert("Full Name and Email are required.");
+      return;
+    }
+    console.log("Storing deliveryAddress:", address); // Debug log
     localStorage.setItem("deliveryAddress", JSON.stringify(address));
+    localStorage.setItem("couponDiscount", discount);
+    localStorage.setItem("couponCode", couponCode);
     router.push("/payment");
   };
 
@@ -54,7 +60,7 @@ const CheckoutPage = () => {
       (total, item) => total + (Number(item.selling_price) || 0) * item.quantity,
       0
     );
-    return total - total * discount; // Apply discount
+    return total - total * discount;
   };
 
   return (
@@ -99,22 +105,22 @@ const CheckoutPage = () => {
 
             {/* Coupon Code */}
             <div className="flex h-10 gap-2 mt-10">
-                <input
-                  type="text"
-                  name="couponCode"
-                  value={couponCode}
-                  onChange={handleCouponChange}
-                  placeholder="Enter Coupon Code"
-                  className="w-full border rounded p-2"
-                />
-                <button
-                  type="button"
-                  onClick={handleApplyCoupon}
-                  className="flex items-center justify-center w-1/3 bg-sky-600 text-sm text-white py-3 rounded hover:bg-sky-700 transition-colors"
-                >
-                  Apply Coupon
-                </button>
-              </div>
+              <input
+                type="text"
+                name="couponCode"
+                value={couponCode}
+                onChange={handleCouponChange}
+                placeholder="Enter Coupon Code"
+                className="w-full border rounded p-2"
+              />
+              <button
+                type="button"
+                onClick={handleApplyCoupon}
+                className="flex items-center justify-center w-1/3 bg-sky-600 text-sm text-white py-3 rounded hover:bg-sky-700 transition-colors"
+              >
+                Apply Coupon
+              </button>
+            </div>
           </div>
 
           {/* Right: Delivery Address Form */}
