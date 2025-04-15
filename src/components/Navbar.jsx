@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
+import WishlistNotification from '@/components/Wishlist/wishlistnotification';
 import {
   IoMenu,
   IoSearch,
@@ -377,11 +378,15 @@ export default function Navbar() {
                   href="/wishlist"
                   className="flex items-center justify-center gap-1 hover:text-sky-700"
                 >
-                  <PiHeart className="h-4" />
-                  <span className="ml-2">Wishlist</span>
+                  <WishlistNotification />
+                  {/* <PiHeart 
+                  className="h-4" /> */}
+                  <span className="ml-2"> Wishlist</span>
+                  
                 </Link>
                 <span className="h-6 border-r-[1px] border-neutral-300" />
                 <Link
+                
                   href="/contact-us"
                   className="flex items-center justify-center gap-1 hover:text-sky-700"
                 >
@@ -466,6 +471,7 @@ export default function Navbar() {
                   </motion.div>
                 )}
               </div>
+              
 
               <button
                 className={`lg:hidden flex items-center gap-1 ${

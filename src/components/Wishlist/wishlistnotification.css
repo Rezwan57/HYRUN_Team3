@@ -1,0 +1,24 @@
+.wishlist-notification {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .wishlist-icon {
+    font-size: 1.2rem;
+    color: #ff3b30;
+  }
+  
+  .wishlist-count {
+    position: absolute;
+    top: -0.4rem;
+    right: -0.6rem;
+    background-color: #ff3b30;
+    color: white;
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 50%;
+    font-weight: bold;
+  }
+  
