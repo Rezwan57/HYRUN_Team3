@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaUser } from "react-icons/fa";
@@ -25,15 +25,18 @@ export default function AdminLogin() {
         body: JSON.stringify({ username, password }),
       });
 
-      if (res.status === 200) {
-        const data = await res.json();
-        console.log(data);
+      const data = await res.json();
+      console.log("API Response:", data);
+
+      if (res.ok) {
+        // Store admin data in localStorage
+        localStorage.setItem("admin", JSON.stringify(data.user));
         router.push("/admin");
       } else {
-        setError("Invalid credentials!");
+        setError(data.error || "An error occurred. Please try again.");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Login Error:", error);
       setError("An error occurred. Please try again.");
     }
   };
@@ -45,7 +48,11 @@ export default function AdminLogin() {
         <h3 className="text-white">Login to your Admin Account</h3>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4" autoComplete="off">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4"
+        autoComplete="off"
+      >
         <span className="relative">
           <input
             type="name"
@@ -80,3 +87,4 @@ export default function AdminLogin() {
     </div>
   );
 }
+
