@@ -59,7 +59,7 @@ function Carousel() {
                 <p className="text-[12px] lg:text-xl mt-5 lg:mt-4 max-w-full lg:max-w-2xl lg:leading-relaxed leading-normal">
                   {sneaker.shortDescription}
                 </p>
-                <Link href="/products" className="bg-prime text-white py-3 px-8 lg:py-4 lg:px-14 rounded-full mt-6 lg:mt-10">
+                <Link href="/products" className="bg-prime text-white text-sm lg:text-base py-2 px-8 lg:py-4 lg:px-14 rounded-full mt-6 lg:mt-10 hover:bg-sky-600">
                   Shop Now
                 </Link>
               </motion.div>
@@ -70,9 +70,9 @@ function Carousel() {
 
               <motion.div
                 key={`image-${activeIndex}`}
-                initial={{ x: "200%", opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: "200%", opacity: 0 }}
+                initial={{ scale: 0.25, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.25, opacity: 0 }}
                 transition={{ duration: 1 }}
                 className="productImage"
               >
@@ -81,7 +81,7 @@ function Carousel() {
                   alt={sneaker.name}
                   width={450}
                   height={450}
-                className="productShadow"
+                  className="productShadow"
                 />
               </motion.div>
             </motion.div>

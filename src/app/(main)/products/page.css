@@ -1,7 +1,4 @@
-
-/* 2nd version i kept for the backup purpose if 1st is not working properly */
-/*
-.container {
+/*.container {
   margin:auto;
 }
 
@@ -12,7 +9,7 @@
   padding-top: 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;   
+  justify-content: space-between; 
   padding: 10px 20px;
 }
 
@@ -22,16 +19,16 @@
   font-weight: bold;
 }
 
-
-
 .productList {
-  display: grid;
-  margin:auto;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  margin: auto;
+  padding: 20px 0;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
-  row-gap: 50px; 
-  column-gap: 20px;
+  row-gap: 50px;
   margin-bottom: 40px;
+  width: 100%;
 }
 
 .productCard {
@@ -44,7 +41,15 @@
   height: auto;
   border-radius: 1rem;
   padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: rgb(223, 223, 223);
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.productCard:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out;
 }
 
 .productDetails {
@@ -59,12 +64,12 @@
 .productImage {
   width: 19rem;
   height: auto;
-  object-fit: contain;
+  object-fit: cover;
   aspect-ratio: 1/1;
   border-radius: 1rem;
 }
 
-{ /*.productLabel {
+/*.productLabel {
   color: rgb(138, 39, 213);
   font-weight: bold;
 } *
@@ -308,3 +313,11 @@
   align-items: center;
 }
   */
+
+
+@media (max-width: 768px) {
+  .productImage {
+    width: 15rem;
+    height: auto;
+  }
+}

@@ -84,7 +84,13 @@ const FilterSidebar = ({
       {isOpen && <div className="filter-overlay" onClick={onClose}></div>}
       
       {/* Sidebar */}
-      <div className={`filter-sidebar ${isOpen ? 'open' : ''}`}>
+      <div
+        className={`filter-sidebar ${isOpen ? 'open' : ''}`}
+        initial={{ x: '-100%', opacity: 0, scale: 0.8 }}
+        animate={{ x: 0, opacity: 1, scale: 1 }}
+        exit={{ x: '-100%', opacity: 0, scale: 0.8 }}
+        transition={{ duration: 0.3 }}
+      >
         <div className="filter-sidebar-header">
           <h3>Sort & Filter</h3>
           <button className="close-filter-btn" onClick={onClose}>×</button>
