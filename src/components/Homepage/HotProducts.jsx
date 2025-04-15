@@ -1,8 +1,9 @@
 "use client";
-import React, { useState } from "react";
-import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import Image from "next/image";
-import hotProductsData from "@/data/Hotproductsdata";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { FaArrowRight } from "react-icons/fa";
+import AddToCart from "../AddToCart";
 import "./HotProducts.css";
 
 const BrandLogos = () => {
@@ -19,61 +20,86 @@ const BrandLogos = () => {
   );
 };
 
-/* it is scrolling effect 
+function ProductSection() {
+  const [products, setProducts] = useState([]);
 
-const ProductSection = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const itemsPerPage = 4; 
+  useEffect(() => {
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        const sorted = data.sort((a, b) => a.selling_price - b.selling_price);
+        const lowestFour = sorted.slice(0, 4);
+        setProducts(lowestFour);
+      })
+      .catch((error) => console.error("Error fetching hot products:", error));
+  }, []);
 
-  const maxIndex = hotProductsData.length - itemsPerPage;
-
-  const handleNext = () => {
-    if (currentIndex < maxIndex) {
-      setCurrentIndex(currentIndex + 1); // Move forward by 1 item
-    }
+  const getImageUrl = (productId) => {
+    return `/api/product_image?product_id=${productId}`;
   };
 
-  const handlePrevious = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1); // Move back by 1 item
-    }
-  };
-  */
+  return (
+    <div className="flex flex-col gap-1 w-full h-auto p-4 mr-0 lg:pr-6 lg:p-0 overflow-hidden">
+      <div className="relative flex justify-center items-end bg-gradient-to-r from-amber-200 to-rose-500 rounded-3xl lg:rounded-s-none lg:rounded-e-[2rem] w-full h-full lg:pb-2 pb-10 lg:pt-20 pt-28">
+        <h1 className="w-full absolute top-0 left-0 text-[4.72rem] lg:text-[18vh] font-bold uppercase text-white leading-[0.7]">
+          Hot Products
+        </h1>
 
-  const ProductSection = () => {
-    return (
-      <div className="hot-products-container">
-        <span className="hot-products-title">HOT PRODUCTS</span>
-        <div className="hot-products">
-          {hotProductsData.map((product) => (
-            <div key={product.id} className="product-item">
-              <img src={product.image} alt={product.name} className="product-image" />
-              <div className="product-name">{product.name}</div>
-              <div className="product-price">{product.price}</div>
-              <button className="add-to-cart">Add to Cart</button>
-            </div>
-            
+        <div className="flex lg:flex-row flex-col justify-center w-full items-center">
+          {products.map((product, index) => (
+            <Link
+              key={index}
+              href={`/products/${product.gender}/${product.category}/${product.slug}`}
+              passHref
+              className="flex flex-col gap-4 justify-center items-center p-2 shadow-xl bg-black rounded-3xl bg-opacity-30 backdrop-blur-xl m-2 hover:scale-110 transition-transform duration-300 cursor-pointer overflow-hidden"
+            >
+              <span className="flex justify-center items-center">
+                <Image
+                  width={512}
+                  height={512}
+                  src={getImageUrl(product.product_id)}
+                  alt={product.name}
+                  className="lg:max-w-56 h-auto object-contain rounded-2xl aspect-square"
+                />
+              </span>
+              <span className="font-bold text-md text-white">
+                {product.name.length > 20
+                  ? product.name.substring(0, 20) + "..."
+                  : product.name}
+              </span>
+              <span className="font-bold text-xl text-white">
+                £{product.selling_price}
+              </span>
+
+              <AddToCart
+                product={product}
+                className="bg-rose-400 text-black py-3 rounded-2xl w-full hover:bg-rose-500 hover:text-white"
+              />
+            </Link>
           ))}
         </div>
-        
-        <div className="show-more-container">
-        <button className="show-more-button">
-          <span className="show-more-arrow">
-            <FaArrowRight />
-          </span>
-        </button>
-        </div>
       </div>
-    );
-  };
-  
-  
-  const HotProducts = () => {
-    return (
-      <div>
-        <BrandLogos />
-        <ProductSection />
-           </div>
-    );
-  };
-  export default HotProducts;
+
+      <button
+        onClick={() => (window.location.href = "/collections/hotproducts")}
+        className="flex justify-between items-center self-end w-full lg:w-[35vw] h-auto bg-rose-400 rounded-full p-2 hover:scale-105 hover:bg-rose-500 transition-transform duration-300"
+      >
+        <span className="p-4"></span>
+        <span className="text-xl text-black">Show More</span>
+        <span className="bg-rose-700 bg-opacity-40 text-white p-2 rounded-full text-xl">
+          <FaArrowRight />
+        </span>
+      </button>
+    </div>
+  );
+}
+
+const HotProducts = () => {
+  return (
+    <div>
+      <BrandLogos />
+      <ProductSection />
+         </div>
+  );
+};
+export default HotProducts;
