@@ -1,522 +1,204 @@
 "use client";
 import React, { useState } from "react";
+import { useCart } from "../../context/CartContext";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../context/AuthContext";
-import "./page.css";
 
 const CheckoutPage = () => {
-  const { user, loading } = useAuth(); // Add loading from context
+  const { cart } = useCart();
   const router = useRouter();
-  const [sameAsBilling, setSameAsBilling] = useState(true);
-  const [errors, setErrors] = useState({});
-  const [saveInfo, setSaveInfo] = useState(false);
-  const [userDetails, setUserDetails] = useState({
-    firstName: "",
-    lastName: "",
-    contactNumber: "",
+
+  const [address, setAddress] = useState({
+    fullName: "",
     email: "",
-    deliveryAddress: {
-      street: "",
-      city: "",
-      state: "",
-      postcode: "",
-      country: "United Kingdom",
-    },
-    billingAddress: {
-      street: "",
-      city: "",
-      state: "",
-      postcode: "",
-      country: "United Kingdom",
-    },
-    deliveryOption: "standard",
+    phone: "",
+    street: "",
+    city: "",
+    postcode: "",
+    country: "",
   });
 
-  const validateField = (name, value, section = null) => {
-    let error = "";
-  
-    console.log(`Validating field: ${section ? `${section}.${name}` : name}, Value: ${value}`);
-  
-    if (!value.trim()) {
-      error = `${name.replace(/([A-Z])/g, " $1")} is required`;
+  const [couponCode, setCouponCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+
+  const handleChange = (e) => {
+    setAddress({ ...address, [e.target.name]: e.target.value });
+  };
+
+  const handleCouponChange = (e) => {
+    setCouponCode(e.target.value);
+  };
+
+  const handleApplyCoupon = () => {
+    // Example coupon code: 'DISCOUNT10' gives a 10% discount
+    if (couponCode === "DISCOUNT10") {
+      setDiscount(0.1); // 10% discount
     } else {
-      switch (name) {
-        case "firstName":
-        case "lastName":
-          if (!/^[A-Za-z\s]+$/.test(value)) error = "Only letters are allowed";
-          break;
-        case "email":
-          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
-            error = "Invalid Email format";
-          break;
-        case "contactNumber":
-          if (!/^\d{10,15}$/.test(value)) error = "Must be 10-15 digits";
-          break;
-        case "postcode":
-          if (!/^[A-Z0-9 ]{5,8}$/i.test(value))
-            error = "Invalid UK Postcode format";
-          break;
-        default:
-          break;
-      }
-    }
-  
-    console.log(`Validation result for ${section ? `${section}.${name}` : name}: ${error || "Valid"}`);
-  
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [section ? `${section}.${name}` : name]: error,
-    }));
-  
-    return !error;
-  };
-
-  const handleInputChange = (e, section = null) => {
-    const { name, value } = e.target;
-    setUserDetails((prev) => ({
-      ...prev,
-      [section ? section : name]: section
-        ? { ...prev[section], [name]: value }
-        : value,
-    }));
-    validateField(name, value, section);
-  };
-
-  const handleSameAsBillingChange = (e) => {
-    const checked = e.target.checked;
-    setSameAsBilling(checked);
-    if (checked) {
-      setUserDetails((prev) => ({
-        ...prev,
-        billingAddress: { ...prev.deliveryAddress },
-      }));
-      setErrors((prevErrors) => {
-        const updatedErrors = { ...prevErrors };
-        Object.keys(prevErrors).forEach((key) => {
-          if (key.startsWith("billingAddress")) {
-            delete updatedErrors[key];
-          }
-        });
-        return updatedErrors;
-      });
+      alert("Invalid coupon code");
+      setDiscount(0);
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!user?.id) {
-      alert("Please log in to proceed with checkout.");
-      router.push("/login");
-      return;
-    }
-
-    let newErrors = {};
-    let isValid = true;
-
-    Object.entries(userDetails).forEach(([key, value]) => {
-      if (typeof value === "object") {
-        Object.entries(value).forEach(([subKey, subValue]) => {
-          const isValidField = validateField(subKey, subValue, key);
-          if (!isValidField) {
-            newErrors[`${key}.${subKey}`] = true;
-            isValid = false;
-          }
-        });
-      } else {
-        const isValidField = validateField(key, value);
-        if (!isValidField) {
-          newErrors[key] = true;
-          isValid = false;
-        }
-      }
-    });
-
-    setErrors(newErrors);
-
-    if (isValid) {
-      console.log("Checkout data submitted:", userDetails);
-<<<<<<< HEAD
-=======
-      // Proceed with the checkout process
->>>>>>> fed19d2fc88d9260bda9c53d939e021d76952655
-    } else {
-      alert("Please correct the errors before proceeding.");
-    }
+    // Persist the delivery address
+    localStorage.setItem("deliveryAddress", JSON.stringify(address));
+    router.push("/payment");
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const getImageUrl = (productId) =>
+    productId ? `/api/product_image?product_id=${productId}` : "/placeholder-image.jpg";
+
+  const calculateTotal = () => {
+    const total = cart.reduce(
+      (total, item) => total + (Number(item.selling_price) || 0) * item.quantity,
+      0
+    );
+    return total - total * discount; // Apply discount
+  };
 
   return (
-    <div className="checkout-container">
-      <h1 className="heading">Contact Information</h1>
-      <form onSubmit={handleSubmit}>
-        <section className="checkout-section">
-          <h2>1. Delivery Options</h2>
-          <div className="delivery-method-options">
-            <h3>Delivery Method</h3>
-            <div className="radio-group">
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="deliveryOption"
-                  value="standard"
-                  checked={userDetails.deliveryOption === "standard"}
-                  onChange={(e) =>
-                    setUserDetails({
-                      ...userDetails,
-                      deliveryOption: e.target.value,
-                    })
-                  }
-                />
-                <span className="radio-text">
-                  Standard Delivery (4-7 working days)
-                </span>
-              </label>
-            </div>
-            <div className="radio-group">
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="deliveryOption"
-                  value="express"
-                  checked={userDetails.deliveryOption === "express"}
-                  onChange={(e) =>
-                    setUserDetails({
-                      ...userDetails,
-                      deliveryOption: e.target.value,
-                    })
-                  }
-                />
-                <span className="radio-text">
-                  Express Delivery (1-2 working days)
-                </span>
-              </label>
-            </div>
-          </div>
-        </section>
+    <div className="min-h-screen bg-gray-100 py-10">
+      <div className="max-w-5xl mx-auto px-4">
+        <h1 className="text-3xl font-bold mb-8">Checkout</h1>
 
-        <section className="checkout-section">
-          <h2>2. Contact Details</h2>
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="firstName">First Name *</label>
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                value={userDetails.firstName}
-                onChange={handleInputChange}
-                className={errors.firstName ? "input-error" : ""}
-                required
-              />
-              {errors.firstName && (
-                <p className="error-message">{errors.firstName}</p>
-              )}
-            </div>
-            <div className="form-group">
-              <label htmlFor="lastName">Last Name *</label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                value={userDetails.lastName}
-                onChang={handleInputChange}
-                className={errors.firstName ? "input-error" : ""}
-                required
-              />
-              {errors.firstName && (
-                <p className="error-message">{errors.firstName}</p>
-              )}
-            </div>
-            <div className="form-group">
-              <label htmlFor="lastName">Last Name *</label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                value={userDetails.lastName}
-                onChange={handleInputChange}
-                className={errors.lastName ? "input-error" : ""}
-                required
-              />
-              {errors.lastName && (
-                <p className="error-message">{errors.lastName}</p>
-              )}
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="email">Email Address *</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={userDetails.email}
-                onChange={handleInputChange}
-                className={errors.email ? "input-error" : ""}
-                required
-              />
-              {errors.email && <p className="error-message">{errors.email}</p>}
-            </div>
-            <div className="form-group">
-              <label htmlFor="contactNumber">Contact Number *</label>
-              <input
-                type="tel"
-                id="contactNumber"
-                name="contactNumber"
-                value={userDetails.contactNumber}
-                onChange={handleInputChange}
-                className={errors.contactNumber ? "input-error" : ""}
-                required
-              />
-              {errors.contactNumber && (
-                <p className="error-message">{errors.contactNumber}</p>
-              )}
-            </div>
-          </div>
-        </section>
-
-        <section className="checkout-section">
-          <h2>3. Delivery Address</h2>
-          <div className="form-group">
-            <label htmlFor="street">Street Address *</label>
-            <input
-              type="text"
-              id="street"
-              name="street"
-              value={userDetails.deliveryAddress.street}
-              onChange={(e) => handleInputChange(e, "deliveryAddress")}
-              className={errors["deliveryAddress.street"] ? "input-error" : ""}
-              required
-            />
-            {errors["deliveryAddress.street"] && (
-              <p className="error-message">
-                {errors["deliveryAddress.street"]}
-              </p>
-            )}
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="city">City/Town *</label>
-              <input
-                type="text"
-                id="city"
-                name="city"
-                value={userDetails.deliveryAddress.city}
-                onChange={(e) => handleInputChange(e, "deliveryAddress")}
-                className={errors["deliveryAddress.city"] ? "input-error" : ""}
-                required
-              />
-              {errors["deliveryAddress.city"] && (
-                <p className="error-message">
-                  {errors["deliveryAddress.city"]}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="postcode">Postcode *</label>
-              <input
-                type="text"
-                id="postcode"
-                name="postcode"
-                value={userDetails.deliveryAddress.postcode}
-                onChange={(e) => handleInputChange(e, "deliveryAddress")}
-                className={
-                  errors["deliveryAddress.postcode"] ? "input-error" : ""
-                }
-                required
-              />
-              {errors["deliveryAddress.postcode"] && (
-                <p className="error-message">
-                  {errors["deliveryAddress.postcode"]}
-                </p>
-              )}
-            </div>
-            <div className="form-group">
-              <label htmlFor="country">Country *</label>
-              <select
-                id="country"
-                name="country"
-                value={userDetails.deliveryAddress.country}
-                onChange={(e) => handleInputChange(e, "deliveryAddress")}
-                className={
-                  errors["deliveryAddress.country"] ? "input-error" : ""
-                }
-                required
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Left: Cart Summary */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-xl font-semibold mb-4">Your Items</h2>
+            {cart.map((item, index) => (
+              <div
+                key={`${item.product_id}-${index}`}
+                className="flex items-center justify-between mb-4"
               >
-                <option value="United Kingdom">United Kingdom</option>
-                <option value="Ireland">Ireland</option>
-                <option value="France">France</option>
-                <option value="Germany">Germany</option>
-              </select>
-              {errors["deliveryAddress.country"] && (
-                <p className="error-message">
-                  {errors["deliveryAddress.country"]}
-                </p>
-              )}
+                <div className="flex items-center gap-3">
+                  <Image
+                    src={getImageUrl(item.product_id)}
+                    alt={item.name}
+                    width={60}
+                    height={60}
+                    className="rounded"
+                    unoptimized
+                  />
+                  <div>
+                    <p className="font-medium">{item.name}</p>
+                    <p className="text-sm text-gray-500">
+                      Qty: {item.quantity} × £{item.selling_price}
+                    </p>
+                  </div>
+                </div>
+                <div className="font-bold text-sky-600">
+                  £{(Number(item.selling_price) * item.quantity).toFixed(2)}
+                </div>
+              </div>
+            ))}
+            <hr className="my-4" />
+            <div className="text-xl font-bold text-right text-sky-700">
+              Total: £{calculateTotal().toFixed(2)}
             </div>
-          </div>
 
-          <div className="checkbox-group">
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={sameAsBilling}
-                onChange={handleSameAsBillingChange}
-              />
-              <span>Billing address same as delivery address</span>
-            </label>
-          </div>
-
-          {!sameAsBilling && (
-            <div className="billing-address">
-              <h3>Billing Address</h3>
-              <div className="form-group">
-                <label htmlFor="billing-street">Street Address *</label>
+            {/* Coupon Code */}
+            <div className="flex h-10 gap-2 mt-10">
                 <input
                   type="text"
-                  id="billing-street"
-                  name="street"
-                  value={userDetails.billingAddress.street}
-                  onChange={(e) => handleInputChange(e, "billingAddress")}
-                  className={
-                    errors["billingAddress.street"] ? "input-error" : ""
-                  }
-                  required
+                  name="couponCode"
+                  value={couponCode}
+                  onChange={handleCouponChange}
+                  placeholder="Enter Coupon Code"
+                  className="w-full border rounded p-2"
                 />
-                {errors["billingAddress.street"] && (
-                  <p className="error-message">
-                    {errors["billingAddress.street"]}
-                  </p>
-                )}
+                <button
+                  type="button"
+                  onClick={handleApplyCoupon}
+                  className="flex items-center justify-center w-1/3 bg-sky-600 text-sm text-white py-3 rounded hover:bg-sky-700 transition-colors"
+                >
+                  Apply Coupon
+                </button>
               </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="billing-city">City/Town *</label>
-                  <input
-                    type="text"
-                    id="billing-city"
-                    name="city"
-                    value={userDetails.billingAddress.city}
-                    onChange={(e) => handleInputChange(e, "billingAddress")}
-                    className={
-                      errors["billingAddress.city"] ? "input-error" : ""
-                    }
-                    required
-                  />
-                  {errors["billingAddress.city"] && (
-                    <p className="error-message">
-                      {errors["billingAddress.city"]}
-                    </p>
-                  )}
-                </div>
-                <div className="form-group">
-                  <label htmlFor="billing-state">County</label>
-                  <input
-                    type="text"
-                    id="billing-state"
-                    name="state"
-                    value={userDetails.billingAddress.state}
-                    onChange={(e) => handleInputChange(e, "billingAddress")}
-                    className={
-                      errors["billingAddress.state"] ? "input-error" : ""
-                    }
-                  />
-                  {errors["billingAddress.state"] && (
-                    <p className="error-message">
-                      {errors["billingAddress.state"]}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="billing-postcode">Postcode *</label>
-                  <input
-                    type="text"
-                    id="billing-postcode"
-                    name="postcode"
-                    value={userDetails.billingAddress.postcode}
-                    onChange={(e) => handleInputChange(e, "billingAddress")}
-                    className={
-                      errors["billingAddress.postcode"] ? "input-error" : ""
-                    }
-                    required
-                  />
-                  {errors["billingAddress.postcode"] && (
-                    <p className="error-message">
-                      {errors["billingAddress.postcode"]}
-                    </p>
-                  )}
-                </div>
-                <div className="form-group">
-                  <label htmlFor="billing-country">Country *</label>
-                  <select
-                    id="billing-country"
-                    name="country"
-                    value={userDetails.billingAddress.country}
-                    onChange={(e) => handleInputChange(e, "billingAddress")}
-                    className={
-                      errors["billingAddress.country"] ? "input-error" : ""
-                    }
-                    required
-                  >
-                    <option value="United Kingdom">United Kingdom</option>
-                    <option value="Scotland">Scotland</option>
-                    <option value="Wales">Wales</option>
-                    <option value="Germany">Germany</option>
-                  </select>
-                  {errors["billingAddress.country"] && (
-                    <p className="error-message">
-                      {errors["billingAddress.country"]}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </section>
-
-        <section className="checkout-section">
-          <div className="privacy-notice">
-            <p>
-              We will use your information in accordance with our{" "}
-              <a href="#">privacy notice</a>. Updated April 2025.
-            </p>
           </div>
 
-          <label
-            htmlFor="savePaymentMethod"
-            className="flex items-center justify-start gap-2"
-          >
-            <input
-              type="checkbox"
-              className="bg-neutral-100 text-black py-4 px-4 rounded-[0.5rem]"
-              name="savePaymentMethod"
-              checked={saveInfo} // Bind to saveInfo state
-              onChange={(e) => setSaveInfo(e.target.checked)} // Update saveInfo
-            />
-            <span>Save information for future payment</span>
-          </label>
+          {/* Right: Delivery Address Form */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-xl font-semibold mb-4">Delivery Address</h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input
+                type="text"
+                name="fullName"
+                placeholder="Full Name"
+                value={address.fullName}
+                onChange={handleChange}
+                required
+                className="w-full border rounded p-2"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={address.email}
+                onChange={handleChange}
+                required
+                className="w-full border rounded p-2"
+              />
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Phone Number"
+                value={address.phone}
+                onChange={handleChange}
+                required
+                className="w-full border rounded p-2"
+              />
+              <input
+                type="text"
+                name="street"
+                placeholder="Street Address"
+                value={address.street}
+                onChange={handleChange}
+                required
+                className="w-full border rounded p-2"
+              />
+              <input
+                type="text"
+                name="city"
+                placeholder="City"
+                value={address.city}
+                onChange={handleChange}
+                required
+                className="w-full border rounded p-2"
+              />
+              <input
+                type="text"
+                name="postcode"
+                placeholder="Postcode"
+                value={address.postcode}
+                onChange={handleChange}
+                required
+                className="w-full border rounded p-2"
+              />
+              <select
+                name="country"
+                value={address.country}
+                onChange={handleChange}
+                required
+                className="w-full border rounded p-2"
+              >
+                <option value="">Select Country</option>
+                <option value="UK">United Kingdom</option>
+                <option value="Ireland">Ireland</option>
+              </select>
 
-          <button type="submit" className="checkout-btn">
-            Proceed to Payment
-          </button>
-        </section>
-      </form>
+              <button
+                type="submit"
+                className="w-full bg-prime text-white py-3 rounded hover:bg-sky-600 transition-colors font-semibold"
+              >
+                Continue to Payment
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default CheckoutPage;
-
