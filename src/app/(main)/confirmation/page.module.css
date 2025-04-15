@@ -1,16 +1,4 @@
-/* Color Variables */
-:root {
-    --primary: #6d28d9;
-    --primary-light: #8b5cf6;
-    --accent: #ec4899;
-    --light: #f8fafc;
-    --dark: #1e293b;
-    --gray: #94a3b8;
-    --light-gray: #e2e8f0;
-    --success: #10b981;
-  }
-   
-  /* Base Styles */
+/* Base Styles */
   .container {
     max-width: 800px;
     margin: 2rem auto;
