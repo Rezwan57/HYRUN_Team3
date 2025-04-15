@@ -1,0 +1,21 @@
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import DynamicPages from '../src/components/ProductsPage/page';
+
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    prefetch: jest.fn(),
+  }),
+  useSearchParams: () => new URLSearchParams(),
+  usePathname: () => '/',
+  useParams: () => ({ category: 'sneakers' }), // <-- Add this line
+}));
+
+describe('DynamicPages', () => {
+  it('renders a heading', () => {
+    render(<DynamicPages />);
+    const heading = screen.getByRole('heading', { level: 1 });
+    expect(heading).toBeInTheDocument();
+  });
+});

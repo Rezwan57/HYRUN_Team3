@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/db.js", "src/app/api/(admin)/edithome/route.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/db.js", "src/app/api/(admin)/edithome/route.js", "__tests__/DynamicPages.test.tsasdax", "__tests__/Login.test.jsx"],
   "exclude": ["node_modules"]
 }
