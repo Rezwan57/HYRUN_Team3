@@ -16,6 +16,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "framer-motion": "^12.0.5",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.6",
     "mysql2": "^3.12.0",
@@ -65,6 +66,5 @@
   "bugs": {
     "url": "https://github.com/Rezwan57/HYRUN_Team3/issues"
   },
-  
   "homepage": "https://github.com/Rezwan57/HYRUN_Team3#readme"
 }

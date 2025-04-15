@@ -6,8 +6,8 @@ import Breadcrumb from "../../../components/Breadcrumb";
 
 function WishlistPage() {
   return (
-    <div className="wishlist-page">
-      <div className="container">
+    <div className="wishlist-page w-full ">
+      <div className="w-full">
         <div className="w-full py-5">
           <Breadcrumb />
         </div>

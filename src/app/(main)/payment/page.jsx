@@ -1,13 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useCart } from "../../context/CartContext";
 import { SlBasket } from "react-icons/sl";
 import styles from './Payment.module.css';
 
 const PaymentPage = () => {
   const router = useRouter();
+  const { cart } = useCart();
 
+  const [user, setUser] = useState(null); // State to store user data
+  const [loading, setLoading] = useState(true); // State to handle loading
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [paymentDetails, setPaymentDetails] = useState({
     cardNumber: "",
@@ -16,28 +20,20 @@ const PaymentPage = () => {
     nameOnCard: "",
   });
 
-  const cartData = [
-    {
-      id: 1,
-      name: "Nike Air Max Running Shoes",
-      price: 120,
-      image: "/shoes1.jpg",
-      quantity: 2,
-      color: "Black/Red",
-      size: "US 10"
-    },
-    {
-      id: 2,
-      name: "Adidas Training Shoes",
-      price: 100,
-      image: "/shoes2.jpg",
-      quantity: 1,
-      color: "White/Blue",
-      size: "US 9"
-    },
-  ];
+  // Fetch user data from localStorage
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) {
+      router.push("/login"); // Redirect to login if user is not logged in
+      return;
+    }
+    setUser(JSON.parse(storedUser));
+    setLoading(false);
+  }, [router]);
 
-  const totalAmount = cartData.reduce((total, item) => total + item.price * item.quantity, 0);
+  const discount = Number(localStorage.getItem("couponDiscount")) || 0;
+  const subtotal = cart.reduce((total, item) => total + (Number(item.selling_price) || 0) * item.quantity, 0);
+  const totalAmount = subtotal - subtotal * discount;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -54,10 +50,45 @@ const PaymentPage = () => {
     setPaymentDetails(prev => ({ ...prev, [name]: formattedValue }));
   };
 
-  const handlePaymentSubmit = (e) => {
+  const handlePaymentSubmit = async (e) => {
     e.preventDefault();
-    router.push(`/confirmation?total=${totalAmount}&method=${paymentMethod}`);
+
+    if (!user) {
+      alert("You must be logged in to place an order.");
+      return;
+    }
+
+    const orderData = {
+      customer_name: user.firstName, // Use the user's first name
+      customer_email: user.email, // Use the user's email
+      cart,
+      total_amount: totalAmount,
+    };
+
+    console.log("Order Data:", orderData);
+
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        console.log("Order placed successfully:", data);
+        router.push(`/confirmation?orderId=${data.order_id}`);
+      } else {
+        console.error("Error placing order:", data.error);
+        alert("Failed to place order. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("An error occurred. Please try again.");
+    }
   };
+
+  if (loading) return <p className="text-center mt-10">Loading...</p>;
 
   return (
     <div className={styles.container}>
@@ -72,23 +103,19 @@ const PaymentPage = () => {
         <h2>Your Order</h2>
 
         <div className={styles.itemsContainer}>
-          {cartData.map(item => (
-            <div key={item.id} className={styles.itemCard}>
+          {cart.map(item => (
+            <div key={item.product_id} className={styles.itemCard}>
               <img
-                src={item.image}
+                src={item.image || `/api/product_image?product_id=${item.product_id}`}
                 alt={item.name}
                 className={styles.productImage}
                 onError={(e) => e.target.src = '/placeholder-product.jpg'}
               />
               <div className={styles.itemDetails}>
                 <h3>{item.name}</h3>
-                <div className={styles.itemAttributes}>
-                  <span>Color: {item.color}</span>
-                  <span>Size: {item.size}</span>
-                </div>
                 <div className={styles.itemPrice}>
-                  <span>£{item.price.toFixed(2)} × {item.quantity}</span>
-                  <span>£{(item.price * item.quantity).toFixed(2)}</span>
+                  <span>£{item.selling_price} × {item.quantity}</span>
+                  <span> = £{(item.selling_price * item.quantity).toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -97,8 +124,14 @@ const PaymentPage = () => {
 
         <div className={styles.orderTotal}>
           <span>Subtotal</span>
-          <span>£{totalAmount.toFixed(2)}</span>
+          <span>£{subtotal.toFixed(2)}</span>
         </div>
+        {discount > 0 && (
+          <div className={styles.orderTotal}>
+            <span>Discount ({(discount * 100).toFixed(0)}%)</span>
+            <span>-£{(subtotal * discount).toFixed(2)}</span>
+          </div>
+        )}
         <div className={styles.orderTotal}>
           <span>Shipping</span>
           <span>Free</span>
@@ -198,32 +231,6 @@ const PaymentPage = () => {
               Pay £{totalAmount.toFixed(2)}
             </button>
           </form>
-        )}
-
-        {/* PayPal Section */}
-        {paymentMethod === "paypal" && (
-          <div className={styles.simulatedPayment}>
-            <p>You'll be redirected to PayPal to complete your payment</p>
-            <button
-              className={`${styles.payButton} ${styles.paypalButton}`}
-              onClick={handlePaymentSubmit}
-            >
-              Continue to PayPal
-            </button>
-          </div>
-        )}
-
-        {/* Google Pay Section */}
-        {paymentMethod === "googlepay" && (
-          <div className={styles.simulatedPayment}>
-            <p>You'll be redirected to Google Pay to complete your payment</p>
-            <button
-              className={`${styles.payButton} ${styles.googlePayButton}`}
-              onClick={handlePaymentSubmit}
-            >
-              Continue to Google Pay
-            </button>
-          </div>
         )}
       </div>
     </div>
