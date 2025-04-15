@@ -34,7 +34,9 @@ const CheckoutPage = () => {
 
   const validateField = (name, value, section = null) => {
     let error = "";
-
+  
+    console.log(`Validating field: ${section ? `${section}.${name}` : name}, Value: ${value}`);
+  
     if (!value.trim()) {
       error = `${name.replace(/([A-Z])/g, " $1")} is required`;
     } else {
@@ -58,12 +60,14 @@ const CheckoutPage = () => {
           break;
       }
     }
-
+  
+    console.log(`Validation result for ${section ? `${section}.${name}` : name}: ${error || "Valid"}`);
+  
     setErrors((prevErrors) => ({
       ...prevErrors,
       [section ? `${section}.${name}` : name]: error,
     }));
-
+  
     return !error;
   };
 
@@ -86,6 +90,15 @@ const CheckoutPage = () => {
         ...prev,
         billingAddress: { ...prev.deliveryAddress },
       }));
+      setErrors((prevErrors) => {
+        const updatedErrors = { ...prevErrors };
+        Object.keys(prevErrors).forEach((key) => {
+          if (key.startsWith("billingAddress")) {
+            delete updatedErrors[key];
+          }
+        });
+        return updatedErrors;
+      });
     }
   };
 
@@ -134,7 +147,6 @@ const CheckoutPage = () => {
   
     if (isValid) {
       console.log("Checkout data submitted:", userDetails);
-      // ... rest of your submit logic
     } else {
       alert("Please correct the errors before proceeding.");
     }
