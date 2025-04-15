@@ -6,6 +6,7 @@ import { useCart } from "../../context/CartContext";
 import { SlBasket } from "react-icons/sl";
 import styles from './Payment.module.css';
 
+
 const PaymentPage = () => {
   const router = useRouter();
   const { cart } = useCart();
@@ -31,9 +32,7 @@ const PaymentPage = () => {
     setLoading(false);
   }, [router]);
 
-  const discount = Number(localStorage.getItem("couponDiscount")) || 0;
-  const subtotal = cart.reduce((total, item) => total + (Number(item.selling_price) || 0) * item.quantity, 0);
-  const totalAmount = subtotal - subtotal * discount;
+  const totalAmount = cart.reduce((total, item) => total + (Number(item.selling_price) || 0) * item.quantity, 0);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -124,14 +123,8 @@ const PaymentPage = () => {
 
         <div className={styles.orderTotal}>
           <span>Subtotal</span>
-          <span>£{subtotal.toFixed(2)}</span>
+          <span>£{cart.reduce((total, item) => total + (Number(item.selling_price) || 0) * item.quantity, 0).toFixed(2)}</span>
         </div>
-        {discount > 0 && (
-          <div className={styles.orderTotal}>
-            <span>Discount ({(discount * 100).toFixed(0)}%)</span>
-            <span>-£{(subtotal * discount).toFixed(2)}</span>
-          </div>
-        )}
         <div className={styles.orderTotal}>
           <span>Shipping</span>
           <span>Free</span>
@@ -238,3 +231,4 @@ const PaymentPage = () => {
 };
 
 export default PaymentPage;
+
