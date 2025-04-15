@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { FaHeart } from 'react-icons/fa';
+import { FaRegHeart  } from 'react-icons/fa6';
 import { getWishlistCount } from './corewishlist';
 import './wishlistnotification.css';
 
@@ -25,7 +25,7 @@ const WishlistNotification = () => {
 
   return (
     <div className="wishlist-notification">
-      <FaHeart className="wishlist-icon" />
+      <FaRegHeart  className="wishlist-icon" />
       {count > 0 && <span className="wishlist-count">{count}</span>}
     </div>
   );
