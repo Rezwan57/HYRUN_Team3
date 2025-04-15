@@ -18,7 +18,6 @@ const CollectionPage = ({
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [wishlist, setWishlist] = useState([]);
   const [colors, setColors] = useState({});
   const [productSizes, setProductSizes] = useState({});
   
@@ -50,6 +49,78 @@ const CollectionPage = ({
     genders: [], 
     categories: [] 
   });
+
+  // Add state to track wishlist items - FIXED
+  const [wishlistItems, setWishlistItems] = useState([]);
+  
+  // Initialize wishlist from localStorage on component mount - FIXED
+  useEffect(() => {
+    // Get wishlist from localStorage if available
+    const storedWishlist = localStorage.getItem('wishlist');
+    if (storedWishlist) {
+      setWishlistItems(JSON.parse(storedWishlist));
+    }
+  }, []);
+
+  // Check if a product is in wishlist - FIXED
+  const isInWishlist = (productId) => {
+    if (!wishlistItems) return false;
+    return wishlistItems.some(item => 
+      typeof item === 'object' 
+        ? item.product_id === productId 
+        : item === productId
+    );
+  };
+
+// This function adds or removes a product from the wishlist
+const toggleWishlist = (e, product) => {
+  // Stop the default link behavior and prevent any parent click from triggering
+  e.preventDefault();
+  e.stopPropagation();
+
+  // Get the current wishlist from localStorage, or start with an empty list if nothing is there
+  const storedWishlist = localStorage.getItem('wishlist');
+  const wishlist = storedWishlist ? JSON.parse(storedWishlist) : [];
+
+  let updatedWishlist;
+
+  // Check if this product is already in the wishlist
+  const isAlreadyInWishlist = wishlist.findIndex(item => 
+    typeof item === 'object'
+      ? item.product_id === product.product_id
+      : item === product.product_id
+  ) !== -1;
+
+  if (isAlreadyInWishlist) {
+    // If it's already in the wishlist, remove it
+    updatedWishlist = wishlist.filter(item => 
+      typeof item === 'object'
+        ? item.product_id !== product.product_id
+        : item !== product.product_id
+    );
+  } else {
+    // If it's not in the wishlist, add it (with full product info)
+    const newItem = {
+      product_id: product.product_id,
+      name: product.name,
+      category: product.category,
+      gender: product.gender,
+      selling_price: product.selling_price,
+      // You can include more fields here if needed
+    };
+
+    updatedWishlist = [...wishlist, newItem];
+  }
+
+  // Save the updated wishlist back to localStorage
+  localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+
+  // Trigger an event to let other parts of the app know the wishlist changed
+  window.dispatchEvent(new Event('wishlistUpdated'));
+
+  // Update local state to reflect the changes immediately in the UI
+  setWishlistItems(updatedWishlist);
+};
 
   // Brand mapping for consistency
   const brandMap = {
@@ -89,17 +160,6 @@ const CollectionPage = ({
     fetchProducts();
     fetchAvailableColors();
     fetchAvailableSizes();
-    
-    // Load wishlist from localStorage
-    const savedWishlist = localStorage.getItem('wishlist');
-    if (savedWishlist) {
-      try {
-        setWishlist(JSON.parse(savedWishlist));
-      } catch (error) {
-        console.error("Error parsing wishlist:", error);
-        setWishlist([]);
-      }
-    }
   }, []);
 
   // Fetch available sizes
@@ -416,30 +476,6 @@ const CollectionPage = ({
     applyFilters();
   }, [filters, sortBy]);
 
-  // Wishlist handlers
-  const toggleWishlist = (e, productId) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    setWishlist(prevWishlist => {
-      let newWishlist;
-      
-      if (prevWishlist.includes(productId)) {
-        newWishlist = prevWishlist.filter(id => id !== productId);
-      } else {
-        newWishlist = [...prevWishlist, productId];
-      }
-      
-      // Save to localStorage
-      localStorage.setItem('wishlist', JSON.stringify(newWishlist));
-      return newWishlist;
-    });
-  };
-
-  const isInWishlist = (productId) => {
-    return wishlist.includes(productId);
-  };
-
   // Filter sidebar controls
   const openFilters = () => {
     setTempFilters({...filters});
@@ -599,7 +635,7 @@ const CollectionPage = ({
                         )}
                         <button 
                           className={styles["wishlist-button"]}
-                          onClick={(e) => toggleWishlist(e, product.product_id)}
+                          onClick={(e) => toggleWishlist(e, product)}
                           aria-label={isInWishlist(product.product_id) ? "Remove from wishlist" : "Add to wishlist"}
                         >
                           {isInWishlist(product.product_id) ? (

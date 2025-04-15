@@ -8,9 +8,7 @@ import Image from "next/image";
 import { FaFilter, FaHeart, FaRegHeart } from "react-icons/fa";
 import "./page.css";
 
-
 const DynamicPages = () => {
-  
   const router = useRouter();
 
   // Banner images mapping
@@ -106,20 +104,63 @@ const DynamicPages = () => {
   
   // Add state to track wishlist items
   const [wishlistItems, setWishlistItems] = useState([]);
-  
-  // Function to toggle wishlist status
-  const toggleWishlist = (e, productId) => {
-    e.preventDefault(); // Prevent Link navigation
-    e.stopPropagation(); // Prevent event bubbling
-    
-    setWishlistItems(prev => {
-      if (prev.includes(productId)) {
-        return prev.filter(id => id !== productId);
-      } else {
-        return [...prev, productId];
-      }
-    });
+
+  // Initialize wishlist from localStorage on component mount
+  useEffect(() => {
+    // Get wishlist from localStorage if available
+    const storedWishlist = localStorage.getItem('wishlist');
+    if (storedWishlist) {
+      setWishlistItems(JSON.parse(storedWishlist));
+    }
+  }, []);
+
+  // Check if a product is in wishlist
+  const isInWishlist = (productId) => {
+    return wishlistItems.includes(productId);
   };
+
+  // This function handles adding or removing a product from the wishlist
+const toggleWishlist = (e, product) => {
+  // Stop any default link/button behavior and prevent it from bubbling up
+  e.preventDefault();
+  e.stopPropagation();
+
+  // Get the current wishlist from localStorage, or start with an empty array
+  const stored = localStorage.getItem('wishlist');
+  const wishlist = stored ? JSON.parse(stored) : [];
+
+  let updatedWishlist;
+
+  // Check if the product is already in the wishlist (by its ID)
+  const isInWishlist = wishlist.some(item => item.product_id === product.product_id);
+
+  if (isInWishlist) {
+    // If it’s already in the wishlist, remove it
+    updatedWishlist = wishlist.filter(item => item.product_id !== product.product_id);
+  } else {
+    // If it’s not in the wishlist, add it (with product details)
+    const newItem = {
+      product_id: product.product_id,
+      name: product.name,
+      category: product.category,
+      gender: product.gender,
+      selling_price: product.selling_price,
+      // Add any other product fields if needed
+    };
+    updatedWishlist = [...wishlist, newItem];
+  }
+
+  // Save the updated list back to localStorage
+  localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+
+  // Broadcast a custom event to notify other components the wishlist changed
+  window.dispatchEvent(new Event('wishlistUpdated'));
+
+  // Update the local component state with the new list of product IDs
+  setWishlistItems(() => {
+    return updatedWishlist.map(item => item.product_id);
+  });
+};
 
   // Tracking the manually applied filters
   // This will help us to know if the filter is applied by the user or not
@@ -889,18 +930,18 @@ const DynamicPages = () => {
                     {/* Wishlist button */}
                     <button 
                       className="wishlist-button"
-                      onClick={(e) => toggleWishlist(e, product.product_id)}
+                      onClick={(e) => toggleWishlist(e, product)}
                     >
-                      {wishlistItems.includes(product.product_id) ? (
+                      {isInWishlist(product.product_id) ? (
                         <FaHeart className="wishlist-icon filled" />
                       ) : (
                         <FaRegHeart className="wishlist-icon" />
                       )}
                     </button>
                   </div>
-                
+                  
                   <div className="productDetails">
-                    <h2 className="productName">{product.name}</h2>
+                  <h2 className="productName">{product.name}</h2>
                     <p className="productSubcategory">{product.subcategory}</p>
                     <p className="productCategory">{product.category}</p>
                     <div className="productColors">
@@ -915,7 +956,6 @@ const DynamicPages = () => {
                     </div>
                     <p className="productPrice">£{product.selling_price}</p>
                   </div>
-
                 </Link>
               ))
             )}
