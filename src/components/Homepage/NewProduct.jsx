@@ -9,14 +9,14 @@ import "./NewProducts.css";
 const Genders = () => {
   return (
     <div className="genders">
-      <Link href="/products/mens" className="gender-link">
+      <Link href="/products/men" className="gender-link">
         <div className="Men's">
           <Image src="/assets/gender/Mens1.jpeg" width={500} height={500} alt="Mens" />
           <div className="gender-name-box">Men's</div>
         </div>
       </Link>
       
-      <Link href="/products/womens" className="gender-link">
+      <Link href="/products/women" className="gender-link">
         <div className="Women's">
           <Image src="/assets/gender/Womens1.jpeg" width={500} height={500} alt="Womens" />
           <div className="gender-name-box">Women's</div>
@@ -36,7 +36,7 @@ const Genders = () => {
 const Sports = () => {
   return (
     <div className="genders">
-      <Link href="/products/category/trainers" className="sport-link">
+      <Link href="/products/Trainers" className="sport-link">
         <div className="Trainers">
           <Image src="/assets/gender/Trainers1.avif" width={200} height={200} alt="Trainers" />
           <div className="sport-badge">SPORT</div>
@@ -44,7 +44,7 @@ const Sports = () => {
         </div>
       </Link>
       
-      <Link href="/products/category/basketball" className="sport-link">
+      <Link href="/products/Basketball" className="sport-link">
         <div className="Basketball">
           <Image src="/assets/gender/Basketball1.avif" width={200} height={200} alt="Basketball" />
           <div className="sport-badge">SPORT</div>
@@ -52,7 +52,7 @@ const Sports = () => {
         </div>
       </Link>
       
-      <Link href="/products/category/walking" className="sport-link">
+      <Link href="/products/WalkingBoots" className="sport-link">
         <div className="Walking">
           <Image src="/assets/gender/Walking1.avif" width={200} height={200} alt="Walking" />
           <div className="sport-badge">SPORT</div>
@@ -60,7 +60,7 @@ const Sports = () => {
         </div>
       </Link>
       
-      <Link href="/products/category/football" className="sport-link">
+      <Link href="/products/FootballShoes" className="sport-link">
         <div className="Football">
           <Image src="/assets/gender/Football1.avif" width={200} height={200} alt="Football" />
           <div className="sport-badge">SPORT</div>
@@ -68,7 +68,7 @@ const Sports = () => {
         </div>
       </Link>
       
-      <Link href="/products/category/running" className="sport-link">
+      <Link href="/products/RunningShoes" className="sport-link">
         <div className="Running">
           <Image src="/assets/gender/Running1.jpg" width={200} height={200} alt="Running" />
           <div className="sport-badge">SPORT</div>
