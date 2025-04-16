@@ -1,9 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 export default function ReturnsPage() {
   const [submitted, setSubmitted] = useState(false);
+  const searchParams = useSearchParams();
+  const orderId = searchParams.get('orderId');
+  const email = searchParams.get('email');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,6 +52,7 @@ export default function ReturnsPage() {
             type="text"
             name="orderId"
             id="orderId"
+            defaultValue={orderId} // Pre-fill the order ID
             required
             className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black/80 transition"
             placeholder="e.g. #123456"
@@ -62,6 +67,7 @@ export default function ReturnsPage() {
             type="email"
             name="email"
             id="email"
+            defaultValue={email} // Pre-fill the email
             required
             className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black/80 transition"
             placeholder="you@example.com"

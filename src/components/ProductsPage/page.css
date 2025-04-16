@@ -144,12 +144,12 @@
   align-items: center;
   justify-content: flex-start;
   gap: 1rem;
-  max-width: 100%;
   height: 100%;
   border-radius: 1rem;
   padding: 1rem;
   background-color: #ececec;
   transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
 }
 
 .productCard:hover {

@@ -941,7 +941,9 @@ const toggleWishlist = (e, product) => {
                   </div>
                   
                   <div className="productDetails">
-                  <h2 className="productName">{product.name}</h2>
+                  <h2 className="productName">
+                    {product.name.length > 6 ? `${product.name.substring(0, 20)}...` : product.name}
+                  </h2>
                     <p className="productSubcategory">{product.subcategory}</p>
                     <p className="productCategory">{product.category}</p>
                     <div className="productColors">
