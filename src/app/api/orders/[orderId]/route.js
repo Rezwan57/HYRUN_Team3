@@ -50,3 +50,29 @@ export async function GET(request, { params }) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function PUT(request, { params }) {
+  const { orderId } = params;
+
+  try {
+    const body = await request.json();
+
+    // Validate input data
+    if (!body.customer_name || !body.customer_email || !body.status || !body.total_amount) {
+      return NextResponse.json({ error: "Invalid order data" }, { status: 400 });
+    }
+
+    // Update the order in the database
+    await db.execute(
+      `UPDATE orders
+       SET customer_name = ?, customer_email = ?, status = ?, total_amount = ?
+       WHERE order_id = ?`,
+      [body.customer_name, body.customer_email, body.status, body.total_amount, orderId]
+    );
+
+    return NextResponse.json({ message: "Order updated successfully" });
+  } catch (error) {
+    console.error("Error updating order:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
