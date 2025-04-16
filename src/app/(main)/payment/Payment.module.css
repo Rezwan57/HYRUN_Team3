@@ -21,7 +21,7 @@
   .header h1 {
     font-size: 2rem;
     font-weight: 700;
-    background: linear-gradient(to right, var(--primary), var(--accent));
+    background:  #00AAFF;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -29,7 +29,7 @@
    
   .cartIcon {
     font-size: 2rem;
-    color: var(--primary);
+    color: #00AAFF;
   }
    
   /* Order Summary */
@@ -47,7 +47,7 @@
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
-    color: var(--dark);
+    color: black;
     position: relative;
     padding-bottom: 0.75rem;
   }
@@ -59,7 +59,7 @@
     left: 0;
     width: 50px;
     height: 3px;
-    background: linear-gradient(to right, var(--primary), var(--accent));
+    background: #00AAFF;
     border-radius: 3px;
   }
    
@@ -74,7 +74,7 @@
     display: flex;
     gap: 1.5rem;
     padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--light-gray);
+    border-bottom: 1px solid grey;
   }
    
   .productImage {
@@ -82,7 +82,7 @@
     height: 100px;
     object-fit: cover;
     border-radius: 12px;
-    border: 1px solid var(--light-gray);
+    border: 1px solid grey;
   }
    
   .itemDetails {
@@ -96,27 +96,27 @@
     font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: var(--dark);
+    color: black;
   }
    
   .itemAttributes {
     display: flex;
     gap: 1rem;
     font-size: 0.9rem;
-    color: var(--gray);
+    color: gray;
     margin-bottom: 0.75rem;
   }
    
   .itemPrice {
     font-weight: 600;
-    color: var(--dark);
+    color: black;
   }
    
   .orderTotal {
     display: flex;
     justify-content: space-between;
     padding: 1rem 0;
-    border-bottom: 1px solid var(--light-gray);
+    border-bottom: 1px solid gray;
   }
    
   .grandTotal {
@@ -125,7 +125,7 @@
     font-weight: 700;
     font-size: 1.25rem;
     padding: 1.5rem 0 0;
-    color: var(--dark);
+    color: black;
   }
    
   /* Payment Section */
@@ -140,7 +140,7 @@
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
-    color: var(--dark);
+    color: black;
     position: relative;
     padding-bottom: 0.75rem;
   }
@@ -152,7 +152,7 @@
     left: 0;
     width: 50px;
     height: 3px;
-    background: linear-gradient(to right, var(--primary), var(--accent));
+    background:  #00AAFF;
     border-radius: 3px;
   }
    
@@ -167,7 +167,7 @@
     display: flex;
     align-items: center;
     padding: 1.25rem;
-    border: 1px solid var(--light-gray);
+    border: 1px solid grey;
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -176,12 +176,12 @@
   }
    
   .paymentMethod:hover {
-    border-color: var(--primary-light);
-    box-shadow: 0 5px 15px -5px rgba(109, 40, 217, 0.3);
+    border-color: #00AAFF;
+    box-shadow: 0 5px 15px -5px rgba(40, 123, 217, 0.3);
   }
    
   .paymentMethod.active {
-    border-color: var(--primary);
+    border-color: #00AAFF;
     background-color: rgba(109, 40, 217, 0.05);
   }
    
@@ -192,20 +192,20 @@
     left: 0;
     width: 4px;
     height: 100%;
-    background: var(--primary);
+    background: #00AAFF;
   }
    
   .radioInput {
     margin-right: 1rem;
     width: 20px;
     height: 20px;
-    accent-color: var(--primary);
+    accent-color: #00AAFF;
   }
    
   .paymentLabel {
     font-size: 1rem;
     font-weight: 500;
-    color: var(--dark);
+    color: black;
   }
    
   /* Form Styles */
@@ -224,12 +224,12 @@
   .formGroup label {
     font-size: 0.95rem;
     font-weight: 500;
-    color: var(--dark);
+    color: black;
   }
    
   .inputField {
     padding: 1rem;
-    border: 1px solid var(--light-gray);
+    border: 1px solid gray;
     border-radius: 12px;
     font-size: 1rem;
     transition: all 0.3s ease;
@@ -251,7 +251,7 @@
   .payButton {
     width: 100%;
     padding: 1.25rem;
-    background: linear-gradient(to right, var(--primary), var(--primary-light));
+    background:  #00AAFF;
     color: white;
     border: none;
     border-radius: 12px;
@@ -260,13 +260,13 @@
     cursor: pointer;
     transition: all 0.3s ease;
     margin-top: 1rem;
-    box-shadow: 0 4px 6px -1px rgba(109, 40, 217, 0.3);
+    box-shadow: 0 4px 6px -1px rgba(40, 117, 217, 0.3);
   }
    
   .payButton:hover {
-    background: linear-gradient(to right, var(--primary-dark), var(--primary));
+    background:  #006da3;
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(109, 40, 217, 0.3);
+    box-shadow: 0 10px 15px -3px rgba(40, 117, 217, 0.3);
   }
    
   /* Simulated Payment */
