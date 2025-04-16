@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import WishlistNotification from '@/components/Wishlist/wishlistnotification';
+import WishlistNotification from "@/components/Wishlist/wishlistnotification";
 import {
   IoMenu,
   IoSearch,
@@ -15,7 +15,7 @@ import { SlBasket } from "react-icons/sl";
 import { VscAccount } from "react-icons/vsc";
 import { IoReceiptOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
-
+import { span } from "framer-motion/client";
 
 const gender = ["Men", "Women", "Kids"]; // for gender links in the navbar
 
@@ -24,7 +24,7 @@ const categories = [
   { id: 2, name: "Running Shoes", link: "/products/RunningShoes/" },
   { id: 3, name: "Football Shoes", link: "/products/FootballShoes/" },
   { id: 4, name: "Walking Boots", link: "/products/WalkingBoots/" },
-  { id: 5, name: "Basketball Shoes", link: "/products/BasketballShoes/"},
+  { id: 5, name: "Basketball Shoes", link: "/products/BasketballShoes/" },
 ];
 
 const subcategories = [
@@ -32,17 +32,47 @@ const subcategories = [
   { id: 2, name: "Women", category_id: 1, link: "/products/womens/Trainers" },
   { id: 3, name: "Kids", category_id: 1, link: "/products/kids/Trainers" },
   { id: 4, name: "Men", category_id: 2, link: "/products/mens/RunningShoes" },
-  { id: 5, name: "Women", category_id: 2, link: "/products/womens/RunningShoes" },
+  {
+    id: 5,
+    name: "Women",
+    category_id: 2,
+    link: "/products/womens/RunningShoes",
+  },
   { id: 6, name: "Kids", category_id: 2, link: "/products/kids/RunningShoes" },
   { id: 7, name: "Men", category_id: 3, link: "/products/mens/FootballShoes" },
-  { id: 8, name: "Women", category_id: 3, link: "/products/womens/FootballShoes" },
+  {
+    id: 8,
+    name: "Women",
+    category_id: 3,
+    link: "/products/womens/FootballShoes",
+  },
   { id: 9, name: "Kids", category_id: 3, link: "/products/kids/FootballShoes" },
   { id: 10, name: "Men", category_id: 4, link: "/products/mens/WalkingBoots" },
-  { id: 11, name: "Women", category_id: 4, link: "/products/womens/WalkingBoots" },
+  {
+    id: 11,
+    name: "Women",
+    category_id: 4,
+    link: "/products/womens/WalkingBoots",
+  },
   { id: 12, name: "Kids", category_id: 4, link: "/products/kids/WalkingBoots" },
-  { id: 13, name: "Men", category_id: 5, link: "/products/mens/BasketballShoes" },
-  { id: 14, name: "Women", category_id: 5, link: "/products/womens/BasketballShoes" },
-  { id: 15, name: "Kids", category_id: 5, link: "/products/kids/BasketballShoes" },
+  {
+    id: 13,
+    name: "Men",
+    category_id: 5,
+    link: "/products/mens/BasketballShoes",
+  },
+  {
+    id: 14,
+    name: "Women",
+    category_id: 5,
+    link: "/products/womens/BasketballShoes",
+  },
+  {
+    id: 15,
+    name: "Kids",
+    category_id: 5,
+    link: "/products/kids/BasketballShoes",
+  },
 ];
 
 const genders = [...new Set(subcategories.map((sub) => sub.name))];
@@ -52,7 +82,7 @@ const CategoryCard = ({ shoeTypeName, link }) => (
     <Link href={link} className="hover:text-sky-600">
       {shoeTypeName}
     </Link>
-  </div> 
+  </div>
 );
 
 export default function Navbar() {
@@ -210,7 +240,7 @@ export default function Navbar() {
                     </motion.div>
                   )}
                 </div>
-            
+
                 {genders.map((gender, index) => (
                   <div
                     key={`${gender}-${index}`}
@@ -219,9 +249,12 @@ export default function Navbar() {
                     onMouseLeave={handleMouseLeave}
                   >
                     {/* here below i have made the gender links and below 
-                        one also the i have made the new arrivals links*/ }
+                        one also the i have made the new arrivals links*/}
 
-                    <Link href={`/products/${gender.toLowerCase()}`}  className="font-medium hover:underline">
+                    <Link
+                      href={`/products/${gender.toLowerCase()}`}
+                      className="font-medium hover:underline"
+                    >
                       {gender}
                     </Link>
 
@@ -266,7 +299,7 @@ export default function Navbar() {
                 </Link>
               </div>
             </div>
-          </div>  
+          </div>
 
           <div className="flex items-center justify-end gap-2 h-full w-auto">
             {/* Search */}
@@ -328,35 +361,38 @@ export default function Navbar() {
                         </Link>
                       </li>
                     )}
-                    <li>
-                      <Link
-                        href="/orders"
-                        className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
-                      >
-                        <IoReceiptOutline className="h-4" />
-                        <span className="ml-2">Your Orders</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/return"
-                        className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
-                      >
-                        <IoReturnUpBackOutline className="h-4" />
-                        <span className="ml-2">Return</span>
-                      </Link>
-                    </li>
 
                     {user && (
-                      <li className="border-t border-gray-200 mt-2">
-                        <button
-                          onClick={handleLogout}
-                          className="flex items-center justify-start w-full py-2 px-4 hover:bg-gray-100 rounded-md text-left"
-                        >
-                          <IoLogOutOutline className="h-4" />
-                          <span className="ml-2">Logout</span>
-                        </button>
-                      </li>
+                      <span>
+                        <li>
+                          <Link
+                            href="/user/order"
+                            className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
+                          >
+                            <IoReceiptOutline className="h-4" />
+                            <span className="ml-2">Your Orders</span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href="/user/returns"
+                            className="flex items-center justify-start py-2 px-4 hover:bg-gray-100 rounded-md"
+                          >
+                            <IoReturnUpBackOutline className="h-4" />
+                            <span className="ml-2">Return</span>
+                          </Link>
+                        </li>
+
+                        <li className="border-t border-gray-200 mt-2">
+                          <button
+                            onClick={handleLogout}
+                            className="flex items-center justify-start w-full py-2 px-4 hover:bg-gray-100 rounded-md text-left"
+                          >
+                            <IoLogOutOutline className="h-4" />
+                            <span className="ml-2">Logout</span>
+                          </button>
+                        </li>
+                      </span>
                     )}
                   </ul>
                 </motion.div>
@@ -382,11 +418,9 @@ export default function Navbar() {
                   {/* <PiHeart 
                   className="h-4" /> */}
                   <span className="ml-2"> Wishlist</span>
-                  
                 </Link>
                 <span className="h-6 border-r-[1px] border-neutral-300" />
                 <Link
-                
                   href="/contact-us"
                   className="flex items-center justify-center gap-1 hover:text-sky-700"
                 >
@@ -471,7 +505,6 @@ export default function Navbar() {
                   </motion.div>
                 )}
               </div>
-              
 
               <button
                 className={`lg:hidden flex items-center gap-1 ${
@@ -489,7 +522,6 @@ export default function Navbar() {
       {showCategories && (
         <div className="absolute lg:hidden flex h-screen w-full top-full lg:p-auto p-10 lg:pb-0 pb-20 bg-white bg-opacity-70 backdrop-blur-3xl z-10 lg:overflow-hidden overflow-y-auto">
           <div className="flex items-start justify-start flex-wrap gap-0 lg:gap-10 w-full max-w-screen-lg text-black h-screen">
-
             {genders.map((gender, index) => (
               <div
                 key={`${gender}-${index}`}
@@ -552,28 +584,30 @@ export default function Navbar() {
             {searchResults.length > 0 && (
               <div className="mt-8">
                 <h2 className="text-2xl font-bold mb-4">Search Results</h2>
-                <div className="grid grid-cols-1 gap-4" >
+                <div className="grid grid-cols-1 gap-4">
                   {searchResults.map((result) => (
-                    
-                      <Link
+                    <Link
                       key={result.id}
-                        href={`/products/${result.gender}/${result.category}/${result.slug}`}
-                        className="flex items-start justify-start p-2 gap-2 hover:bg-gray-100 rounded-xl bg-white shadow-xl"
-                        onClick={() => setShowFullPageSearch(false)}
-                      >
-                        <Image
-                          width={128}
-                          height={128}
-                          src={getImageUrl(result.product_id)}
-                          alt={result.name}
-                          className="w-24 h-24 object-cover rounded-md"
-                        />
-                        <div className="flex flex-col justify-start items-start  gap-2 p-2">
-                          <span className="text-xl font-bold ">{result.name}</span>
-                          <span className="text-xl ">£{result.selling_price}</span>
-                        </div>
-                      </Link>
-                
+                      href={`/products/${result.gender}/${result.category}/${result.slug}`}
+                      className="flex items-start justify-start p-2 gap-2 hover:bg-gray-100 rounded-xl bg-white shadow-xl"
+                      onClick={() => setShowFullPageSearch(false)}
+                    >
+                      <Image
+                        width={128}
+                        height={128}
+                        src={getImageUrl(result.product_id)}
+                        alt={result.name}
+                        className="w-24 h-24 object-cover rounded-md"
+                      />
+                      <div className="flex flex-col justify-start items-start  gap-2 p-2">
+                        <span className="text-xl font-bold ">
+                          {result.name}
+                        </span>
+                        <span className="text-xl ">
+                          £{result.selling_price}
+                        </span>
+                      </div>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -584,4 +618,3 @@ export default function Navbar() {
     </header>
   );
 }
-

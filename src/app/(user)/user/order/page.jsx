@@ -4,13 +4,13 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 function Order() {
-  const [orders, setOrders] = useState([]); // State to store the user's orders
-  const [loading, setLoading] = useState(true); // State to handle loading
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
-  const [currentProductId, setCurrentProductId] = useState(null); // State to store the product ID for review
-  const [review, setReview] = useState(""); // State to store the review text
-  const [rating, setRating] = useState(0); // State to store the rating
-  const [loadingReview, setLoadingReview] = useState(false); // State to handle review submission loading
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true); 
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [currentProductId, setCurrentProductId] = useState(null); 
+  const [review, setReview] = useState(""); 
+  const [rating, setRating] = useState(0); 
+  const [loadingReview, setLoadingReview] = useState(false); 
   const router = useRouter();
 
   useEffect(() => {
@@ -41,9 +41,8 @@ function Order() {
     fetchOrders();
   }, []);
 
-  const handleReturn = (orderId, productId) => {
-    alert(`Return initiated for Order ID: ${orderId}, Product ID: ${productId}`);
-    // Add logic to handle return request
+  const handleReturn = (orderId, email) => {
+    router.push(`/user/returns?orderId=${orderId}&email=${email}`);
   };
 
   const handleReview = (productId) => {
@@ -137,7 +136,7 @@ function Order() {
                   <div style={{ marginTop: "5px" }}>
                     <button
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevent triggering the parent click event
+                        e.stopPropagation(); 
                         handleReturn(order.order_id, item.product_id);
                       }}
                       style={{
