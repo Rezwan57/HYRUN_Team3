@@ -18,6 +18,8 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [productGender, setProductGender] = useState("");
   const [isAdded, setIsAdded] = useState(false);
+  const [reviews, setReviews] = useState([]); // State to store reviews
+  const [averageRating, setAverageRating] = useState(0); // State to store average rating
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -79,6 +81,9 @@ const Product = () => {
           setMainImage(imageBase64);
           setAdditionalImages(additionalImagesData);
           setProductGender(genderData.gender_name);
+
+          // Fetch reviews
+          fetchReviews(productData.product_id);
         } else {
           console.log("No product found for slug:", slug);
           setProduct(null);
@@ -88,6 +93,27 @@ const Product = () => {
         setProduct(null);
       } finally {
         setLoading(false);
+      }
+    };
+
+    const fetchReviews = async (productId) => {
+      try {
+        const res = await fetch(`/api/review?product_id=${productId}`);
+        if (!res.ok) {
+          throw new Error(`Failed to fetch reviews with status: ${res.status}`);
+        }
+        const data = await res.json();
+        setReviews(data);
+
+        // Calculate average rating
+        const totalRating = data.reduce(
+          (sum, review) => sum + review.rating,
+          0
+        );
+        const avgRating = data.length > 0 ? totalRating / data.length : 0;
+        setAverageRating(avgRating.toFixed(1));
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
       }
     };
 
@@ -190,6 +216,18 @@ const Product = () => {
                 £ {product.selling_price}
               </div>
 
+              {/* Average Rating */}
+              <div>
+                <h3 className="font-semibold mb-2">Rating</h3>
+                <div className="flex items-center">
+                  <p className="text-yellow-500 text-2xl">
+                    {"★".repeat(Math.floor(averageRating))}
+                    {"☆".repeat(5 - Math.floor(averageRating))}
+                  </p>
+                  <span className="ml-2 text-lg font-bold">({averageRating} / 5)</span>
+                </div>
+              </div>
+
               {/* Size Selection */}
               <div>
                 <h3 className="font-semibold mb-2">Select Size</h3>
@@ -281,6 +319,30 @@ const Product = () => {
             <p className="text-sm xl:text-xl text-justify leading-2 text-gray-600">
               {product.description}
             </p>
+          </div>
+
+          {/* Reviews */}
+          <div>
+            <h3 className="text-3xl xl:text-6xl font-bold mb-2">Reviews</h3>
+            {reviews.length > 0 ? (
+              <ul className="space-y-4">
+                {reviews.map((review, index) => (
+                  <li key={index} className="border p-4 rounded-lg">
+                    <p className="font-semibold">{review.name}</p> {/* Display user's name */}
+                    <p className="text-sm text-gray-600">{review.review}</p>
+                    <p className="text-yellow-500">
+                      {"★".repeat(review.rating)}
+                      {"☆".repeat(5 - review.rating)}
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      {new Date(review.created_at).toLocaleDateString()}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No reviews yet.</p>
+            )}
           </div>
         </div>
       </div>
