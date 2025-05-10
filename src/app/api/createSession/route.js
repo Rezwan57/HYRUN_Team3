@@ -1,12 +1,11 @@
-import { db } from "../../../../lib/db.js";
-
-
-
-export async function GET() {
+export async function GET(request) {
   try {
-    const [rows] = await db.query('SELECT * FROM users'); 
-    return Response.json(rows);
+    const session = await request.session();
+    const users = await db.query("SELECT id, first_name, last_name, user_email FROM users");
+    session.users = users;
+    await session.save();
+    return NextResponse.json({ message: "Session created" });
   } catch (error) {
-    return Response.json({ error: 'Database error', details: error }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

@@ -5,6 +5,7 @@ import NewProduct from "@/components/Homepage/NewProduct";
 
 
 
+
 export const metadata: Metadata = {
   title: "HYRUN - Home",
   description: "Explore quality sneakers from HYRUN",
@@ -13,10 +14,11 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="flex flex-col gap-32 mb-10">
+    <main className="flex flex-col gap-10 mb-10">
       <HeroSection />
       <HotProducts />
       <NewProduct />
+      
     </main>
   );
 }

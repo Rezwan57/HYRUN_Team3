@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -12,7 +12,7 @@ export default function Breadcrumb() {
         if (pathname) {
             const pathArray = pathname.split('/').filter((item) => item !== '');
             const breadcrumbArray = pathArray.map((item, index) => ({
-                name: item.charAt(0).toUpperCase() + item.slice(1),
+                name: item.replace(/%20/g, ' ').charAt(0).toUpperCase() + item.replace(/%20/g, ' ').slice(1),
                 href: "/" + pathArray.slice(0, index + 1).join('/'),
             }))
             setBreadcrumb(breadcrumbArray);
@@ -20,7 +20,7 @@ export default function Breadcrumb() {
     }, [pathname]);
 
   return (
-    <nav className="text-gray-600 text-md mx-4 my-2 px-10 py-2 bg-neutral-100 rounded-lg">
+    <nav className="text-gray-600 lg:text-[14px] text-xs mx-4 my-2 lg:px-10 px-4 lg:py-4 py-2 bg-neutral-100 rounded-lg">
       <ul className="flex items-center space-x-2">
         <li>
           <Link href="/" className="text-neutral-600 hover:underline">
@@ -38,7 +38,7 @@ export default function Breadcrumb() {
                   : "text-neutral-600 hover:underline"
               }`}
             >
-              {crumb.name}
+              {crumb.name.replace(/%20/g, ' ')}
             </Link>
             {index < breadcrumb.length - 1 && <span className="text-[var(--primary)]">/</span>}
           </li>
@@ -47,3 +47,4 @@ export default function Breadcrumb() {
     </nav>
   )
 }
+
